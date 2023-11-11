@@ -2,7 +2,7 @@ import axios from "axios";
 import refresh from "./refresh";
 import { toast } from "react-toastify";
 
-const url = "http://fruitseasonapims-001-site1.btempurl.com";
+const url = "https://fruitseasonapims-001-site1.btempurl.com";
 const instance = axios.create({
     baseURL: url,
     headers: {

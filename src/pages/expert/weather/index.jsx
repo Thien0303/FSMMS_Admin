@@ -16,8 +16,10 @@ const WeatherTable = () => {
   console.log("weather: ", weatherData);
   const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    dispatch(getAllWeather({ location: '', createdDate: '' }));
+    dispatch(getAllWeather({ location: '', createdDate: ''}));
   }, [dispatch, reload]);
+ 
+
   const handleCreateNewWeather = async () => {
     try {
       await dispatch(createAllWeather({ userId: user?.userId }));
@@ -52,14 +54,14 @@ const WeatherTable = () => {
       flex: 1,
       renderCell: (params) => {
         const descriptionData = params.row.description.match(/\[(.*?)\]/g);
-        const nhietdo = descriptionData[1];
-        const rainChance = descriptionData[2];
-        const humidity = descriptionData[6];
+        const nhietdo = descriptionData[0];
+        const rainChance = descriptionData[1];
+        const humidity = descriptionData[2];
         return (
           <div>
-            <div><strong>Nhiệt độ:</strong> {nhietdo}</div>
-            <div><strong>Dự đoán mưa:</strong> {rainChance}</div>
-            <div><strong>Độ ẩm:</strong> {humidity}</div>
+            <div><strong>Thời gian:</strong> {nhietdo}</div>
+            <div><strong>Nhiệt độ:</strong> {rainChance}</div>
+            <div><strong>Dự đoán mưa:</strong> {humidity}</div>
           </div>
         );
       }

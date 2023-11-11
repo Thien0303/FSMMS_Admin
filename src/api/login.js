@@ -1,5 +1,5 @@
 import axios from "axios";
-const URL = "http://fruitseasonapims-001-site1.btempurl.com";
+const URL = "https://fruitseasonapims-001-site1.btempurl.com";
 
 const instance = axios.create({
     baseURL: URL,

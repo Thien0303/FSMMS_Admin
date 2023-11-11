@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getWeather, createWeather } from "../../../api/Expert/weather";
 export const getAllWeather = createAsyncThunk(
     "weather/getAllWeather",
-    async ({ location, createdDate }, thunkAPI) => {
+    async ({ location, createdDate}, thunkAPI) => {
         try {
             const response = await getWeather(location, createdDate);
             return response;

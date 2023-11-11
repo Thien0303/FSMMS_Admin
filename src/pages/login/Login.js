@@ -36,7 +36,7 @@ export default function Login({ setIsLogin }) {
       };
       axios
         .post(
-          "http://fruitseasonapims-001-site1.btempurl.com/api/auths/login",
+          "https://fruitseasonapims-001-site1.btempurl.com/api/auths/login",
           dataLogin,
           {
             headers: {
