@@ -2,9 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {getFruitHistory, createFruitHistory } from "../../../api/Expert/fruitHistory";
 export const getAllFruitHistory = createAsyncThunk(
     "fruitHistory/getAllFruitHistory",
-    async ({ location, createdDate }, thunkAPI) => {
+    async ({ location, createdDate, userId }, thunkAPI) => {
         try {
-            const response = await getFruitHistory(location, createdDate);
+            const response = await getFruitHistory(location, createdDate, userId);
             return response;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data);

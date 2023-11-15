@@ -14,11 +14,15 @@ const FruitHistory = () => {
   const dispatch = useDispatch();
   const fruitHistory = useSelector((state) => state.fruitHistory?.weather?.data);
   const [reload, setReload] = useState(true);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
   console.log("fruit: ", fruitHistory);
   const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    dispatch(getAllFruitHistory({ location: '', createdDate: ''}));
-  }, [dispatch]);
+  if(!isDataLoaded){
+    dispatch(getAllFruitHistory({ location: '', createdDate: '',userId: user.userId  }));
+    setIsDataLoaded(true);
+  }
+  }, [dispatch, user, isDataLoaded]);
   const handleCreateNewFruitHistory = async () => {
     try {
       await dispatch(createAllFruitHistory({ userId: user?.userId }));
