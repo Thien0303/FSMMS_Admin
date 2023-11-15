@@ -23,20 +23,23 @@ const GetListPost = () => {
     }
   , [dispatch]);
   
-  if (!postData || postData.length === 0) {
+  const filteredPosts = postData?.filter((p) => p.userId !== user.userId);
+
+  if (!filteredPosts || filteredPosts.length === 0) {
     return (
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "100vh", // Chiều cao của màn hình
+          height: "76.52vh",
         }}
       >
         Chưa có nội dung bài viết
       </div>
     );
   }
+  
   return (
     <>
       {postData?.filter((p) => p.userId !== user.userId)?.map((post) => (

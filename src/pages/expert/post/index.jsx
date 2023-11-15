@@ -82,7 +82,7 @@ export default function SinglePost() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "100vh", 
+          height: "76.52vh", 
         }}
       >
         Nội dung chưa được tạo.
