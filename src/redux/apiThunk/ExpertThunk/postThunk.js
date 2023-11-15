@@ -2,9 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getPost, getPostDetail, createPost, updatePost } from "../../../api/Expert/Post";
 export const getAllPost = createAsyncThunk(
     "post/getAllPost",
-    async ({ postTitle}, thunkAPI) => {
+    async ({ postTitle, userId}, thunkAPI) => {
         try {
-            const response = await getPost(postTitle);
+            const response = await getPost(postTitle, userId);
             return response;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data);

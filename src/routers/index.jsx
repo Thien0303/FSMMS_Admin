@@ -13,6 +13,7 @@ import AdminRouter from "./AdminRouter";
 import ExpertRouter from "./ExpertRouter";
 import SupplierRouter from "./SupplierRouter";
 import PostDetail from "../pages/expert/post/postDetail";
+import GetListPost from "../pages/expert/post/getAllPost";
 export const publicRouters = [
     {
         path: "/",
@@ -30,9 +31,9 @@ export const publicRouters = [
 
 export const expertRouters = [
     {
-        path: "/post",
-        name: "post",
-        component: SinglePost,
+        path: "/list",
+        name: "listPost",
+        component: GetListPost,
         layout: DefaultLayout,
     },
     {
@@ -57,6 +58,12 @@ export const expertRouters = [
         path: "/weather",
         name: "weather",
         component: WeatherTable,
+        layout: DefaultLayout,
+    },
+    {
+        path: "/post",
+        name: "post",
+        component: SinglePost,
         layout: DefaultLayout,
     },
 

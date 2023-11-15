@@ -18,7 +18,7 @@ import {
 } from "../../../redux/apiThunk/ExpertThunk/commentThunk";
 const styles = {
     commentInput: {
-      width: "100%", // Đặt chiều rộng cho TextField
+      width: "90%", // Đặt chiều rộng cho TextField
       marginBottom: "10px", // Khoảng cách giữa TextField và Button
     },
     button: {
@@ -179,9 +179,7 @@ const PostDetail = () => {
             Được đăng bởi {postDataDetail?.fullName} vào ngày{" "}
             {new Date(postDataDetail?.createdDate).toLocaleDateString()}
           </Typography>
-          <Typography variant="body1" paragraph>
-            {postDataDetail?.postContent}
-          </Typography>
+          <Typography variant="h6" color="text.secondary" dangerouslySetInnerHTML={{ __html: postDataDetail?.postContent }} />
         </CardContent>
       </Card>
       {commentTree

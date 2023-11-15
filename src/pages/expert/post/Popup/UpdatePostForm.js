@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Button, Box } from '@mui/material';
 import * as Yup from 'yup';
+import ReactQuill from 'react-quill';
 
 const validationSchema = Yup.object().shape({
   postTitle: Yup.string().required('Post Title is required'),
@@ -12,6 +13,11 @@ const validationSchema = Yup.object().shape({
 });
 
 const UpdatePostForm = ({ initialValues, onSubmit }) => {
+  const [editorValue, setEditorValue] = useState('');
+  useEffect(() => {
+    setEditorValue(initialValues.postContent || ''); // Set editor value when initialValues change
+  }, [initialValues.postContent]);
+
   return (
     <Formik
       initialValues={initialValues}
@@ -33,19 +39,30 @@ const UpdatePostForm = ({ initialValues, onSubmit }) => {
             )}
           </Field>
           <Field name="postContent">
-            {({ field, meta }) => (
-              <TextField
-                {...field}
-                label="Post Content"
-                multiline
-                rows={4}
-                error={meta.touched && !!meta.error}
-                helperText={meta.touched && meta.error ? meta.error : ''}
-                fullWidth
-                style={{ marginBottom: '10px' }} 
-              />
+            {({ field, form }) => (
+              <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column' }}>
+                <label style={{ marginBottom: '8px' }}>Post Content</label>
+                <ReactQuill
+                  theme="snow"
+                  value={editorValue}
+                  onChange={(value) => {
+                    setEditorValue(value);
+                    form.setFieldValue('postContent', value);
+                  }}
+                  onBlur={() => form.setFieldTouched('postContent', true)}
+                  modules={{
+                    toolbar: [
+                      ['bold', 'italic', 'underline', 'strike'],
+                      ['link'],
+                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      ['clean'],
+                    ],
+                  }}
+                />
+              </div>
             )}
           </Field>
+
           <Field name="type">
             {({ field, meta }) => (
               <TextField

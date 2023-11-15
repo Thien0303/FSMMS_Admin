@@ -38,13 +38,13 @@ const Sidebar = () => {
   if(isAuthenticated.roleName === 'Expert'){
     renderItem = (
       <>
-        <Item
+              <Item
                 title="Danh sách bài viết"
-                to="/post"
+                to="/list"
                 icon={<ListAltOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              />   
               <Item
                 title="Tạo bài viết"
                 to="/create"
@@ -66,6 +66,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
+              <Item
+                title="Bài viết của tôi"
+                to="/post"
+                icon={<ListAltOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
       </>
     ) 
   } else if (isAuthenticated.roleName === 'Admin'){
@@ -77,7 +84,7 @@ const Sidebar = () => {
   return (
     <Box
       sx={{
-        height: "auto",
+      
         zIndex: 1000,
         "& .pro-sidebar-inner": {
           background: `${colors.primary[400]} !important`,

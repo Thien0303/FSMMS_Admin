@@ -1,8 +1,13 @@
 import api from '../api';
-export const getPost = async (postTitle) => {
+export const getPost = async (postTitle, userId) => {
     try {
+      if(userId){
+        const response = await api.get(`api/posts?postTitle=${postTitle}&activeOnly=true&userId=${userId}`);
+        return response.data;
+      } else {
         const response = await api.get(`api/posts?postTitle=${postTitle}&activeOnly=true`);
         return response.data;
+      }
     } catch (error) {
         console.error("Error fetching post data:", error);
         throw error; 

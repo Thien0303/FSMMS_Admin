@@ -1,31 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, useTheme } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Typography,
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../../../components/Header";
-import { getAllWeather, createAllWeather } from '../../../redux/apiThunk/ExpertThunk/weatherThunk';
-import { tokens } from '../../../theme';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  getAllWeather,
+  createAllWeather,
+} from "../../../redux/apiThunk/ExpertThunk/weatherThunk";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import WeatherPopup from "./WeatherPopup";
+
 const WeatherTable = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
   const weatherData = useSelector((state) => state.weather?.weather?.data);
   const [reload, setReload] = useState(true);
-  console.log("weather: ", weatherData);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [locationDataLoaded, setLocationDataLoaded] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+
   useEffect(() => {
-    dispatch(getAllWeather({ location: '', createdDate: ''}));
-  }, [dispatch, reload]);
- 
+    if (!locationDataLoaded) {
+      dispatch(
+        getAllWeather({ location: "", createdDate: "", userId: user.userId })
+      );
+      setLocationDataLoaded(true);
+    }
+  }, [dispatch, locationDataLoaded, reload, user]);
 
   const handleCreateNewWeather = async () => {
     try {
       await dispatch(createAllWeather({ userId: user?.userId }));
       setReload(!reload);
-      toast.success('Thời tiết đã được cập nhật thành công!', {
-        position: 'top-right',
+      setLocationDataLoaded(false);
+      toast.success("Thời tiết đã được cập nhật thành công!", {
+        position: "top-right",
         autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -33,8 +54,8 @@ const WeatherTable = () => {
         draggable: true,
       });
     } catch (error) {
-      toast.error('Có lỗi xảy ra khi cập nhật thời tiết!', {
-        position: 'top-right',
+      toast.error("Có lỗi xảy ra khi cập nhật thời tiết!", {
+        position: "top-right",
         autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -44,81 +65,120 @@ const WeatherTable = () => {
     }
   };
 
-  const columns = [
-    { field: 'weatherName', headerName: 'Thời Tiết', flex: 1 },
-    { field: 'location', headerName: 'Địa điểm', flex: 1 },
-    { field: 'image', headerName: '', flex: 1, renderCell: (params) => <img src={params.value} alt="Weather" style={{ width: 50, height: 50 }} /> },
-    {
-      field: 'description',
-      headerName: 'Mô tả chi tiết',
-      flex: 1,
-      renderCell: (params) => {
-        const descriptionData = params.row.description.match(/\[(.*?)\]/g);
-        const nhietdo = descriptionData[0];
-        const rainChance = descriptionData[1];
-        const humidity = descriptionData[2];
-        return (
-          <div>
-            <div><strong>Thời gian:</strong> {nhietdo}</div>
-            <div><strong>Nhiệt độ:</strong> {rainChance}</div>
-            <div><strong>Dự đoán mưa:</strong> {humidity}</div>
-          </div>
-        );
-      }
-    }
-  ];
-  
+  const handleTabChange = (event, newValue) => {
+    setSelectedLocation(newValue);
+    setDialogOpen(true);
+  };
 
-  const rows = weatherData?.map(item => ({
-    ...item,
-    id: item.weatherId 
-  })) || [];
+  const handleCloseDialog = () => {
+    setSelectedLocation(null);
+    setDialogOpen(false);
+  };
+
+  const allLocations = [
+    "Cà Mau",
+    "Sóc Trăng",
+    "Hậu Giang",
+    "Cần Thơ",
+    "Kiên Giang",
+    "An Giang",
+    "Đồng Tháp",
+    "Vĩnh Long",
+    "Trà Vinh",
+    "Bến Tre",
+    "Tiền Giang",
+    "Long An",
+    "Bình Dương",
+    "Bình Phước",
+    "Đồng Nai",
+    "Tây Ninh",
+    "Vũng Tàu",
+    "Hồ Chí Minh",
+  ];
 
   return (
     <Box m="20px">
       <Header title="Thời tiết" subtitle="Dữ liệu dự đoán thời tiết" />
       <Box
-        m="40px 0 0 0"
-        height="75vh"
         sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: "30px",
         }}
       >
-     <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginBottom: "10px"
-          }}
+        <Button
+          variant="contained"
+          color="success"
+          onClick={handleCreateNewWeather}
         >
-     <Button variant="contained" color="success" onClick={handleCreateNewWeather}>
-        Cập nhật mới nhất
-      </Button>
+          Cập nhật mới nhất
+        </Button>
       </Box>
-        <DataGrid checkboxSelection rows={rows} columns={columns} />
-      </Box>
+      <Grid container spacing={2}>
+        {allLocations.map((location) => (
+          <Grid key={location} item xs={12} sm={6} md={1.5}>
+            <Card
+              style={{
+                cursor: "pointer",
+                backgroundColor:
+                  selectedLocation === location ? "#e0e0e0" : "white",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+              onClick={() => {
+                handleTabChange(null, location);
+                setLocationDataLoaded(false);
+              }}
+            >
+            <Box
+                component={Chip}
+                style={{
+                  width: "70%",
+                  height: "100px",
+                  overflow: "hidden",
+                  backgroundColor: "white",
+                }}
+                color="primary"
+                clickable
+                avatar={
+                  <Avatar
+                    src={
+                      weatherData?.find((item) => item.location === location)
+                        ?.image
+                    }
+                    alt={location}
+                    style={{ width: 60, height: 60 }}
+                  />
+                }
+              />
+              <CardContent>
+                <Typography variant="h6" align="center">
+                  {location}
+                </Typography>
+              </CardContent>
+            </Card>
+            {selectedLocation === location && (
+              <Dialog open={dialogOpen} onClose={handleCloseDialog} PaperProps={{
+                style: {
+                  maxWidth: '700px', 
+                  width: '100%',
+                  height: "80vh"
+                },
+              }}>
+                <DialogTitle  variant="body" style={{ fontWeight: "bold", marginBottom: "16px", color: "#6633FF" }}>{`Thông tin thời tiết tại ${location}`}</DialogTitle>
+                <DialogContent>
+                  <WeatherPopup
+                    location={location}
+                    weatherData={weatherData}
+                    onClose={handleCloseDialog}
+                  />
+                </DialogContent>
+              </Dialog>
+            )}
+          </Grid>
+        ))}
+      </Grid>
       <ToastContainer />
     </Box>
   );

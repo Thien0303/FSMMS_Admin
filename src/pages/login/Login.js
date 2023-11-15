@@ -52,7 +52,7 @@ export default function Login({ setIsLogin }) {
               navigate('')
               break;
             case 'Expert':
-              navigate('/post')
+              navigate('/list')
               break;
             default:
               navigate('')
