@@ -4,29 +4,55 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import { Avatar, Box, Divider, IconButton, InputBase, ListItemIcon, Menu, MenuItem, useTheme } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  InputBase,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  useTheme,
+} from "@mui/material";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ColorModeContext, tokens } from "../../theme";
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import Badge from "@mui/material/Badge";
+import { useSelector } from "react-redux";
+import CartPopup from "../../pages/supplier/Product/CartPopup/CartPopup";
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const [anchorEl, setAnchorEl] = useState(null);
+  const isAuthenticated = JSON.parse(localStorage.getItem("user"));
   const open = Boolean(anchorEl);
-  const navigate = useNavigate()
+  const [cartPopupOpen, setCartPopupOpen] = useState(false);
+  const cartItems = useSelector((state) => state.cart);
+  const cartQuantity = cartItems?.length;
+  const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleCartIconClick = (event) => {
+    setCartPopupOpen(event.currentTarget);
+  };
+
+  const handleCloseCartPopup = () => {
+    setCartPopupOpen(false);
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem("user")
+    localStorage.removeItem("user");
     setAnchorEl(null);
-    navigate("/")
-  }
+    navigate("/");
+  };
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
       {/* SEARCH BAR */}
@@ -53,11 +79,15 @@ const Topbar = () => {
         <IconButton>
           <NotificationsOutlinedIcon />
         </IconButton>
-        <IconButton>
-          <SettingsOutlinedIcon />
+        {isAuthenticated?.roleName === "Supplier" && (
+          <IconButton id={ Boolean(cartPopupOpen)?'simple-popover' : undefined} onClick={handleCartIconClick}>
+          <Badge badgeContent={cartQuantity} color="error">
+            <ShoppingCartOutlinedIcon />
+          </Badge>
         </IconButton>
+        )}
         <IconButton onClick={handleClick}>
-          <PersonOutlinedIcon  />
+          <PersonOutlinedIcon />
         </IconButton>
       </Box>
       <Menu
@@ -69,31 +99,31 @@ const Topbar = () => {
         PaperProps={{
           elevation: 0,
           sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
-            '& .MuiAvatar-root': {
+            "& .MuiAvatar-root": {
               width: 32,
               height: 32,
               ml: -0.5,
               mr: 1,
             },
-            '&:before': {
+            "&:before": {
               content: '""',
-              display: 'block',
-              position: 'absolute',
+              display: "block",
+              position: "absolute",
               top: 0,
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
               zIndex: 0,
             },
           },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={handleClose}>
           <Avatar /> Profile
@@ -121,6 +151,7 @@ const Topbar = () => {
           Logout
         </MenuItem>
       </Menu>
+        <CartPopup cartPopupOpen={cartPopupOpen} setCartPopupOpen={setCartPopupOpen} handleClose={handleCloseCartPopup} />
     </Box>
   );
 };

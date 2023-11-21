@@ -14,6 +14,10 @@ import ExpertRouter from "./ExpertRouter";
 import SupplierRouter from "./SupplierRouter";
 import PostDetail from "../pages/expert/post/postDetail";
 import GetListPost from "../pages/expert/post/getAllPost";
+import ListProduct from "../pages/supplier/Product/ListProduct";
+import CheckoutPage from "../pages/supplier/Product/CheckOut";
+import ProductDetail from "../pages/supplier/Product/ListProductDetail";
+import ChatIntro from "../pages/supplier/Chat/Chat";
 export const publicRouters = [
     {
         path: "/",
@@ -69,6 +73,30 @@ export const expertRouters = [
 
 ];
 export const supplierRouters = [
+    {
+        path: "/listproduct",
+        name: "listFruit",
+        component: ListProduct,
+        layout: DefaultLayout,
+    },
+    {
+        path: "/fruitDetail/:id",
+        name: "fruitDetail",
+        component: ProductDetail,
+        layout: DefaultLayout,
+    },
+    {
+        path: "/checkout",
+        name: "checkout",
+        component: CheckoutPage,
+        layout: DefaultLayout,
+    },
+    {
+        path: "/chat",
+        name: "chat",
+        component: ChatIntro,
+        layout: DefaultLayout,
+    },
 
 ];
 export const adminRouters = [

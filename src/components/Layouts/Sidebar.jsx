@@ -1,15 +1,16 @@
-import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
-import CloudOutlinedIcon from '@mui/icons-material/CloudOutlined';
-import DifferenceOutlinedIcon from '@mui/icons-material/DifferenceOutlined';
+import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
+import CloudOutlinedIcon from "@mui/icons-material/CloudOutlined";
+import DifferenceOutlinedIcon from "@mui/icons-material/DifferenceOutlined";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import { Menu, MenuItem, ProSidebar } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
-
+import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
+import LocalAtmOutlinedIcon from '@mui/icons-material/LocalAtmOutlined';
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -35,56 +36,78 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("Dashboard");
   let isAuthenticated = JSON.parse(localStorage.getItem("user"));
   let renderItem;
-  if(isAuthenticated.roleName === 'Expert'){
+  if (isAuthenticated.roleName === "Expert") {
     renderItem = (
       <>
-              <Item
-                title="Danh sách bài viết"
-                to="/list"
-                icon={<ListAltOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />   
-              <Item
-                title="Tạo bài viết"
-                to="/create"
-                icon={<CreateNewFolderOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Giá thị trường"
-                to="/history"
-                icon={<DifferenceOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Thời tiết"
-                to="/weather"
-                icon={<CloudOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Bài viết của tôi"
-                to="/post"
-                icon={<ListAltOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
+        <Item
+          title="Danh sách bài viết"
+          to="/list"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Tạo bài viết"
+          to="/create"
+          icon={<CreateNewFolderOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Giá thị trường"
+          to="/history"
+          icon={<DifferenceOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Thời tiết"
+          to="/weather"
+          icon={<CloudOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Bài viết của tôi"
+          to="/post"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
       </>
-    ) 
-  } else if (isAuthenticated.roleName === 'Admin'){
-
-  } else if(isAuthenticated.roleName === 'Supplier'){
-    
+    );
+  } else if (isAuthenticated.roleName === "Admin") {
+  } else if (isAuthenticated.roleName === "Supplier") {
+    renderItem = (
+      <>
+        <Item
+          title="Cửa hàng trái cây"
+          to="/listproduct"
+          icon={<LocalMallOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Đặt hàng"
+          to="/checkout"
+          icon={<LocalAtmOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Chat"
+          to="/chat"
+          icon={<LocalAtmOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      </>
+    );
   }
 
   return (
     <Box
       sx={{
-      
         zIndex: 1000,
         "& .pro-sidebar-inner": {
           background: `${colors.primary[400]} !important`,
@@ -148,9 +171,7 @@ const Sidebar = () => {
                   color={colors.grey[100]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
-                >
-                  
-                </Typography>
+                ></Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   EP Fruit Expert
                 </Typography>
@@ -158,10 +179,7 @@ const Sidebar = () => {
             </Box>
           )}
 
-          
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            {renderItem}
-          </Box>
+          <Box paddingLeft={isCollapsed ? undefined : "10%"}>{renderItem}</Box>
         </Menu>
       </ProSidebar>
     </Box>

@@ -55,7 +55,7 @@ export default function Login({ setIsLogin }) {
               navigate('/list')
               break;
             default:
-              navigate('')
+              navigate('/listproduct')
           }
         })
         .catch((error) => {

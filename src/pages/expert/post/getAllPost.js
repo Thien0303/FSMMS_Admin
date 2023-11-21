@@ -39,7 +39,6 @@ const GetListPost = () => {
       </div>
     );
   }
-  
   return (
     <>
       {postData?.filter((p) => p.userId !== user.userId)?.map((post) => (

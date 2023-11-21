@@ -37,7 +37,6 @@ instance.interceptors.response.use(
                 originalConfig._retry = true;
 
                 try {
-                    toast.error("Hết hạn token")
                     const rs = await refresh.get("/api/auths/refresh-token");
                     const accessToken = rs.data.accessToken;
                     const refreshToken = rs.data.refreshToken;
