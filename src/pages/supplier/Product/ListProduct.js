@@ -8,8 +8,7 @@ import {
   Button,
   Chip,
 } from "@mui/material";
-import { NavLink, useNavigate } from "react-router-dom";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { NavLink} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllFruit } from "../../../redux/apiThunk/SupplierThunk/fruitThunk";
 import { ToastContainer, toast } from "react-toastify";
@@ -21,7 +20,6 @@ const ListProduct = () => {
   const productsPerPage = productsPerRow * 2;
   const [visibleProducts, setVisibleProducts] = useState(productsPerPage);
   const [discountData, setDiscountData] = useState([]);
-  console.log("dis", discountData);
   const dispatch = useDispatch();
   const handleShowMore = () => {
     setVisibleProducts(visibleProducts + productsPerPage);
@@ -45,7 +43,6 @@ const ListProduct = () => {
       });
   }, [dispatch]);
   const products = useSelector((state) => state.fruit?.fruit.data);
-  console.log("data: ", products);
   const handleAddToCart = (product) => {
     const findDis = discountData?.reduce((prev, curr, index) => {
       if (
@@ -58,8 +55,6 @@ const ListProduct = () => {
       return prev;
     }, {});
 
-    console.log("a", findDis);
-
     dispatch(
       addToCart({
         ...product,
@@ -69,7 +64,6 @@ const ListProduct = () => {
         fruitDiscountId: findDis?.fruitDiscountId,
       })
     );
-    console.log("xyz: ", product);
     toast.success("Đã thêm vào vỏ hàng!", {
       position: "top-center",
       autoClose: 1000,
@@ -80,9 +74,8 @@ const ListProduct = () => {
       progress: undefined,
     });
   };
-  console.log("Product Id: ", products);
   return (
-    <Container sx={{ marginTop: "20px" }}>
+    <Container sx={{ marginTop: "20px"}}>
       <Grid container spacing={2}>
         {products?.slice(0, visibleProducts).map((product, index) => (
           <Grid item key={product.fruitId} xs={12} sm={6} md={3}>
@@ -93,28 +86,30 @@ const ListProduct = () => {
                 style={{ position: "absolute", top: 8, left: 8 }}
               />
               <NavLink to={`/fruitDetail/${product.fruitId}`}>
-                <img
-                  src={product.fruitImages[0]?.imageUrl}
-                  alt={product.fruitImages[0]?.fruitName}
-                  style={{
-                    width: "100%",
-                    height: 200,
-                    objectFit: "cover",
-                    cursor: "pointer",
-                  }}
-                />
+                {product.fruitImages && product.fruitImages.length > 0 && (
+                  <img
+                    src={product.fruitImages[0]?.imageUrl}
+                    alt={product.fruitImages[0]?.fruitName}
+                    style={{
+                      width: "100%",
+                      height: 200,
+                      objectFit: "cover",
+                      cursor: "pointer",
+                    }}
+                  />
+                )}
               </NavLink>
               <Typography variant="subtitle1" style={{ marginTop: 8 }}>
                 {product.fruitName}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                Loại: {product.orderType}
+                Loại: {product.categoryFruitName}
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 Số lượng: {product.quantityAvailable}
               </Typography>
               <Typography variant="h6" style={{ marginTop: 8 }}>
-                ${product.price.toFixed(2)}
+                ${product.price?.toFixed(2)}
               </Typography>
               <Button
                 variant="contained"

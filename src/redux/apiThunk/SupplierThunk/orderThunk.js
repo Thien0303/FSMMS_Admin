@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { createOrder, getFarmer } from "../../../api/Supplier/Order";
+import { createOrder, getFarmer, getOrder } from "../../../api/Supplier/Order";
 export const createAllOrder = createAsyncThunk(
     "order/createAllOrder",
     async (data, thunkAPI) => {
@@ -17,6 +17,17 @@ export const getAllFarmer = createAsyncThunk(
     async ({ fullName, roleName}, thunkAPI) => {
         try {
             const response = await getFarmer(fullName, roleName);
+            return response;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+export const getAllOrder = createAsyncThunk(
+    "order/getAllOrder",
+    async ({ buyerUserId, sellerUserId, status}, thunkAPI) => {
+        try {
+            const response = await getOrder(buyerUserId, sellerUserId, status);
             return response;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data);

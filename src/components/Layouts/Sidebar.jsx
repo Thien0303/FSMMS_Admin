@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import LocalAtmOutlinedIcon from '@mui/icons-material/LocalAtmOutlined';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -97,10 +99,38 @@ const Sidebar = () => {
         <Item
           title="Chat"
           to="/chat"
-          icon={<LocalAtmOutlinedIcon />}
+          icon={<ChatOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />
+        <Item
+          title="Tạo sản phẩm"
+          to="/createFruit"
+          icon={<CreateNewFolderOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />   
+       <Item
+          title="Danh sách trái cây"
+          to="/listFruit"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />   
+        <Item
+          title="Quản lý giảm giá"
+          to="/listDiscountFruit"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />  
+        <Item
+          title="Quản lý đơn hàng"
+          to="/listOrderSeller"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />                      
       </>
     );
   }

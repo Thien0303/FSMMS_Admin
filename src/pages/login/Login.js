@@ -31,8 +31,8 @@ export default function Login({ setIsLogin }) {
       setIsLoading(true);
       console.log(values);
       const dataLogin = {
-        email: values.email,
-        password: values.password,
+        email: values?.email,
+        password: values?.password,
       };
       axios
         .post(
@@ -53,24 +53,28 @@ export default function Login({ setIsLogin }) {
               break;
             case 'Expert':
               navigate('/list')
+              toast.success("Đăng nhập thành công")
               break;
             default:
               navigate('/listproduct')
+              toast.success("Đăng nhập thành công")
           }
         })
         .catch((error) => {
           setIsLoading(false);
-          if (error.response && error.response.data) {
-            for (
-              let i = 0;
-              i < error.response.data.Message[0].DescriptionError.length;
-              i++
-            ) {
-              toast.error(error.response.data.Message[0].DescriptionError[i]);
+          if (error.response && error.response.data && error.response.data.Message) {
+            const messages = error.response.data.Message;
+            if (messages.length > 0 && messages[0].DescriptionError) {
+              for (let i = 0; i < messages[0].DescriptionError.length; i++) {
+                toast.error(messages[0].DescriptionError[i]);
+              }
+            } else {
+              toast.error("An error occurred while logging in!");
             }
           } else {
-            toast.error("Login Failed! May be error in server!");
+            toast.error("An error occurred while logging in!");
           }
+          
         });
     },
   });
