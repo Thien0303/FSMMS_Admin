@@ -1,0 +1,21 @@
+.body {
+    display: flex;
+    /* flex-direction: row; */
+    min-height: vh;
+    /* background-image: ; */
+}
+
+.chat-component {
+    justify-self: flex-end;
+    width: 100%;
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* .nav {
+    background-color: #edf2f7;
+    
+} */
