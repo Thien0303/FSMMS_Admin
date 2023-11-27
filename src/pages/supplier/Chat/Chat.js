@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 const ChatIntro = () => {
   const [connection, setConnection] = useState(null);
   const [inputText, setInputText] = useState("");
+  const url = "https://fruitseasonapims-001-site1.btempurl.com";
 
   useEffect(() => {
     const connect = new HubConnectionBuilder()
-      .withUrl(`https://localhost:7024/chat?userid=${userLogin.userId}`)
+      .withUrl(`${url}/chat?userid=${userLogin.userId}`)
       .withAutomaticReconnect()
       .build();
 
@@ -46,34 +47,6 @@ const ChatIntro = () => {
     };
   }, [connection]);
 
-  useEffect(() => {
-    if (connection) {
-      document.getElementById('message').addEventListener('keypress', async e => {
-        let messageElement = document.getElementById('message');
-        let chatHistory = document.getElementById('chatHistory');
-
-        if (e.key === 'Enter' && messageElement.value != '') {
-          try {
-            let sender = userLogin.userId + '';
-            let receiver = document.getElementById('user-chat-id').textContent;
-            let message = messageElement.value;
-
-            await connection.invoke("SendMessage", sender, receiver, message);
-            messageElement.value = '';
-          } catch (err) {
-            console.error(err);
-          }
-        }
-      });
-    }
-
-    return () => {
-      document.getElementById('message').addEventListener('keypress', async e => {
-
-      });
-    };
-  }, [connection]);
-
   var userInformation = localStorage.getItem('user');
   var userLogin = JSON.parse(userInformation);
   var token = userLogin.accessToken;
@@ -84,7 +57,7 @@ const ChatIntro = () => {
     window.location.href = 'login.html';
   }
 
-  fetch('https://localhost:7024/Chats/Users', {
+  fetch(`${url}/Chats/Users`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -124,7 +97,7 @@ const ChatIntro = () => {
     })
 
   function loadChatHistory(user) {
-    fetch(`https://localhost:7024/Chats/History/${user.userId}`, {
+    fetch(`${url}/Chats/History/${user.userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -174,7 +147,28 @@ const ChatIntro = () => {
     return li;
   }
 
+  const sendMessage = async (event) => {
+    if (connection) {
+      if (event.key === 'Enter' && event.target.value != '') {
+        try {
+          let messageElement = document.getElementById('message');
+          let sender = userLogin.userId + '';
+          let receiver = document.getElementById('user-chat-id').textContent;
+          if (receiver == '') {
+            alert('Cần chọn người bạn muốn nhắn tin trước')
+            messageElement.value = '';
+            return;
+          }
+          let message = messageElement.value;
 
+          await connection.invoke("SendMessage", sender, receiver, message);
+          messageElement.value = '';
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    }
+  }
 
   return (
     <div style={{ height: '90vh' }}>
@@ -236,6 +230,7 @@ const ChatIntro = () => {
                           id="message"
                           placeholder="Type your message here..."
                           defaultValue={""}
+                          onKeyDown={(event) => sendMessage(event)}
                         />
                       </div>
                     </div>
