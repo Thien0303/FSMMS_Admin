@@ -18,6 +18,7 @@ import ListProduct from "../pages/supplier/Product/ListProduct";
 import CheckoutPage from "../pages/supplier/Product/CheckOut";
 import ProductDetail from "../pages/supplier/Product/ListProductDetail";
 import ChatIntro from "../pages/supplier/Chat/Chat";
+import ChatLayout from "../components/Layouts/ChatLayout";
 export const publicRouters = [
     {
         path: "/",
@@ -95,7 +96,7 @@ export const supplierRouters = [
         path: "/chat",
         name: "chat",
         component: ChatIntro,
-        layout: DefaultLayout,
+        layout: ChatLayout,
     },
 
 ];
@@ -213,6 +214,6 @@ export const RouterComponents = () => {
                     </div>
                 </BrowserRouter>
             </ThemeProvider>
-         </ColorModeContext.Provider>
+        </ColorModeContext.Provider>
     );
 };
