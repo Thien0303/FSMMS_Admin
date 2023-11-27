@@ -18,7 +18,11 @@ import ListProduct from "../pages/supplier/Product/ListProduct";
 import CheckoutPage from "../pages/supplier/Product/CheckOut";
 import ProductDetail from "../pages/supplier/Product/ListProductDetail";
 import ChatIntro from "../pages/supplier/Chat/Chat";
-import ChatLayout from "../components/Layouts/ChatLayout";
+import ProductForm from "../pages/supplier/Product/CreateProduct";
+import ListFruitSupplier from "../pages/supplier/Product/ListFruitSupplier";
+import FruitSupplierDetail from "../pages/supplier/Product/ListFruitDetail";
+import DiscountSupplier from "../pages/supplier/Discount/DiscountSupplier";
+import OrderSeller from "../pages/supplier/Order/OrderSeller";
 export const publicRouters = [
     {
         path: "/",
@@ -87,6 +91,12 @@ export const supplierRouters = [
         layout: DefaultLayout,
     },
     {
+        path: "/listFruitDetail/:id",
+        name: "listFruitDetail",
+        component: FruitSupplierDetail,
+        layout: DefaultLayout,
+    },
+    {
         path: "/checkout",
         name: "checkout",
         component: CheckoutPage,
@@ -96,9 +106,32 @@ export const supplierRouters = [
         path: "/chat",
         name: "chat",
         component: ChatIntro,
-        layout: ChatLayout,
+        layout: DefaultLayout,
     },
-
+    {
+        path: "/createFruit",
+        name: "createFruit",
+        component: ProductForm,
+        layout: DefaultLayout,
+    },
+    {
+        path: "/listFruit",
+        name: "listFruit",
+        component: ListFruitSupplier,
+        layout: DefaultLayout,
+    },
+    {
+        path: "/listDiscountFruit",
+        name: "listDiscountFruit",
+        component: DiscountSupplier,
+        layout: DefaultLayout,
+    },
+    {
+        path: "/listOrderSeller",
+        name: "listOrderSeller",
+        component: OrderSeller,
+        layout: DefaultLayout,
+    },
 ];
 export const adminRouters = [
 
@@ -214,6 +247,6 @@ export const RouterComponents = () => {
                     </div>
                 </BrowserRouter>
             </ThemeProvider>
-        </ColorModeContext.Provider>
+         </ColorModeContext.Provider>
     );
 };

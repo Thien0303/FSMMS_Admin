@@ -15,7 +15,6 @@ const FruitHistory = () => {
   const fruitHistory = useSelector((state) => state.fruitHistory?.weather?.data);
   const [reload, setReload] = useState(true);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
-  console.log("fruit: ", fruitHistory);
   const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
   if(!isDataLoaded){

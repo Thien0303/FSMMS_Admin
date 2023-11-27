@@ -37,7 +37,7 @@ instance.interceptors.response.use(
                 originalConfig._retry = true;
 
                 try {
-                    const rs = await refresh.get("/api/auths/refresh-token");
+                    const rs = await refresh.post("/api/auths/refresh-token");
                     const accessToken = rs.data.accessToken;
                     const refreshToken = rs.data.refreshToken;
                     let user = JSON.parse(localStorage.getItem("user"));

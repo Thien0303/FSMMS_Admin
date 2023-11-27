@@ -8,6 +8,7 @@ import cartSlice from './Reducers/SupplierSlice/cartSlice';
 import discountFruitSlice from './Reducers/SupplierSlice/discountFruitSlice';
 import reviewSlice from './Reducers/SupplierSlice/reviewSlice';
 import orderSlice from './Reducers/SupplierSlice/orderSlice';
+import categorySlice from './Reducers/SupplierSlice/categorySlice';
 const store = configureStore({
     reducer: {
       weather : weatherSlice,
@@ -18,7 +19,8 @@ const store = configureStore({
       cart: cartSlice,
       discountFruit: discountFruitSlice,
       review: reviewSlice,
-      order: orderSlice
+      order: orderSlice,
+      category: categorySlice,
     },
 } 
 )

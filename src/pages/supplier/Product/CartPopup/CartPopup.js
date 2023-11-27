@@ -62,7 +62,14 @@ const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
           horizontal: "right",
         }}
       >
-        <List style={{ minWidth: "350px", padding: "16px", maxHeight: "400px", overflowY: "auto" }}>
+        <List
+          style={{
+            minWidth: "350px",
+            padding: "16px",
+            maxHeight: "400px",
+            overflowY: "auto",
+          }}
+        >
           {cartItems.map((item) => (
             <div key={item.fruitId}>
               <ListItem style={{ display: "flex", alignItems: "center" }}>
@@ -83,18 +90,22 @@ const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
                   style={{ flex: 1 }}
                 />
                 <ListItemSecondaryAction style={{ marginLeft: "auto" }}>
-                <Box display="flex" alignItems="center">
-            <IconButton onClick={() => handleDecreaseQuantity(item.fruitId)}>
-              <RemoveIcon />
-            </IconButton>
-            <Typography>{item.quantity}</Typography>
-            <IconButton onClick={() => handleIncreaseQuantity(item.fruitId)}>
-              <AddIcon />
-            </IconButton>
-            <IconButton onClick={() => handleRemove(item.fruitId)}>
-              <DeleteIcon />
-            </IconButton>
-          </Box>
+                  <Box display="flex" alignItems="center">
+                    <IconButton
+                      onClick={() => handleDecreaseQuantity(item.fruitId)}
+                    >
+                      <RemoveIcon />
+                    </IconButton>
+                    <Typography>{item.quantity}</Typography>
+                    <IconButton
+                      onClick={() => handleIncreaseQuantity(item.fruitId)}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleRemove(item.fruitId)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
                 </ListItemSecondaryAction>
               </ListItem>
               {/* <ListItem style={{ display: "flex", alignItems: "center" }}>
@@ -110,10 +121,15 @@ const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <Button variant="contained" color="primary"     onClick={() => {
-      navigate('/checkout');
-      setCartPopupOpen(null); // Đóng CartPopup sau khi chuyển hướng
-    }} fullWidth>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                navigate("/checkout");
+                setCartPopupOpen(null); // Đóng CartPopup sau khi chuyển hướng
+              }}
+              fullWidth
+            >
               Checkout
             </Button>
           </ListItem>

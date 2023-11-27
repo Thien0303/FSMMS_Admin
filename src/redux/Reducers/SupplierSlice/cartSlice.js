@@ -18,12 +18,18 @@ const cartSlice = createSlice({
       }
     },
     removeFromCart: (state, action) => {
+      console.log("remove: ", state);
       const { fruitId } = action.payload;
       const index = state.findIndex((item) => item.fruitId === fruitId);
 
       if (index !== -1) {
         state.splice(index, 1);
       }
+    },
+    removeFromCartByFamer: (state, action) => {
+      const fullName = action.payload;
+      const newArray = state.filter((item) => item.fullName !== fullName);
+      return newArray.slice();
     },
     increaseQuantity: (state, action) => {
       const { fruitId } = action.payload;
@@ -52,7 +58,6 @@ const cartSlice = createSlice({
       const existingProductIndex = state.findIndex(
         (item) => item.fruitId === fruitId
       );
-
       state[existingProductIndex].percent = percent;
       state[existingProductIndex].depositAmount = depositAmount;
       state[existingProductIndex].fruitDiscountId = fruitDiscountId;
@@ -70,5 +75,6 @@ export const {
   decreaseQuantity,
   selectPercent,
   clearData,
+  removeFromCartByFamer,
 } = cartSlice.actions;
 export default cartSlice.reducer;
