@@ -40,12 +40,15 @@ const CheckoutPage = () => {
   const currentDate = new Date().toLocaleDateString();
   const [open, setOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const [depositPrice, setDepositPrice] = useState("");
   const cartItems = useSelector((state) => state.cart);
   const userId = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
   const [discountData, setDiscountData] = useState([]);
+  console.log("discount: ", discountData);
   const [userData, setUserData] = useState([]);
   const [loadAgain, setLoadAgain] = useState(true);
+  console.log("abc: ", cartItems);
   useEffect(() => {
     dispatch(getAllDiscountFruit({ discountName: "", discountExpiryDate: "" }))
       .unwrap()
@@ -167,11 +170,12 @@ const CheckoutPage = () => {
           console.log("hasPreorder: ", hasPreOrder);
           if (hasPreOrder) {
             const res = orderResult.payload;
+            setDepositPrice(res?.depositAmount)
             setImageUrl(res?.sellerImageMomoUrl);
             setOpen(true);
-            toast.success("Đặt hàng thành công");
+            toast.success("Đặt hàng thành công, Chủ vườn sẽ liên hệ lại với bạn sau");
           } else {
-            toast.success("Đặt hàng thành công");
+            toast.success("Đặt hàng thành công, Chủ vườn sẽ liên hệ lại với bạn sau");
           }
 
           dispatch(removeFromCartByFamer(fullName));
@@ -191,9 +195,15 @@ const CheckoutPage = () => {
   };
 
   const handleIncreaseQuantity = (fruitId) => {
-    dispatch(increaseQuantity({ fruitId }));
-    setLoadAgain(true);
+    const fruit = cartItems.find(item => item.fruitId === fruitId);
+    if (fruit && fruit.quantity < fruit.quantityAvailable) {
+      dispatch(increaseQuantity({ fruitId }));
+      setLoadAgain(true);
+    } else {
+      alert('Số lượng sản phẩm không đủ');
+    }
   };
+  
 
   const handleDecreaseQuantity = (fruitId) => {
     dispatch(decreaseQuantity({ fruitId }));
@@ -225,10 +235,10 @@ const CheckoutPage = () => {
       boxSizing="border-box"
     >
       <Typography variant="h4" gutterBottom>
-        Checkout
+        Đơn hàng
       </Typography>
       <Typography variant="subtitle1" gutterBottom>
-        Order Details
+        Đơn hàng chi tiết
       </Typography>
       {cartItems?.length > 0 &&
         userData?.map((f) => (
@@ -357,11 +367,11 @@ const CheckoutPage = () => {
 
       <hr />
       <Typography variant="subtitle1" gutterBottom>
-        User Information
+        Thông tin cá nhân
       </Typography>
       <form onSubmit={formik.handleSubmit}>
         <TextField
-          label="Delivery Address"
+          label="Địa chỉ nhận hàng"
           variant="outlined"
           name="deliveryAdress"
           fullWidth
@@ -378,7 +388,7 @@ const CheckoutPage = () => {
         />
 
         <TextField
-          label="Phone Number"
+          label="Số điện thoại"
           variant="outlined"
           fullWidth
           name="phoneNumber"
@@ -392,10 +402,10 @@ const CheckoutPage = () => {
         />
 
         <Typography variant="subtitle1" gutterBottom>
-          Order Date: {currentDate}
+          Ngày đặt hàng: {currentDate}
         </Typography>
       </form>
-      <Popup open={open} onClose={() => setOpen(false)} imageUrl={imageUrl} />
+      <Popup open={open} onClose={() => setOpen(false)} imageUrl={imageUrl} depositPrice={depositPrice}/>
     </Box>
   );
 };

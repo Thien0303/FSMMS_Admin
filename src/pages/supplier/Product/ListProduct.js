@@ -75,7 +75,10 @@ const ListProduct = () => {
     });
   };
   return (
-    <Container sx={{ marginTop: "20px"}}>
+    <Container sx={{ marginTop: "0px"}}>
+      <Typography variant="h1" sx={{ mb: 7, textAlign: "center" }} color="green">
+              Tɾáι ƈâყ ƈủα ɳôɳɠ ԃâɳ
+        </Typography>
       <Grid container spacing={2}>
         {products?.slice(0, visibleProducts).map((product, index) => (
           <Grid item key={product.fruitId} xs={12} sm={6} md={3}>

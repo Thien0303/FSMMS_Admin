@@ -1,7 +1,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const URL = "https://fruitseasonapims-001-site1.btempurl.com";
+const URL = "https://fruitseasonms.azurewebsites.net";
 
 const instance = axios.create({
     baseURL: URL,

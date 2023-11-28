@@ -11,3 +11,7 @@ export const createReviewFruit = async (data) =>{
       });
     return response.data;
 };
+export const deleteReviewAPI = async (id) => {
+  const response = await api.delete(`api/review-fruits/${id}`);
+  return response.data;
+};

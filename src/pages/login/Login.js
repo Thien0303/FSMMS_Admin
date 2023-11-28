@@ -1,5 +1,5 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
@@ -7,9 +7,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from "axios";
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
+import Blogin from "../../assets/images/Blogin.jpg"
 export default function Login({ setIsLogin }) {
   const navigate = useNavigate();
   const [loading, setIsLoading] = useState(false);
@@ -36,7 +37,7 @@ export default function Login({ setIsLogin }) {
       };
       axios
         .post(
-          "https://fruitseasonapims-001-site1.btempurl.com/api/auths/login",
+          "https://fruitseasonms.azurewebsites.net/api/auths/login",
           dataLogin,
           {
             headers: {
@@ -89,7 +90,7 @@ export default function Login({ setIsLogin }) {
         width: "100vw",
         height: "100vh",
         paddingTop: "20vh",
-        backgroundImage: 'url("./images/BackgroundLogin.png")',
+        backgroundImage: `url(${Blogin})`,
         backgroundSize: "cover",
       }}
     >
@@ -114,7 +115,7 @@ export default function Login({ setIsLogin }) {
           >
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" color="green">
             Sign in
           </Typography>
           <form onSubmit={formik.handleSubmit}>
@@ -162,18 +163,18 @@ export default function Login({ setIsLogin }) {
               >
                 Sign In
               </Button>
-              {/* <Grid container>
-                <Grid item xs>
+              <Grid container>
+                {/* <Grid item xs>
                   <Link to="/" variant="body2">
                     Forgot password?
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item>
-                  <Link to="/" variant="body2">
+                  <Link to="/register" variant="body2" style={{color: "green"}}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
-              </Grid> */}
+              </Grid>
             </Box>
           </form>
         </Box>

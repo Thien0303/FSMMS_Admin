@@ -42,7 +42,7 @@ const ProductForm = () => {
   const [openPopup, setOpenPopup] = useState(false);
   const navigate = useNavigate();
   const [defaultCategoryId, setDefaultCategoryId] = useState("");
-
+  const {id} = useParams();
   useEffect(() => {
     if (categories.length > 0) {
       setDefaultCategoryId(categories[0].categoryFruitId);
