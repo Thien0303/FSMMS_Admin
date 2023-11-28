@@ -32,7 +32,12 @@ const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
   };
 
   const handleIncreaseQuantity = (fruitId) => {
-    dispatch(increaseQuantity({ fruitId }));
+    const fruit = cartItems.find(item => item.fruitId === fruitId);
+    if (fruit && fruit.quantity < fruit.quantityAvailable) {
+      dispatch(increaseQuantity({ fruitId }));
+    } else {
+      alert('Số lượng sản phẩm không đủ');
+    } 
   };
 
   const handleDecreaseQuantity = (fruitId) => {

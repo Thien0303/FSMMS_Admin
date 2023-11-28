@@ -23,12 +23,27 @@ import ListFruitSupplier from "../pages/supplier/Product/ListFruitSupplier";
 import FruitSupplierDetail from "../pages/supplier/Product/ListFruitDetail";
 import DiscountSupplier from "../pages/supplier/Discount/DiscountSupplier";
 import OrderSeller from "../pages/supplier/Order/OrderSeller";
+import OrderBuyer from "../pages/supplier/Order/OrderBuyer";
+import Register from "../pages/login/Register";
+import OTPPage from "../pages/login/OTPPage";
 import ChatLayout from "../components/Layouts/ChatLayout";
 export const publicRouters = [
     {
         path: "/",
         name: "login",
         component: Login,
+        layout: null,
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: Register,
+        layout: null,
+    },
+    {
+        path: '/otp',
+        name: 'otp',
+        component: OTPPage,
         layout: null,
     },
     {
@@ -131,6 +146,12 @@ export const supplierRouters = [
         path: "/listOrderSeller",
         name: "listOrderSeller",
         component: OrderSeller,
+        layout: DefaultLayout,
+    },
+    {
+        path: "/listOrderFruit",
+        name: "listOrderFruit",
+        component: OrderBuyer,
         layout: DefaultLayout,
     },
 ];

@@ -10,7 +10,6 @@ const cartSlice = createSlice({
       const existingProductIndex = state.findIndex(
         (item) => item.fruitId === fruitId
       );
-
       if (existingProductIndex !== -1) {
         state[existingProductIndex].quantity += quantity;
       } else {

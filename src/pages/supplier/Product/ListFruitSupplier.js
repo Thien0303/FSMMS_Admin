@@ -97,7 +97,10 @@ const ListFruitSupplier = () => {
     setAnchorEl(null);
   };
   return (
-    <Container sx={{ marginTop: "20px" }}>
+    <Container sx={{ marginTop: "0px" }}>
+            <Typography variant="h1" sx={{ mb: 7, textAlign: "center" }} color="green">
+            Şảຖ phẩ๓ đã tạ໐
+        </Typography>
       <Grid container spacing={2}>
         {products?.slice(0, visibleProducts).map((product, index) => (
           <Grid item key={product.fruitId} xs={12} sm={6} md={3}>

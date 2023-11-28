@@ -12,7 +12,9 @@ import { tokens } from "../../theme";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import LocalAtmOutlinedIcon from '@mui/icons-material/LocalAtmOutlined';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
-
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import DiscountOutlinedIcon from '@mui/icons-material/DiscountOutlined';
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -83,7 +85,7 @@ const Sidebar = () => {
     renderItem = (
       <>
         <Item
-          title="Cửa hàng trái cây"
+          title="Trái cây của nông dân"
           to="/listproduct"
           icon={<LocalMallOutlinedIcon />}
           selected={selected}
@@ -111,7 +113,7 @@ const Sidebar = () => {
           setSelected={setSelected}
         />   
        <Item
-          title="Danh sách trái cây"
+          title="Sản phẩm đã tạo"
           to="/listFruit"
           icon={<ListAltOutlinedIcon />}
           selected={selected}
@@ -120,17 +122,24 @@ const Sidebar = () => {
         <Item
           title="Quản lý giảm giá"
           to="/listDiscountFruit"
-          icon={<ListAltOutlinedIcon />}
+          icon={<DiscountOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />  
         <Item
           title="Quản lý đơn hàng"
           to="/listOrderSeller"
-          icon={<ListAltOutlinedIcon />}
+          icon={<BorderColorOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
-        />                      
+        />   
+        <Item
+          title="Lịch sử đơn hàng"
+          to="/listOrderFruit"
+          icon={<HistoryOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />                            
       </>
     );
   }

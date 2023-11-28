@@ -12,3 +12,7 @@ export const getOrder = async (buyerUserId, sellerUserId, status) =>{
     const response = await api.get(`api/orders?buyerUserId=${buyerUserId}&sellerUserId=${sellerUserId}&status=${status}`);
     return response.data;
 };
+export const updateOrder = async (id, action) => {
+    const response = await api.put(`api/orders/${id}/process?action=${action}`);
+    return response.data;
+};
