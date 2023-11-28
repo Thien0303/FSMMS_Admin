@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 const ChatIntro = () => {
   const [connection, setConnection] = useState(null);
   const [inputText, setInputText] = useState("");
-  const url = "https://fruitseasonapims-001-site1.btempurl.com";
+  const url = "https://fruitseasonms.azurewebsites.net";
 
   useEffect(() => {
     const connect = new HubConnectionBuilder()
