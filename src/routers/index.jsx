@@ -26,6 +26,7 @@ import OrderSeller from "../pages/supplier/Order/OrderSeller";
 import OrderBuyer from "../pages/supplier/Order/OrderBuyer";
 import Register from "../pages/login/Register";
 import OTPPage from "../pages/login/OTPPage";
+import ChatLayout from "../components/Layouts/ChatLayout";
 export const publicRouters = [
     {
         path: "/",
@@ -121,7 +122,7 @@ export const supplierRouters = [
         path: "/chat",
         name: "chat",
         component: ChatIntro,
-        layout: DefaultLayout,
+        layout: ChatLayout,
     },
     {
         path: "/createFruit",
@@ -268,6 +269,6 @@ export const RouterComponents = () => {
                     </div>
                 </BrowserRouter>
             </ThemeProvider>
-         </ColorModeContext.Provider>
+        </ColorModeContext.Provider>
     );
 };
