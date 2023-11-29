@@ -26,8 +26,8 @@ const cartSlice = createSlice({
       }
     },
     removeFromCartByFamer: (state, action) => {
-      const fullName = action.payload;
-      const newArray = state.filter((item) => item.fullName !== fullName);
+      const userId = action.payload;
+      const newArray = state.filter((item) => item.userId !== userId);
       return newArray.slice();
     },
     increaseQuantity: (state, action) => {

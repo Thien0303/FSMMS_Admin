@@ -3,7 +3,9 @@ import {
   Container,
   Divider,
   Grid,
+  Paper,
   Rating,
+  TableContainer,
   Typography
 } from "@mui/material";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,6 +17,7 @@ import {
   deleteReview,
   getAllReview,
 } from "../../../redux/apiThunk/SupplierThunk/reviewThunk";
+import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 const ProductDetail = () => {
   const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -90,17 +93,15 @@ const ProductDetail = () => {
     await dispatch(deleteReview({ id: id }));
     setReload(!reload);
   };
-
   return (
     <Container sx={{ marginTop: "20px" }}>
-      <Grid container spacing={6}>
+      <Grid container spacing={6} >
         <Grid item xs={12} sm={6}>
           <img
             src={fruitDetail?.fruitImages[currentImageIndex]?.imageUrl}
             alt={fruitDetail?.fruitName}
             style={{ width: "100%", height: "auto" }}
           />
-          {/* Ảnh nhỏ */}
           <Box mt={2}>
             {fruitDetail?.fruitImages.map((image, index) => (
               <img
@@ -131,29 +132,79 @@ const ProductDetail = () => {
               {fruitDetail?.fruitName}
             </Typography>
             <Typography variant="h6" mb={1} style={{ fontWeight: "bold" }}>
-              Giá: ${fruitDetail?.price.toFixed(2)}
+              Giá: ${fruitDetail?.price.toFixed(3)} vnđ
             </Typography>
             <Typography variant="body1" mb={2}>
               Mô tả: {fruitDetail?.fruitDescription}
             </Typography>
-            <Typography variant="body2" mb={2} style={{ fontWeight: "bold" }}>
-              Số lượng có sẵn: {fruitDetail?.quantityAvailable}
-            </Typography>
-            <Typography variant="body2" mb={2} style={{ fontWeight: "bold" }}>
-              Nơi xuất xứ: {fruitDetail?.originCity}
-            </Typography>
-            <Typography variant="body2" mb={2} style={{ fontWeight: "bold" }}>
-              Loại đặt hàng: {fruitDetail?.orderType}
-            </Typography>
-            <Typography variant="body2" mb={2} style={{ fontWeight: "bold" }}>
-              Loại trái cây: {fruitDetail?.categoryFruitName}
-            </Typography>
-            <Typography variant="body2" mb={2} style={{ fontWeight: "bold" }}>
-              Người sản xuất: {fruitDetail?.fullName}
-            </Typography>
-            <Typography variant="body2" mb={2} style={{ fontWeight: "bold" }}>
-              Tên cây trồng: {fruitDetail?.plantName}
-            </Typography>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  <TableRow>
+                    <TableCell
+                      variant="head"
+                      component="th"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      Giá:
+                    </TableCell>
+                    <TableCell>${fruitDetail?.price.toFixed(3)} vnđ</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      variant="head"
+                      component="th"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      Số lượng có sẵn:
+                    </TableCell>
+                    <TableCell>
+                      {fruitDetail?.quantityAvailable} (sản phẩm)
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      variant="head"
+                      component="th"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      Nơi xuất xứ:
+                    </TableCell>
+                    <TableCell>{fruitDetail?.originCity}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      variant="head"
+                      component="th"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      Loại đặt hàng:
+                    </TableCell>
+                    <TableCell>{fruitDetail?.orderType}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      variant="head"
+                      component="th"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      Loại trái cây:
+                    </TableCell>
+                    <TableCell>{fruitDetail?.categoryFruitName}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      variant="head"
+                      component="th"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      Người sản xuất:
+                    </TableCell>
+                    <TableCell>{fruitDetail?.fullName}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+              </TableContainer>
           </Box>
         </Grid>
         <Grid item xs={12} sm={1}>
@@ -188,7 +239,7 @@ const ProductDetail = () => {
                                 value={data.ReviewComment}
                             ></textarea>
                             <button className="btn btn-success" type="submit">
-                                Post
+                                Đánh giá
                             </button>
                         </form>
                         {reviews?.map(
@@ -215,20 +266,8 @@ const ProductDetail = () => {
                                             </div>
                                             {reviewParent.reviewComment}
                                             <div>
-                                                <button
-                                                    className="btn btn-light"
-                                                    style={{ color: '#198754' }}
-                                                >
-                                                    reply
-                                                </button>
                                                 {reviewParent.fullName === user?.fullName && (
                                                     <>
-                                                        <button
-                                                            className="btn btn-light"
-                                                            style={{ color: '#ffc107' }}
-                                                        >
-                                                            edit
-                                                        </button>
                                                         <button
                                                             className="btn btn-light"
                                                             style={{ color: '#dc3545' }}
@@ -239,7 +278,7 @@ const ProductDetail = () => {
                                                                 )
                                                             }
                                                         >
-                                                            delete
+                                                            Xóa
                                                         </button>
                                                     </>
                                                 )}

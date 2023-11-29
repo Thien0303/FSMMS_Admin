@@ -74,10 +74,24 @@ const ListProduct = () => {
       progress: undefined,
     });
   };
+  if (!products || products.length === 0) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "76.52vh",
+        }}
+      >
+        Sản phẩm chưa được tạo
+      </div>
+    );
+  }
   return (
     <Container sx={{ marginTop: "0px"}}>
       <Typography variant="h1" sx={{ mb: 7, textAlign: "center" }} color="green">
-              Tɾáι ƈâყ ƈủα ɳôɳɠ ԃâɳ
+            Trái cây của nông dân
         </Typography>
       <Grid container spacing={2}>
         {products?.slice(0, visibleProducts).map((product, index) => (
@@ -102,18 +116,21 @@ const ListProduct = () => {
                   />
                 )}
               </NavLink>
-              <Typography variant="subtitle1" style={{ marginTop: 8 }}>
+              <Typography variant="subtitle1" style={{ marginTop: 8, fontWeight:"bold", color: "#009900"}}>
                 {product.fruitName}
               </Typography>
-              <Typography variant="body2" color="textSecondary">
+              <Typography variant="body2" style={{}}>
                 Loại: {product.categoryFruitName}
               </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Số lượng: {product.quantityAvailable}
+              <Typography variant="body2" style={{marginTop: 2, }}>
+                Đặt hàng: {product.orderType}
               </Typography>
-              <Typography variant="h6" style={{ marginTop: 8 }}>
-                ${product.price?.toFixed(2)}
+              <Typography variant="body2" style={{ color: "black", marginTop: 2, fontWeight: "bold" }}>
+                Số lượng: {product.quantityAvailable} (sản phẩm)
               </Typography>
+              <Typography variant="h6" style={{ marginTop: 5, color: "#FF0000" }}>
+                  Giá: {product?.price?.toFixed(3)} vnđ
+                </Typography>
               <Button
                 variant="contained"
                 color="primary"

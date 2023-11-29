@@ -50,7 +50,7 @@ export default function Login({ setIsLogin }) {
           localStorage.setItem("user", JSON.stringify(response.data.data));
           switch(response.data.data.roleName) {
             case 'Admin':
-              navigate('')
+              navigate('/dashboard')
               break;
             case 'Expert':
               navigate('/list')

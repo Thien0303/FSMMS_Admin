@@ -27,6 +27,12 @@ import OrderBuyer from "../pages/supplier/Order/OrderBuyer";
 import Register from "../pages/login/Register";
 import OTPPage from "../pages/login/OTPPage";
 import ChatLayout from "../components/Layouts/ChatLayout";
+import Dashboard from "../pages/admin/dashboard/Dashboard";
+import GetUser from "../pages/admin/System/getUser";
+import CreatePostAdmin from "../pages/admin/Post/CreatePost";
+import GetListPostAdmin from "../pages/admin/Post/getAllPost";
+import PostDetailAdmin from "../pages/admin/Post/getPostDetail";
+import UpdatePost from "../pages/admin/Post/ManagePost";
 export const publicRouters = [
     {
         path: "/",
@@ -38,12 +44,6 @@ export const publicRouters = [
         path: '/register',
         name: 'register',
         component: Register,
-        layout: null,
-    },
-    {
-        path: '/otp',
-        name: 'otp',
-        component: OTPPage,
         layout: null,
     },
     {
@@ -156,7 +156,42 @@ export const supplierRouters = [
     },
 ];
 export const adminRouters = [
-
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/getUser',
+        name: 'getUser',
+        component: GetUser,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/createPost',
+        name: 'createPost',
+        component: CreatePostAdmin,
+        layout: DefaultLayout,
+    },
+    {
+        path: "/postdetailAdmin/:id",
+        name: "postDetailAdmin",
+        component: PostDetailAdmin,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/listAllPost',
+        name: 'listAllPost',
+        component: GetListPostAdmin,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/updatePost',
+        name: 'updatePost',
+        component: UpdatePost,
+        layout: DefaultLayout,
+    },
 ];
 //Scroll Top when clicked another page
 function ScrollToTop() {

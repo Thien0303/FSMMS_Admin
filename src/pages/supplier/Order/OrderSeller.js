@@ -89,7 +89,8 @@ const OrderSeller = () => {
   }, [dispatch, user, isDataLoaded]);
 
   const columns = [
-    { field: "fullName", headerName: "Tên khách hàng", flex: 1 },
+    { field: "id", headerName: "Mã đơn hàng", flex: 0.7},
+    { field: "fullName", headerName: "Tên khách hàng", flex: 0.9 },
     {
       field: `totalAmount`,
       headerName: "Tổng số tiền",
@@ -99,7 +100,7 @@ const OrderSeller = () => {
     {
       field: `depositAmount`,
       headerName: "Số tiền thanh toán trước",
-      flex: 1,
+      flex: 1.2,
       valueFormatter: (params) => `${params.value} vnd`,
     },
     {

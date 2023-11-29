@@ -10,11 +10,12 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
-import LocalAtmOutlinedIcon from '@mui/icons-material/LocalAtmOutlined';
-import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
-import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
-import DiscountOutlinedIcon from '@mui/icons-material/DiscountOutlined';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import LocalAtmOutlinedIcon from "@mui/icons-material/LocalAtmOutlined";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import DiscountOutlinedIcon from "@mui/icons-material/DiscountOutlined";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -81,6 +82,45 @@ const Sidebar = () => {
       </>
     );
   } else if (isAuthenticated.roleName === "Admin") {
+    renderItem = (
+      <>
+        <Item
+          title="Dashboard"
+          to="/dashboard"
+          icon={<HomeOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
+          title="Tạo bài viết"
+          to="/createPost"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+       <Item
+          title="Danh sách bài viết"
+          to="/listAllPost"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+       <Item
+          title="Quản lý bài viết"
+          to="/updatePost"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+         <Item
+          title="Danh sách người dùng"
+          to="/getUser"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      </>
+    );
   } else if (isAuthenticated.roleName === "Supplier") {
     renderItem = (
       <>
@@ -111,35 +151,35 @@ const Sidebar = () => {
           icon={<CreateNewFolderOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
-        />   
-       <Item
+        />
+        <Item
           title="Sản phẩm đã tạo"
           to="/listFruit"
           icon={<ListAltOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
-        />   
+        />
         <Item
           title="Quản lý giảm giá"
           to="/listDiscountFruit"
           icon={<DiscountOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
-        />  
+        />
         <Item
           title="Quản lý đơn hàng"
           to="/listOrderSeller"
           icon={<BorderColorOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
-        />   
+        />
         <Item
           title="Lịch sử đơn hàng"
           to="/listOrderFruit"
           icon={<HistoryOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
-        />                            
+        />
       </>
     );
   }
@@ -184,7 +224,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  Expert Care
+                  Mùa trái cây
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -212,12 +252,11 @@ const Sidebar = () => {
                   sx={{ m: "10px 0 0 0" }}
                 ></Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  EP Fruit Expert
+                  Hệ thống quản lý
                 </Typography>
               </Box>
             </Box>
           )}
-
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>{renderItem}</Box>
         </Menu>
       </ProSidebar>

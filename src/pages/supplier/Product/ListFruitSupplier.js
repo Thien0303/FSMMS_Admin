@@ -80,7 +80,7 @@ const ListFruitSupplier = () => {
             createdDate: "",
             userId: userId.userId,
           })
-        )  
+        );
         toast.success("Delete successful");
       } catch (error) {
         toast.error("Delete failed!");
@@ -98,26 +98,26 @@ const ListFruitSupplier = () => {
   };
   return (
     <Container sx={{ marginTop: "0px" }}>
-            <Typography variant="h1" sx={{ mb: 7, textAlign: "center" }} color="green">
-            Şảຖ phẩ๓ đã tạ໐
-        </Typography>
+      <Typography
+        variant="h1"
+        sx={{ mb: 7, textAlign: "center" }}
+        color="green"
+      >
+        Sản phẩm đã tạo
+      </Typography>
       <Grid container spacing={2}>
         {products?.slice(0, visibleProducts).map((product, index) => (
           <Grid item key={product.fruitId} xs={12} sm={6} md={3}>
-            <Paper
-                elevation={3}
-                style={{ padding: 16, position: "relative" }}
+            <Paper elevation={3} style={{ padding: 16, position: "relative" }}>
+              <Chip
+                label="Mới"
+                color="secondary"
+                style={{ position: "absolute", top: 8, left: 8 }}
+              />
+              <NavLink
+                to={`/listFruitDetail/${product.fruitId}`}
+                style={{ textDecoration: "none" }}
               >
-                <Chip
-                  label="Mới"
-                  color="secondary"
-                  style={{ position: "absolute", top: 8, left: 8 }}
-                />
-             <NavLink
-              to={`/listFruitDetail/${product.fruitId}`}
-              style={{ textDecoration: "none" }}
-            >
-              
                 {product.fruitImages && product.fruitImages.length > 0 && (
                   <img
                     src={product.fruitImages[0]?.imageUrl}
@@ -130,52 +130,57 @@ const ListFruitSupplier = () => {
                     }}
                   />
                 )}
-                 </NavLink>
-                <Typography variant="subtitle1" style={{ marginTop: 8 }}>
-                  {product.fruitName}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Loại: {product.categoryFruitName}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Số lượng: {product.quantityAvailable}
-                </Typography>
-                <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-                <Typography variant="h6" style={{ marginTop: 8 }}>
-                  ${product.price?.toFixed(2)}
+              </NavLink>
+              <Typography variant="subtitle1" style={{ marginTop: 8, fontWeight:"bold", color: "#009900"}}>
+                {product.fruitName}
+              </Typography>
+              <Typography variant="body2" style={{}}>
+                Loại: {product.categoryFruitName}
+              </Typography>
+              <Typography variant="body2" style={{marginTop: 2, }}>
+                Đặt hàng: {product.orderType}
+              </Typography>
+              <Typography variant="body2" style={{ color: "black", marginTop: 2, fontWeight: "bold" }}>
+                Số lượng: {product.quantityAvailable} (sản phẩm)
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Typography variant="h6" style={{ marginTop: 5, color: "#FF0000" }}>
+                  Giá: {product?.price?.toFixed(3)} vnđ
                 </Typography>
                 <span style={{ cursor: "pointer" }}>
-                <MoreVertIcon
-                  color="action"
-                  onClick={(event) => handleMenuClick(event, product.fruitId)}
-                />
-                {selectFruitId === product.fruitId && (
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleMenuClose}
-                  >
-                    {/* <MenuItem onClick={() => handleUpdatePost(product.fruitId)}>
+                  <MoreVertIcon
+                    color="action"
+                    onClick={(event) => handleMenuClick(event, product.fruitId)}
+                  />
+                  {selectFruitId === product.fruitId && (
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleMenuClose}
+                    >
+                      {/* <MenuItem onClick={() => handleUpdatePost(product.fruitId)}>
                       <EditIcon fontSize="small" sx={{ mr: 1 }} /> Update
                     </MenuItem> */}
-                    <MenuItem onClick={() => handleDeletePost(product.fruitId)}>
-                      <DeleteForeverOutlinedIcon
-                        fontSize="small"
-                        color="error"
-                      />{" "}
-                      Xóa sản phẩm
-                    </MenuItem>
-                  </Menu>
-                )}
-              </span>
+                      <MenuItem
+                        onClick={() => handleDeletePost(product.fruitId)}
+                      >
+                        <DeleteForeverOutlinedIcon
+                          fontSize="small"
+                          color="error"
+                        />{" "}
+                        Xóa sản phẩm
+                      </MenuItem>
+                    </Menu>
+                  )}
+                </span>
               </Box>
-              </Paper>
+            </Paper>
           </Grid>
         ))}
       </Grid>

@@ -23,6 +23,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 import { useSelector } from "react-redux";
 import CartPopup from "../../pages/supplier/Product/CartPopup/CartPopup";
+import logo from '../../assets/images/logo.png';
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -56,16 +57,8 @@ const Topbar = () => {
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
       {/* SEARCH BAR */}
-      <Box
-        display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
-      >
-        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
-        <IconButton type="button" sx={{ p: 1 }}>
-          <SearchOutlinedIcon />
-        </IconButton>
-      </Box>
+  
+        <img src={logo} alt="Logo"height={'40'} width="170" />
 
       {/* ICONS */}
       <Box display="flex">

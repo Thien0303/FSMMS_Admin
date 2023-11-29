@@ -235,8 +235,8 @@ const ProductForm = () => {
               helperText={formik.touched.orderType && formik.errors.orderType}
               margin="normal"
             >
-              <MenuItem value="Order">Order</MenuItem>
-              <MenuItem value="PreOrder">PreOrder</MenuItem>
+              <MenuItem value="Order">Đặt hàng</MenuItem>
+              <MenuItem value="PreOrder">Đặt hàng trước</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth margin="normal">
@@ -279,7 +279,7 @@ const ProductForm = () => {
             </Select>
           </FormControl>
           <Button
-            color="primary"
+            color="success"
             variant="contained"
             fullWidth
             type="submit"

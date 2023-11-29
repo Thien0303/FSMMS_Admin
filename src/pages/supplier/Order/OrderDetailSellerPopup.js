@@ -1,13 +1,14 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, TableContainer, Paper } from "@mui/material";
 
 const OrderDetailSeller = ({ open, handleClose, orderDetails }) => {
     console.log("abc: ", orderDetails);
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-      <DialogTitle>Thông tin chi tiết đơn hàng</DialogTitle>
-      <DialogContent dividers >
-        <Table>
+    <Dialog open={open} onClose={handleClose} maxWidth="md">
+      <DialogTitle style={{color: "green", fontSize: "20px"}}>Thông tin chi tiết đơn hàng</DialogTitle>
+      <DialogContent >
+      <TableContainer component={Paper}>
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell component="th" scope="row" style={{fontSize: "15px"}}>Tên trái cây</TableCell>
@@ -22,13 +23,14 @@ const OrderDetailSeller = ({ open, handleClose, orderDetails }) => {
               <TableRow key={index}>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.fruitName}</TableCell>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.quantity}</TableCell>
-                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.unitPrice}</TableCell>
+                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.unitPrice * 1000}</TableCell>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.oderDetailType}</TableCell>
-                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.totalAmount}</TableCell>
+                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.totalAmount * 1000}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        </TableContainer>
       </DialogContent>
     </Dialog>
   );

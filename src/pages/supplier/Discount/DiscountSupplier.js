@@ -24,8 +24,8 @@ const DiscountSupplier = () => {
     { field: 'fruitName', headerName: 'Sản phẩm', flex: 1 },
     { field: 'discountName', headerName: 'Tên giảm giá', flex: 1 },
     { field: 'discountThreshold', headerName: 'Số lượng giảm giá', flex: 1 },
-    { field: `discountPercentage`, headerName: 'Số phần trăm giảm giá', flex: 1, valueFormatter: (params) => `${params.value}%`, },
-    { field: 'depositAmount', headerName: 'Số phần trăm trả trước', flex: 1,  valueFormatter: (params) => `${params.value}%`, },
+    { field: `discountPercentage`, headerName: 'Số phần trăm giảm giá', flex: 1, valueFormatter: (params) => `${params.value * 100}%`, },
+    { field: 'depositAmount', headerName: 'Số phần trăm trả trước', flex: 1,  valueFormatter: (params) => `${params.value * 100}%`, },
     { 
       field: 'discountExpiryDate', 
       headerName: 'Hạn giảm giá', 

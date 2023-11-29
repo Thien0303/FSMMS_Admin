@@ -69,7 +69,7 @@ const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
       >
         <List
           style={{
-            minWidth: "350px",
+            minWidth: "450px",
             padding: "16px",
             maxHeight: "400px",
             overflowY: "auto",
@@ -91,7 +91,7 @@ const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
                 </Box>
                 <ListItemText
                   primary={item.fruitName}
-                  secondary={`$${item.price?.toFixed(2)} x ${item.quantity}`}
+                  secondary={`$${item.price?.toFixed(3)} x ${item.quantity}`}
                   style={{ flex: 1 }}
                 />
                 <ListItemSecondaryAction style={{ marginLeft: "auto" }}>
@@ -122,7 +122,7 @@ const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
           <ListItem>
             <ListItemText primary="Total" />
             <ListItemSecondaryAction>
-              <strong>${getTotalPrice().toFixed(2)}</strong>
+              <strong>${getTotalPrice().toFixed(3)} vnđ</strong>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>

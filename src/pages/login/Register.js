@@ -13,6 +13,9 @@ import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Logo from '../../assets/images/logo.png'
 import background from '../../assets/images/background.jpg'
+import { useState } from 'react'
+import OTPPage from './OTPPage'
+import PopupOTP from './OTPPage'
 const defaultTheme = createTheme()
 export default function Register() {
     const [email, setEmail] = React.useState('');
@@ -22,6 +25,7 @@ export default function Register() {
     const [address, setAddress] = React.useState('');
     const [momo, setMomo] = React.useState(null);
     const [profile, setProfile] = React.useState(null);
+    const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const baseUrl = 'https://fruitseasonms.azurewebsites.net/api/auths/register';
 
@@ -62,7 +66,7 @@ export default function Register() {
             const data = await response.json();
 
             if (response.ok) {
-                navigate('/otp');
+                setOpen(true);
             } else {
                 console.log('Registration failed');
             }
@@ -177,6 +181,7 @@ export default function Register() {
                         </Box>
                     </Box>
                 </Grid>
+                <PopupOTP open={open} onClose={() => setOpen(false)}/>
             </Grid>
         </ThemeProvider>
     )

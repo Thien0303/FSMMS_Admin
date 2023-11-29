@@ -146,11 +146,10 @@ export default function SinglePost() {
               </span>
             </Box>
             <Divider sx={{ mt: 2, mb: 2 }} />
-            <Typography
-              variant="h6"
-              color="text.secondary"
-              dangerouslySetInnerHTML={{ __html: post.postContent }}
-            />
+            <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+            Được đăng bởi {post?.fullName} vào ngày{" "}
+            {new Date(post?.createdDate).toLocaleDateString()}
+          </Typography>
           </CardContent>
         </Card>
       ))}

@@ -6,25 +6,21 @@ import Typography from "@mui/material/Typography";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import {
-  getAllPost,
-} from "../../../redux/apiThunk/ExpertThunk/postThunk";
 import { useState } from "react";
-const GetListPost = () => {
-  const postData = useSelector((state) => state.post.post?.data);
+import { getAllPostAdmin } from "../../../redux/apiThunk/AdminThunk/systemThunk";
+const GetListPostAdmin = () => {
+  const postData = useSelector((state) => state.getUser.getPost?.data);
   console.log("data", postData);
   const dispatch = useDispatch();
   const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")): {userId: ""};
   useEffect(() => {
       setIsDataLoaded(true);
-      dispatch(getAllPost({ postTitle: ""}));
+      dispatch(getAllPostAdmin({ postTitle: ""}));
       setIsDataLoaded(false);
     }
   , [dispatch]);
-  const filteredPosts = postData?.filter((p) => p.userId !== user.userId);
 
-  if (!filteredPosts || filteredPosts.length === 0) {
+  if (!postData || postData.length === 0) {
     return (
       <div
         style={{
@@ -40,9 +36,9 @@ const GetListPost = () => {
   }
   return (
     <>
-      {postData?.filter((p) => p.userId !== user.userId)?.map((post) => (
+      {postData.filter((e) => e.status !== "Cancelled" ).map((post) => (
         <Card key={post.postId} sx={{ maxWidth: "50vw", m: "auto", mb: 5 }}>
-          <NavLink to={`/postdetail/${post.postId}`}>
+          <NavLink to={`/postdetailAdmin/${post.postId}`}>
             <CardMedia
               component="img"
               height={100}
@@ -72,4 +68,4 @@ const GetListPost = () => {
     </>
   );
 }
-export default GetListPost;
+export default GetListPostAdmin;

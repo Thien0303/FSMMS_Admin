@@ -33,7 +33,7 @@ import Popup from "./CartPopup/CartPayment";
 import { toast } from "react-toastify";
 const validationSchema = yup.object({
   deliveryAddress: yup.string().required("Delivery address is required"),
-  phoneNumber: yup.string().required("Phone number is required"),
+  phoneNumber: yup.string().matches(/^0/, "Số điện thoại phải bắt đầu bằng '0'").min(10, "Số điện thoại ít nhất là 10 số").max(11, "Số điện thoại nhiều nhất là 11 số").required("Bắt buộc nhập số điện thoại"),
 });
 
 const CheckoutPage = () => {
@@ -42,11 +42,13 @@ const CheckoutPage = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [depositPrice, setDepositPrice] = useState("");
   const cartItems = useSelector((state) => state.cart);
-  const userId = JSON.parse(localStorage.getItem("user"));
+  console.log("cart: ", cartItems);
+  const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
   const [discountData, setDiscountData] = useState([]);
   console.log("discount: ", discountData);
   const [userData, setUserData] = useState([]);
+  console.log("user: ", userData);
   const [loadAgain, setLoadAgain] = useState(true);
   console.log("abc: ", cartItems);
   useEffect(() => {
@@ -66,7 +68,7 @@ const CheckoutPage = () => {
         let intrasitAmout = 0;
 
         for (let j = 0; j < cartItems.length; j++) {
-          if (user.fullName === cartItems[j].fullName) {
+          if (user.userId === cartItems[j].userId) {
             const quantity = cartItems[j].quantity || 0;
             const percent = cartItems[j].percent || 0;
             const price = cartItems[j].price || 0;
@@ -126,13 +128,13 @@ const CheckoutPage = () => {
     initialValues: {
       deliveryAddress: "",
       phoneNumber: "",
-      fullName: "",
+      userId: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      const { fullName } = values;
+      const { userId } = values;
       const cartItemsByFarmer = cartItems.filter(
-        (item) => item.fullName === fullName
+        (item) => item.userId === userId
       );
       const orderDetail = [];
       for (const item of cartItemsByFarmer) {
@@ -153,7 +155,7 @@ const CheckoutPage = () => {
         orderDetail.push(orderDetailData);
       }
       const orderData = {
-        userId: userId.userId,
+        userId: user.userId,
         deliveryAddress: values.deliveryAddress,
         phoneNumber: values.phoneNumber,
         orderDetails: orderDetail,
@@ -173,16 +175,13 @@ const CheckoutPage = () => {
             setDepositPrice(res?.depositAmount)
             setImageUrl(res?.sellerImageMomoUrl);
             setOpen(true);
-            toast.success("Đặt hàng thành công, Chủ vườn sẽ liên hệ lại với bạn sau");
-          } else {
-            toast.success("Đặt hàng thành công, Chủ vườn sẽ liên hệ lại với bạn sau");
-          }
-
-          dispatch(removeFromCartByFamer(fullName));
+          } 
+          dispatch(removeFromCartByFamer(userId));
         } else {
           toast.error("Lỗi khi đặt hàng");
         }
       } catch (error) {
+        console.log(error?.respone?.data)
         toast.error("Lỗi khi đặt hàng");
       }
 
@@ -234,19 +233,19 @@ const CheckoutPage = () => {
       padding="20px"
       boxSizing="border-box"
     >
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h2" sx={{fontWeight: "bold", color: "green"}} gutterBottom>
         Đơn hàng
       </Typography>
-      <Typography variant="subtitle1" gutterBottom>
+      <Typography variant="h5" mb={2} gutterBottom>
         Đơn hàng chi tiết
       </Typography>
       {cartItems?.length > 0 &&
         userData?.map((f) => (
           <Box key={f.id}>
-            {cartItems.filter((check) => check.fullName === f.fullName)
-              ?.length > 0 && <Typography>{f.fullName}</Typography>}
+            {cartItems.filter((check) => check.userId === f.userId)
+              ?.length > 0 && <Typography sx={{fontSize: "15px", fontWeight: "bold"}} mb={1}>{f.fullName}</Typography>}
             {cartItems
-              .filter((check) => check.fullName === f.fullName)
+              .filter((check) => check.userId === f.userId)
               .map((item) => {
                 return (
                   <Paper
@@ -255,7 +254,7 @@ const CheckoutPage = () => {
                     style={{
                       marginBottom: "10px",
                       padding: "15px",
-                      width: "100%",
+                      width: "120%",
                       maxWidth: "900px",
                     }}
                   >
@@ -274,7 +273,7 @@ const CheckoutPage = () => {
                           {item.fruitName}
                         </Typography>
                         <Typography>
-                          Quantity: {item.quantity} x ${item.price.toFixed(2)}
+                          Số lượng: {item.quantity} x ${item.price.toFixed(3)} vnđ
                         </Typography>
                         {item?.orderType === "PreOrder" && (
                           <FormControl
@@ -282,7 +281,7 @@ const CheckoutPage = () => {
                             size="small"
                           >
                             <InputLabel id="demo-select-small-label">
-                              Discount
+                              Mã giảm giá
                             </InputLabel>
                             <Select
                               labelId="demo-select-small-label"
@@ -337,26 +336,26 @@ const CheckoutPage = () => {
                   </Paper>
                 );
               })}
-            {cartItems.filter((check) => check.fullName === f.fullName)
+            {cartItems.filter((check) => check.userId === f.userId)
               ?.length > 0 && (
               <Box>
                 <Typography variant="subtitle1" gutterBottom>
-                  Tổng số tiền cần trả trước: {f?.intrasitAmout || 0}
+                  Tổng số tiền cần trả trước: {f?.intrasitAmout *1000 || 0}
                 </Typography>
                 <Typography variant="subtitle1" gutterBottom>
                   Tổng số tiền cần trả sau khi nhận hàng:{" "}
-                  {f?.total ? f.total - f.intrasitAmout : 0}
+                  {f?.total ? (f.total - f.intrasitAmout) *1000  : 0}
                 </Typography>
                 <Button
                   onClick={() => {
                     formik.setValues({
                       ...formik.values,
-                      fullName: f.fullName,
+                      userId: f.userId,
                     });
                     formik.handleSubmit();
                   }}
                   variant="contained"
-                  color="primary"
+                  color="success"
                 >
                   Đặt hàng
                 </Button>

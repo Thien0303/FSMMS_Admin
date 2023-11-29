@@ -49,7 +49,7 @@ const OrderBuyer = () => {
   }, [dispatch, user, isDataLoaded]);
 
   const columns = [ 
-    { field: "id", headerName: "ID", flex: 1 },
+    { field: "id", headerName: "Mã đơn hàng", flex: 1 },
     {
       field: "discountExpiryDate",
       headerName: "Ngày đặt hàng",
@@ -63,19 +63,19 @@ const OrderBuyer = () => {
         field: `totalAmount`,
         headerName: "Tổng số tiền",
         flex: 1,
-        valueFormatter: (params) => `${params.value} vnd`,
+        valueFormatter: (params) => `${params.value * 1000} vnd`,
       },
       {
         field: `depositAmount`,
         headerName: "Số tiền thanh toán trước",
         flex: 1,
-        valueFormatter: (params) => `${params.value} vnd`,
+        valueFormatter: (params) => `${params.value * 1000} vnd`,
       },
       {
         field: `remainingAmount`,
         headerName: "Số tiền thanh toán sau",
         flex: 1,
-        valueFormatter: (params) => `${params.value} vnd`,
+        valueFormatter: (params) => `${params.value *1000} vnd`,
       },
     { field: "status", headerName: "Trạng thái", flex: 1 },
     {

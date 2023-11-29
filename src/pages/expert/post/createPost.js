@@ -52,7 +52,7 @@ const CreateArticle = () => {
   return (
     <Container fixed>
       <Box sx={{ marginTop: "20px" }}>
-        <Typography variant="h2" sx={{ mb: 7, textAlign: "center" }}>
+        <Typography variant="h2" sx={{ mb: 7, textAlign: "center", color: "green" }}>
           Tạo mới bài viết
         </Typography>
         <Formik
@@ -163,6 +163,7 @@ const CreateArticle = () => {
                 variant="contained"
                 fullWidth
                 disabled={isSubmitting}
+                color="success"
               >
                 Post
               </Button>

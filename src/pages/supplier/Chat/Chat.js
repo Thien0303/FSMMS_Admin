@@ -11,7 +11,6 @@ const ChatIntro = () => {
       .withUrl(`${url}/chat?userid=${userLogin.userId}`)
       .withAutomaticReconnect()
       .build();
-
     setConnection(connect);
   }, []);
 
