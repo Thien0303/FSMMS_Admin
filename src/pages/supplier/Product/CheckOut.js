@@ -340,11 +340,11 @@ const CheckoutPage = () => {
               ?.length > 0 && (
               <Box>
                 <Typography variant="subtitle1" gutterBottom>
-                  Tổng số tiền cần trả trước: {f?.intrasitAmout *1000 || 0}
+                  Tổng số tiền cần trả trước: {f?.intrasitAmout *1000 || 0} vnđ
                 </Typography>
                 <Typography variant="subtitle1" gutterBottom>
                   Tổng số tiền cần trả sau khi nhận hàng:{" "}
-                  {f?.total ? (f.total - f.intrasitAmout) *1000  : 0}
+                  {f?.total ? (f.total - f.intrasitAmout) *1000  : 0} vnđ
                 </Typography>
                 <Button
                   onClick={() => {

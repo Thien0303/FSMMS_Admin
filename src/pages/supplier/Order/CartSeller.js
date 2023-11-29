@@ -9,9 +9,9 @@ import { Typography } from "@mui/material";
 const PopupSeller = ({ open, onClose, imageMomoUrl, depositAmount }) => {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Vui lòng quét mã</DialogTitle>
+      <DialogTitle>Vui lòng quét mã để thanh toán</DialogTitle>
       <DialogContent>
-        <Typography variant="h5" color="green" sx={{marginBottom: "10px", fontWeight: "bold"}}>Số tiền cần hoàn trả: {depositAmount} đồng</Typography>
+        <Typography variant="h5" color="green" sx={{marginBottom: "10px", fontWeight: "bold"}}>Số tiền cần hoàn trả: {depositAmount * 1000} vnđ</Typography>
         <img
           src={imageMomoUrl}
           alt="QR Code"
