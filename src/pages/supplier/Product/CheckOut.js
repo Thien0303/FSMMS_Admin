@@ -273,7 +273,7 @@ const CheckoutPage = () => {
                           {item.fruitName}
                         </Typography>
                         <Typography>
-                          Số lượng: {item.quantity} x ${item.price.toFixed(3)} vnđ
+                          Số lượng: {item.quantity} x {item.price?.toFixed(3)} vnđ
                         </Typography>
                         {item?.orderType === "PreOrder" && (
                           <FormControl

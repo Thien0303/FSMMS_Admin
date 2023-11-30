@@ -91,7 +91,7 @@ const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
                 </Box>
                 <ListItemText
                   primary={item.fruitName}
-                  secondary={`$${item.price?.toFixed(3)} x ${item.quantity}`}
+                  secondary={`${item.price?.toFixed(3)} x ${item.quantity}`}
                   style={{ flex: 1 }}
                 />
                 <ListItemSecondaryAction style={{ marginLeft: "auto" }}>
@@ -120,22 +120,22 @@ const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
             </div>
           ))}
           <ListItem>
-            <ListItemText primary="Total" />
+            <ListItemText primary="Tổng tiền" />
             <ListItemSecondaryAction>
-              <strong>${getTotalPrice().toFixed(3)} vnđ</strong>
+              <strong>{getTotalPrice()?.toFixed(3)} vnđ</strong>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
             <Button
               variant="contained"
-              color="primary"
+              color="success"
               onClick={() => {
                 navigate("/checkout");
                 setCartPopupOpen(null); // Đóng CartPopup sau khi chuyển hướng
               }}
               fullWidth
             >
-              Checkout
+              Thanh toán
             </Button>
           </ListItem>
         </List>

@@ -63,19 +63,19 @@ const OrderBuyer = () => {
         field: `totalAmount`,
         headerName: "Tổng số tiền",
         flex: 1,
-        valueFormatter: (params) => `${params.value * 1000} vnd`,
+        valueFormatter: (params) => `${params.value * 1000} vnđ`,
       },
       {
         field: `depositAmount`,
         headerName: "Số tiền thanh toán trước",
         flex: 1,
-        valueFormatter: (params) => `${params.value * 1000} vnd`,
+        valueFormatter: (params) => `${params.value * 1000} vnđ`,
       },
       {
         field: `remainingAmount`,
         headerName: "Số tiền thanh toán sau",
         flex: 1,
-        valueFormatter: (params) => `${params.value *1000} vnd`,
+        valueFormatter: (params) => `${params.value *1000} vnđ`,
       },
     { field: "status", headerName: "Trạng thái", flex: 1 },
     {
