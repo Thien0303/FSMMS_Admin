@@ -139,7 +139,7 @@ export default function SinglePost() {
                         fontSize="small"
                         color="error"
                       />{" "}
-                      Delete
+                       Delete
                     </MenuItem>
                   </Menu>
                 )}

@@ -126,7 +126,7 @@ const ListProduct = () => {
                 Đặt hàng: {product.orderType}
               </Typography>
               <Typography variant="body2" style={{ color: "black", marginTop: 2, fontWeight: "bold" }}>
-                Số lượng: {product.quantityAvailable} (sản phẩm)
+                Số lượng: {product.quantityAvailable} kg
               </Typography>
               <Typography variant="h6" style={{ marginTop: 5, color: "#FF0000" }}>
                   Giá: {product?.price?.toFixed(3)} vnđ

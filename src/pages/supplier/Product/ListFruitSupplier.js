@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllFruitSupplier } from "../../../redux/apiThunk/SupplierThunk/fruitThunk";
+import { getAllFruitSupplier, updateFruitAllSupplier } from "../../../redux/apiThunk/SupplierThunk/fruitThunk";
 import { ToastContainer, toast } from "react-toastify";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
@@ -19,12 +19,16 @@ import MenuItem from "@mui/material/MenuItem";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../../../api/api";
+import UpdateProductDialog from "./PopupProduct/UpdateFruit";
+import UpdateForm from "./PopupProduct/UpdateForm";
 const ListFruitSupplier = () => {
   const productsPerRow = 4;
   const productsPerPage = productsPerRow * 2;
   const [visibleProducts, setVisibleProducts] = useState(productsPerPage);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectFruitId, setSelectFruitId] = useState();
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const dispatch = useDispatch();
   const handleShowMore = () => {
     setVisibleProducts(visibleProducts + productsPerPage);
@@ -64,6 +68,49 @@ const ListFruitSupplier = () => {
       </div>
     );
   }
+  const handleUpdateFruit = async (id) => {
+    const productToUpdate = products.find(item => item.fruitId === id);
+    setSelectedProduct(productToUpdate);
+    setOpenModal(true);
+    setAnchorEl(null);
+  };
+  const handleUpdateSubmit = async(values, { setSubmitting, resetForm }) =>{
+    try{
+    const dataFruit = {
+      fruitName: values.fruitName,
+      fruitDescription: values.fruitDescription,
+      price: values.price,
+      quantityAvailable: values.quantityAvailable,
+      quantityInTransit: 0,
+      originCity: values.originCity,
+      orderType: values.orderType,
+      status: "Active",  
+    };
+    await dispatch(
+      updateFruitAllSupplier({ id: selectedProduct.fruitId, data: dataFruit })
+    );
+    dispatch(
+      getAllFruitSupplier({
+        fruitName: "",
+        minPrice: "",
+        maxPrice: "",
+        newestDate: "",
+        createdDate: "",
+        userId: userId.userId,
+      })
+    );
+    toast.success("Update successful");
+    resetForm();
+    setOpenModal(false);
+  } catch (error) {
+    toast.error("Update failed");
+  } finally {
+    setSubmitting(false);
+  }
+  }
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
   const handleDeletePost = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this Fruit?"
@@ -131,17 +178,23 @@ const ListFruitSupplier = () => {
                   />
                 )}
               </NavLink>
-              <Typography variant="subtitle1" style={{ marginTop: 8, fontWeight:"bold", color: "#009900"}}>
+              <Typography
+                variant="subtitle1"
+                style={{ marginTop: 8, fontWeight: "bold", color: "#009900" }}
+              >
                 {product.fruitName}
               </Typography>
               <Typography variant="body2" style={{}}>
                 Loại: {product.categoryFruitName}
               </Typography>
-              <Typography variant="body2" style={{marginTop: 2, }}>
+              <Typography variant="body2" style={{ marginTop: 2 }}>
                 Đặt hàng: {product.orderType}
               </Typography>
-              <Typography variant="body2" style={{ color: "black", marginTop: 2, fontWeight: "bold" }}>
-                Số lượng: {product.quantityAvailable} (sản phẩm)
+              <Typography
+                variant="body2"
+                style={{ color: "black", marginTop: 2, fontWeight: "bold" }}
+              >
+                Số lượng: {product.quantityAvailable} kg
               </Typography>
               <Box
                 sx={{
@@ -150,7 +203,10 @@ const ListFruitSupplier = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography variant="h6" style={{ marginTop: 5, color: "#FF0000" }}>
+                <Typography
+                  variant="h6"
+                  style={{ marginTop: 5, color: "#FF0000" }}
+                >
                   Giá: {product?.price?.toFixed(3)} vnđ
                 </Typography>
                 <span style={{ cursor: "pointer" }}>
@@ -164,9 +220,12 @@ const ListFruitSupplier = () => {
                       open={Boolean(anchorEl)}
                       onClose={handleMenuClose}
                     >
-                      {/* <MenuItem onClick={() => handleUpdatePost(product.fruitId)}>
-                      <EditIcon fontSize="small" sx={{ mr: 1 }} /> Update
-                    </MenuItem> */}
+                      <MenuItem
+                        onClick={() => handleUpdateFruit(product.fruitId)}
+                      >
+                        <EditIcon fontSize="small" sx={{ mr: 1 }} /> Cập nhật
+                        sản phẩm
+                      </MenuItem>
                       <MenuItem
                         onClick={() => handleDeletePost(product.fruitId)}
                       >
@@ -232,6 +291,9 @@ const ListFruitSupplier = () => {
           )}
         </Box>
       ) : null}
+       {selectedProduct && (
+      <UpdateForm open={openModal} handleClose={handleCloseModal} initialValues={selectedProduct} onSubmit={handleUpdateSubmit}/>
+      )}
     </Container>
   );
 };

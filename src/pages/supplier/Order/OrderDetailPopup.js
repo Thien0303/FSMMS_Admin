@@ -23,9 +23,9 @@ const OrderDetailsPopup = ({ open, handleClose, orderDetails }) => {
               <TableRow key={index}>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.fruitName}</TableCell>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.quantity}</TableCell>
-                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.unitPrice}</TableCell>
+                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.unitPrice * 1000} vnđ</TableCell>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.oderDetailType}</TableCell>
-                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.totalAmount}</TableCell>
+                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.totalAmount * 1000} vnđ</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -70,7 +70,7 @@ import {
                   {({ field, meta }) => (
                     <TextField
                       {...field}
-                      label="Title"
+                      label="Tiêu đề"
                       fullWidth
                       error={meta.touched && !!meta.error}
                       helperText={meta.touched && meta.error ? meta.error : ""}
@@ -87,7 +87,7 @@ import {
                         flexDirection: "column",
                       }}
                     >
-                      <label style={{ marginBottom: "8px" }}>Content</label>
+                      <label style={{ marginBottom: "8px" }}>Nội dung</label>
                       <ReactQuill
                         style={{ height: "150px", marginBottom: "16px" }}
                         theme="snow"
@@ -111,7 +111,7 @@ import {
                   {({ field, meta }) => (
                     <TextField
                       {...field}
-                      label="Type"
+                      label="Loại bài viết"
                       fullWidth
                       error={meta.touched && !!meta.error}
                       helperText={meta.touched && meta.error ? meta.error : ""}
@@ -131,7 +131,7 @@ import {
                     htmlFor="uploadFile"
                     style={{ fontSize: "16px", mr: 2, margin: 5 }}
                   >
-                    Upload File
+                    Tải ảnh
                   </label>
                   <Field name="uploadFile">
                     {({ field, form, meta }) => (
@@ -160,10 +160,11 @@ import {
                 <Button
                   type="submit"
                   variant="contained"
+                  color="success"
                   fullWidth
                   disabled={isSubmitting}
                 >
-                  Post
+                  Tạo bài viết
                 </Button>
               </Form>
             )}

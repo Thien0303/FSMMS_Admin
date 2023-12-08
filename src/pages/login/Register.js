@@ -1,188 +1,250 @@
-import * as React from 'react'
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import Link from '@mui/material/Link'
-import Paper from '@mui/material/Paper'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import { useNavigate } from 'react-router-dom'
-import Typography from '@mui/material/Typography'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import Logo from '../../assets/images/logo.png'
-import background from '../../assets/images/background.jpg'
-import { useState } from 'react'
-import OTPPage from './OTPPage'
-import PopupOTP from './OTPPage'
-const defaultTheme = createTheme()
+import * as React from "react";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import { useNavigate } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Logo from "../../assets/images/logo.png";
+import background from "../../assets/images/background.jpg";
+import { useState } from "react";
+import PopupOTP from "./OTPPage";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Email không hợp lệ")
+    .required("Vui lòng nhập email"),
+  password: Yup.string()
+    .required("Vui lòng nhập mật khẩu")
+    .min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
+  fullName: Yup.string().required("Vui lòng nhập họ và tên"),
+  phone: Yup.string()
+    .matches(/^0/, "Số điện thoại phải bắt đầu bằng '0'")
+    .min(10, "Số điện thoại ít nhất là 10 số")
+    .max(11, "Số điện thoại nhiều nhất là 11 số")
+    .required("Bắt buộc nhập số điện thoại"),
+  address: Yup.string().required("Vui lòng nhập địa chỉ"),
+  roleId: Yup.number().required("Vui lòng chọn vai trò"),
+});
+
 export default function Register() {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [name, setName] = React.useState('');
-    const [phone, setPhone] = React.useState('');
-    const [address, setAddress] = React.useState('');
-    const [momo, setMomo] = React.useState(null);
-    const [profile, setProfile] = React.useState(null);
-    const [open, setOpen] = useState(false);
-    const navigate = useNavigate();
-    const baseUrl = 'https://fruitseasonms.azurewebsites.net/api/auths/register';
+  const [profile, setProfile] = React.useState(null);
+  const [open, setOpen] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const baseUrl = "https://fruitseasonms.azurewebsites.net/api/auths/register";
 
-    const handleFileUpload = (event, fileNumber) => {
-        const files = event.target.files;
-        if (files.length > 0) {
-            if (fileNumber === 1) {
-                setMomo(files[0]);
-            } else if (fileNumber === 2) {
-                setProfile(files[0]);
-            }
+  const handleFileUpload = (event, fileNumber) => {
+    const files = event.target.files;
+    if (files.length > 0) {
+      if (fileNumber === 2) {
+        setProfile(files[0]);
+      }
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      fullName: "",
+      phone: "",
+      address: "",
+      roleId: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values, {resetForm}) => {
+      try {
+        const formData = new FormData();
+        formData.append("Email", values.email);
+        formData.append("Password", values.password);
+        formData.append("FullName", values.fullName);
+        formData.append("Address", values.address);
+        formData.append("PhoneNumber", values.phone);
+        formData.append("RoleId", values.roleId);
+        formData.append("ProfileImageUrl", values.profile);
+        console.log("data: ", values);
+        const response = await fetch(baseUrl, {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setFormSubmitted(true);
+          resetForm();
+          setOpen(true);
+        } else {
+          console.log("Registration failed");
         }
-    };
+      } catch (error) {
+        console.error("Error calling API:", error);
+      }
+    },
+  });
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+  return (
+    <Grid container component="main" sx={{ height: "100vh" }}>
+      <CssBaseline />
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
+        sx={{
+          backgroundImage: `url(${background})`,
+          backgroundRepeat: "no-repeat",
+          backgroundColor: (t) =>
+            t.palette.mode === "light"
+              ? t.palette.grey[50]
+              : t.palette.grey[900],
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={0} square>
+        <Box
+          sx={{
+            my: 8,
+            mx: 10,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            color={"goldenrod"}
+            variant="h6"
+            component="div"
+            sx={{ mb: 2 }}
+          >
+            <img src={Logo} alt="logo" height={"40"} width="170" />
+          </Typography>
+          <form onSubmit={formik.handleSubmit}>
+            <TextField
+              fullWidth
+              name="email"
+              label="Địa chỉ email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+            />
 
-        try {
-            const formData = new FormData();
-            formData.append('Email', email);
-            formData.append('Password', password);
-            formData.append('FullName', name);
-            formData.append('Address', address);
-            formData.append('PhoneNumber', phone);
-            formData.append('RoleId', 3);
-            if (momo) {
-                formData.append('ImageMomoUrl', momo);
-            }
-            if (profile) {
-                formData.append('ProfileImageUrl', profile);
-            }
+            <TextField
+              margin="normal"
+              fullWidth
+              name="password"
+              label="Mật khẩu"
+              type="password"
+              autoComplete="current-password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+            />
 
-            const response = await fetch(baseUrl, {
-                method: 'POST',
-                body: formData,
-            });
+            <TextField
+              margin="normal"
+              fullWidth
+              name="fullName"
+              label="Họ và Tên"
+              type="text"
+              value={formik.values.fullName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+              helperText={formik.touched.fullName && formik.errors.fullName}
+            />
 
-            const data = await response.json();
+            <TextField
+              margin="normal"
+              fullWidth
+              name="phone"
+              label="Số điện thoại"
+              type="tel"
+              value={formik.values.phone}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.phone && Boolean(formik.errors.phone)}
+              helperText={formik.touched.phone && formik.errors.phone}
+            />
 
-            if (response.ok) {
-                setOpen(true);
-            } else {
-                console.log('Registration failed');
-            }
-        } catch (error) {
-            console.error('Error calling API:', error);
-        }
-    };
+            <TextField
+              margin="normal"
+              fullWidth
+              name="address"
+              label="Địa chỉ"
+              type="text"
+              value={formik.values.address}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.address && Boolean(formik.errors.address)}
+              helperText={formik.touched.address && formik.errors.address}
+            />
+         <FormControl fullWidth margin="normal">
+            <InputLabel id="categoryFruitId-label">
+              Chọn vai trò của bạn
+            </InputLabel>
+            <Select
+              fullWidth
+              id="roleId"
+              name="roleId"
+              label="Chọn vai trò của bạn"
+              value={formik.values.roleId}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.roleId && Boolean(formik.errors.roleId)
+              }
+              helperText={formik.touched.roleId && formik.errors.roleId}
+              margin="normal"
+            >
+              <MenuItem value={3}>Nhà cung cấp</MenuItem>
+              <MenuItem value={5}>Chuyên gia</MenuItem>
+            </Select>
+            </FormControl>
+            <span>Ảnh cá nhân </span>
 
-    return (
-        <ThemeProvider theme={defaultTheme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
-                <CssBaseline />
-                <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={7}
-                    sx={{
-                        backgroundImage: `url(${background})`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }}
-                />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={0} square>
-                    <Box
-                        sx={{
-                            my: 8,
-                            mx: 10,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Typography color={'goldenrod'} variant="h6" component="div">
-                            <img src={Logo} alt="logo" height={'40'} width="170" />
-                        </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 0 }}>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="fullName"
-                                label="Full Name"
-                                type="text"
-                                id="fullName"
-                                autoFocus
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="phone"
-                                label="Phone number"
-                                type="tel"
-                                id="phone"
-                                // pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                                onChange={(e) => setPhone(e.target.value)}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="address"
-                                label="Address"
-                                type="text"
-                                id="address"
-                                onChange={(e) => setAddress(e.target.value)}
-                            />
-                            <span>Momo Image</span><input class="form-control form-control-sm" id="Momo" type="file" onChange={(e) => handleFileUpload(e, 1)} placeholder='Momo image'></input>
-                            <hr/>
-                            <span>Profile Image</span><input class="form-control form-control-sm" id="Profile" type="file" onChange={(e) => handleFileUpload(e, 2)}></input>
-                            {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 1 }}
-                            >
-                                Register
-                            </Button>
-
-                            {/* <Copyright sx={{ mt: 5 }} /> */}
-                        </Box>
-                    </Box>
-                </Grid>
-                <PopupOTP open={open} onClose={() => setOpen(false)}/>
-            </Grid>
-        </ThemeProvider>
-    )
+            <input
+              className="form-control form-control-sm"
+              id="ProfileImageUrl"
+              name="ProfileImageUrl"
+              type="file"
+              onChange={(e) => {
+                formik.setFieldValue("profile", e.currentTarget.files[0]);
+                handleFileUpload(e, 2);
+              }}
+              onBlur={formik.handleBlur}
+              error={formik.touched.profile && Boolean(formik.errors.profile)}
+            />
+            {formik.touched.profile && formik.errors.profile && (
+              <div>{formik.errors.profile}</div>
+            )}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="success"
+              sx={{ mt: 3, mb: 1 }}
+            >
+              Đăng ký tài khoản
+            </Button>
+          </form>
+          {formSubmitted && (
+            <PopupOTP open={open} onClose={() => setOpen(false)} />
+          )}
+        </Box>
+      </Grid>
+    </Grid>
+  );
 }

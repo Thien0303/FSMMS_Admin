@@ -30,7 +30,7 @@ const UpdatePostForm = ({ initialValues, onSubmit }) => {
             {({ field, meta }) => (
               <TextField
                 {...field}
-                label="Post Title"
+                label="Tiêu đề bài viết"
                 error={meta.touched && !!meta.error}
                 helperText={meta.touched && meta.error ? meta.error : ''}
                 fullWidth
@@ -41,7 +41,7 @@ const UpdatePostForm = ({ initialValues, onSubmit }) => {
           <Field name="postContent">
             {({ field, form }) => (
               <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column' }}>
-                <label style={{ marginBottom: '8px' }}>Post Content</label>
+                <label style={{ marginBottom: '8px' }}>Nội dung bài viết</label>
                 <ReactQuill
                   theme="snow"
                   value={editorValue}
@@ -67,7 +67,7 @@ const UpdatePostForm = ({ initialValues, onSubmit }) => {
             {({ field, meta }) => (
               <TextField
                 {...field}
-                label="Type"
+                label="Loại bài viết"
                 error={meta.touched && !!meta.error}
                 helperText={meta.touched && meta.error ? meta.error : ''}
                 fullWidth
@@ -107,11 +107,11 @@ const UpdatePostForm = ({ initialValues, onSubmit }) => {
           <Button
             type="submit"
             variant="contained"
-            color="primary"
+            color="success"
             disabled={isSubmitting}
             style={{ marginTop: '16px', alignItems: "flex-start" }}
           >
-            Update
+            Cập nhật bài viết
           </Button>
         </Form>
       )}

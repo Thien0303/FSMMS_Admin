@@ -30,11 +30,6 @@ const validationSchema = yup.object({
     .date()
     .required("Vui lòng nhập ngày hết hạn")
     .min(new Date(), "Ngày hết hạn không hợp lệ"),
-  depositAmount: yup
-    .number()
-    .required("Vui lòng nhập số tiền đặt cọc")
-    .min(0, "Số tiền đặt cọc không hợp lệ")
-    .max(1, "Tỉ lệ giảm giá không được lớn hơn 1"),
 });
 
 const DiscountPopup = ({ open, handleCloseDiscountPopup, fruitId }) => {
@@ -46,7 +41,6 @@ const DiscountPopup = ({ open, handleCloseDiscountPopup, fruitId }) => {
       discountThreshold: 0,
       discountPercentage: 0,
       discountExpiryDate: "",
-      depositAmount: 0,
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -55,7 +49,6 @@ const DiscountPopup = ({ open, handleCloseDiscountPopup, fruitId }) => {
         discountThreshold: values.discountThreshold,
         discountPercentage: values.discountPercentage,
         discountExpiryDate: values.discountExpiryDate,
-        depositAmount: values.depositAmount,
         fruitId: fruitId,
       };
       try {
@@ -123,24 +116,6 @@ const DiscountPopup = ({ open, handleCloseDiscountPopup, fruitId }) => {
             helperText={
               formik.touched.discountPercentage &&
               formik.errors.discountPercentage
-            }
-            fullWidth
-            margin="normal"
-          />
-         <TextField
-            name="depositAmount"
-            label="Tỉ lệ trả trước"
-            type="number"
-            value={formik.values.depositAmount}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.depositAmount &&
-              Boolean(formik.errors.depositAmount)
-            }
-            helperText={
-              formik.touched.depositAmount &&
-              formik.errors.depositAmount
             }
             fullWidth
             margin="normal"

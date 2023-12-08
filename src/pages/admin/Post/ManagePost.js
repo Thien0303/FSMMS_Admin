@@ -121,7 +121,7 @@ const UpdatePost = () => {
   })) || [];
   return (
     <Box m="20px">
-      <Header title="Đơn hàng" subtitle="Quản lý danh sách đơn hàng" />
+      <Header title="Bài viết" subtitle="Quản lý danh sách bài viết" />
       <Box
         m="40px 0 0 0"
         height="75vh"

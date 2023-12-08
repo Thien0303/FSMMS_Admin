@@ -10,6 +10,7 @@ import Header from "../../../components/Header";
 import StatBox from "../../../components/StatBox";
 import { tokens } from "../../../theme";
 import { getAllTotalOrder, getAllTotalPost, getAllTotalScales, getAllTotalUser } from "../../../redux/apiThunk/AdminThunk/dashboardThunk";
+
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
 
@@ -109,7 +110,7 @@ const Dashboard = () => {
         </Box>
 
         {/* ROW 2 */}
-        {/* <Box
+        <Box
           gridColumn="span 8"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -135,12 +136,12 @@ const Dashboard = () => {
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
               >
-                ${data.CurrentMonthProfits}
+                ${dashboardData?.CurrentMonthProfits}
               </Typography>
             </Box>
           </Box>
           <Box height="300px" m="-20px 0 0 0">
-            <Apex dataChart={data.MonthProfits} />
+            
           </Box>
         </Box>
         <Box
@@ -162,7 +163,7 @@ const Dashboard = () => {
               Recent Transactions
             </Typography>
           </Box>
-          {data.FiveNewOrders && data.FiveNewOrders.map((transaction, i) => (
+          {dashboardData?.FiveNewOrders && dashboardData?.FiveNewOrders.map((transaction, i) => (
             <Box
               key={`${transaction.ID}-${i}`}
               display="flex"
@@ -191,7 +192,7 @@ const Dashboard = () => {
                    {transaction.OrderStatus === 0 ? "Failed" : "Success"}
                   </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{format(new Date(transaction.OrderedDate), 'dd/MM/yyyy')}</Box>
+            
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"
@@ -201,7 +202,7 @@ const Dashboard = () => {
               </Box>
             </Box>
           ))}
-        </Box> */}
+        </Box>
       </Box>
     </Box>
   );

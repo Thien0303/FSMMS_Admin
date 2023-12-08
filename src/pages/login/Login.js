@@ -70,10 +70,10 @@ export default function Login({ setIsLogin }) {
                 toast.error(messages[0].DescriptionError[i]);
               }
             } else {
-              toast.error("An error occurred while logging in!");
+              toast.error("Email hoặc mật khẩu không hợp lệ !");
             }
           } else {
-            toast.error("An error occurred while logging in!");
+            toast.error("Email hoặc mật khẩu không hợp lệ !");
           }
           
         });
@@ -116,7 +116,7 @@ export default function Login({ setIsLogin }) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5" color="green">
-            Sign in
+            Đăng nhập
           </Typography>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ mt: 1 }}>
@@ -124,7 +124,7 @@ export default function Login({ setIsLogin }) {
                 margin="normal"
                 fullWidth
                 id="email"
-                label="User Name"
+                label="Email"
                 name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
@@ -136,7 +136,7 @@ export default function Login({ setIsLogin }) {
                 margin="normal"
                 fullWidth
                 name="password"
-                label="Password"
+                label="Mật khẩu"
                 type="password"
                 id="password"
                 value={formik.values.password}
@@ -147,34 +147,41 @@ export default function Login({ setIsLogin }) {
                 }
                 helperText={formik.touched.password && formik.errors.password}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                color="success"
                 disabled={checkDisabled(
                   formik.values.password,
                   formik.values.email
                 )}
               >
-                Sign In
+                Đăng nhập
               </Button>
-              <Grid container>
+              <Grid>
                 {/* <Grid item xs>
                   <Link to="/" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid> */}
                 <Grid item>
-                  <Link to="/register" variant="body2" style={{color: "green"}}>
-                    {"Don't have an account? Sign Up"}
+                  <Link to="/forgotPassword" variant="body2" style={{color: "green"}}>
+                    {"Quên mật khẩu ?"}
                   </Link>
                 </Grid>
-              </Grid>
+             
+                <Grid item>
+                  <Link to="/register" variant="body2" style={{color: "green"}}>
+                    {"Bạn chưa có tài khoản ?"}
+                  </Link>
+                </Grid>
+                </Grid>
             </Box>
           </form>
         </Box>

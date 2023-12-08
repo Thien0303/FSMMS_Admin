@@ -2,7 +2,6 @@ import React from "react";
 import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, TableContainer, Paper } from "@mui/material";
 
 const OrderDetailSeller = ({ open, handleClose, orderDetails }) => {
-    console.log("abc: ", orderDetails);
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md">
       <DialogTitle style={{color: "green", fontSize: "20px"}}>Thông tin chi tiết đơn hàng</DialogTitle>

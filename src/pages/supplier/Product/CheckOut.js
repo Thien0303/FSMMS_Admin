@@ -29,7 +29,6 @@ import {
   createAllOrder,
   getAllFarmer,
 } from "../../../redux/apiThunk/SupplierThunk/orderThunk";
-import Popup from "./CartPopup/CartPayment";
 import { toast } from "react-toastify";
 const validationSchema = yup.object({
   deliveryAddress: yup.string().required("Delivery address is required"),
@@ -38,9 +37,6 @@ const validationSchema = yup.object({
 
 const CheckoutPage = () => {
   const currentDate = new Date().toLocaleDateString();
-  const [open, setOpen] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
-  const [depositPrice, setDepositPrice] = useState("");
   const cartItems = useSelector((state) => state.cart);
   console.log("cart: ", cartItems);
   const user = JSON.parse(localStorage.getItem("user"));
@@ -65,28 +61,19 @@ const CheckoutPage = () => {
     if (loadAgain) {
       const updatedUserData = userData.map((user) => {
         let total = 0;
-        let intrasitAmout = 0;
 
         for (let j = 0; j < cartItems.length; j++) {
           if (user.userId === cartItems[j].userId) {
             const quantity = cartItems[j].quantity || 0;
             const percent = cartItems[j].percent || 0;
             const price = cartItems[j].price || 0;
-            const deposit = cartItems[j].depositAmount || 0;
-
             total += quantity * price - (quantity * price * percent) / 100;
 
-            if (percent > 0) {
-              intrasitAmout +=
-                (quantity * price - (quantity * price * percent) / 100) *
-                deposit;
-            }
           }
         }
         return {
           ...user,
           total: total,
-          intrasitAmout: intrasitAmout,
         };
       });
       setUserData(updatedUserData);
@@ -108,7 +95,6 @@ const CheckoutPage = () => {
               return {
                 ...existingUser,
                 total: apiUser.total,
-                intrasitAmout: apiUser.intrasitAmout,
               };
             } else {
               return apiUser;
@@ -161,25 +147,8 @@ const CheckoutPage = () => {
         orderDetails: orderDetail,
       };
       try {
-        const [orderResult] = await Promise.all([
-          dispatch(createAllOrder(orderData)),
-        ]);
-
-        if (orderResult?.payload) {
-          const hasPreOrder = cartItemsByFarmer.some(
-            (item) => item.orderType === "PreOrder"
-          );
-          console.log("hasPreorder: ", hasPreOrder);
-          if (hasPreOrder) {
-            const res = orderResult.payload;
-            setDepositPrice(res?.depositAmount)
-            setImageUrl(res?.sellerImageMomoUrl);
-            setOpen(true);
-          } 
-          dispatch(removeFromCartByFamer(userId));
-        } else {
-          toast.error("Lỗi khi đặt hàng");
-        }
+          dispatch(createAllOrder(orderData));
+          dispatch(removeFromCartByFamer(userId));      
       } catch (error) {
         console.log(error?.respone?.data)
         toast.error("Lỗi khi đặt hàng");
@@ -340,11 +309,8 @@ const CheckoutPage = () => {
               ?.length > 0 && (
               <Box>
                 <Typography variant="subtitle1" gutterBottom>
-                  Tổng số tiền cần trả trước: {f?.intrasitAmout *1000 || 0} vnđ
-                </Typography>
-                <Typography variant="subtitle1" gutterBottom>
                   Tổng số tiền cần trả sau khi nhận hàng:{" "}
-                  {f?.total ? (f.total - f.intrasitAmout) *1000  : 0} vnđ
+                  {f?.total *1000} vnđ
                 </Typography>
                 <Button
                   onClick={() => {
@@ -404,7 +370,6 @@ const CheckoutPage = () => {
           Ngày đặt hàng: {currentDate}
         </Typography>
       </form>
-      <Popup open={open} onClose={() => setOpen(false)} imageUrl={imageUrl} depositPrice={depositPrice}/>
     </Box>
   );
 };

@@ -33,6 +33,7 @@ import CreatePostAdmin from "../pages/admin/Post/CreatePost";
 import GetListPostAdmin from "../pages/admin/Post/getAllPost";
 import PostDetailAdmin from "../pages/admin/Post/getPostDetail";
 import UpdatePost from "../pages/admin/Post/ManagePost";
+import ForgotPassword from "../pages/login/ForgotPassword";
 export const publicRouters = [
     {
         path: "/",
@@ -44,6 +45,12 @@ export const publicRouters = [
         path: '/register',
         name: 'register',
         component: Register,
+        layout: null,
+    },
+    {
+        path: '/forgotPassword',
+        name: 'forgotPassword',
+        component: ForgotPassword,
         layout: null,
     },
     {

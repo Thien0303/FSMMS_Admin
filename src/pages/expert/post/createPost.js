@@ -71,7 +71,7 @@ const CreateArticle = () => {
                 {({ field, meta }) => (
                   <TextField
                     {...field}
-                    label="Title"
+                    label="Tiêu đề"
                     fullWidth
                     error={meta.touched && !!meta.error}
                     helperText={meta.touched && meta.error ? meta.error : ""}
@@ -88,7 +88,7 @@ const CreateArticle = () => {
                       flexDirection: "column",
                     }}
                   >
-                    <label style={{ marginBottom: "8px" }}>Content</label>
+                    <label style={{ marginBottom: "8px" }}>Nội dung</label>
                     <ReactQuill
                       style={{ height: "150px", marginBottom: "16px" }}
                       theme="snow"
@@ -112,7 +112,7 @@ const CreateArticle = () => {
                 {({ field, meta }) => (
                   <TextField
                     {...field}
-                    label="Type"
+                    label="Loại bài viết"
                     fullWidth
                     error={meta.touched && !!meta.error}
                     helperText={meta.touched && meta.error ? meta.error : ""}
@@ -165,7 +165,7 @@ const CreateArticle = () => {
                 disabled={isSubmitting}
                 color="success"
               >
-                Post
+                Tạo bài viết
               </Button>
             </Form>
           )}

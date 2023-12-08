@@ -54,3 +54,4 @@ export const createFruitImage = async (data) => {
   });
   return response.data;
 };
+

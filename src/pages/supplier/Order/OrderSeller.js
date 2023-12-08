@@ -14,7 +14,6 @@ import { Popover, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { toast } from "react-toastify";
 import OrderDetailSeller from "./OrderDetailSellerPopup";
-import PopupSeller from "./CartSeller";
 const OrderSeller = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -27,9 +26,7 @@ const OrderSeller = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState(null);
   const [isDetailPopupOpen, setIsDetailPopupOpen] = useState(false);
-  const [depositAmount, setDepositAmount] = useState(null);
-  const [imageMomoUrl, setImageMomoUrl] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [rows, setRows] = useState([]);
   const handleMenuClick = (event, orderId) => {
     setAnchorEl(event.currentTarget);
     setSelectedOrderId(orderId);
@@ -49,36 +46,67 @@ const OrderSeller = () => {
   const handleDetailClose = () => {
     setIsDetailPopupOpen(false);
   };
-  const handleUpdateOrder = (action) => {
-    if (selectedOrderId && (action === "Accepted" || action === "Rejected")) {
-      dispatch(updateAllOrder({ id: selectedOrderId, action: action }))
-        .then((response) => {
-          console.log("Update successful:", response);
-          if (
-            action === "Rejected" &&
-            response?.payload.depositAmount &&
-            response?.payload.imageMomoUrl
-          ) {
-            setDepositAmount(response?.payload.depositAmount);
-            setImageMomoUrl(response?.payload.imageMomoUrl);
-            setOpen(true);
-          }
-          dispatch(
-            getAllOrder({
-              buyerUserId: "",
-              sellerUserId: user.userId,
-              status: "",
-            })
-          );
-          handleMenuClose();
-          toast.success("Cập nhật trạng thái đơn hàng thành công");
-        })
-        .catch((error) => {
-          console.error("Update failed:", error);
-          toast.error("Cập nhật trạng thái đơn hàng thất bại");
-        });
+  const handleUpdateOrder = (action, status) => {
+    if (selectedOrderId) {
+      let updatedStatus;
+      switch (action) {
+        case "Shipping":
+          updatedStatus = "Shipping"; 
+          break;
+          case "Accepted":
+            if (status === "Đang giao hàng") {
+              updatedStatus = "Accepted";
+            } else {
+              toast.warning("The order must be in 'Shipping' status to mark as 'Accepted'");
+            }
+            break;
+          case "UserRefused":
+            if (status === "Đang giao hàng") {
+              updatedStatus = "UserRefused";
+            } else {
+              toast.warning("The order must be in 'Shipping' status to mark as 'UserRefused'");
+            }
+            break;
+        case "Rejected":
+          updatedStatus = "Rejected";
+          break;
+        default:
+          break;
+      }
+  
+      if (updatedStatus) {
+        dispatch(updateAllOrder({ id: selectedOrderId, action: updatedStatus }))
+          .then((response) => {
+            console.log("Update successful:", response);
+            const updatedRows = rows.map(row => {
+              if (row.id === selectedOrderId) {
+                return {
+                  ...row,
+                  status: updatedStatus,
+                };
+              }
+              return row;
+            });
+            setRows(updatedRows);
+  
+            dispatch(
+              getAllOrder({
+                buyerUserId: "",
+                sellerUserId: user.userId,
+                status: "",
+              })
+            );
+            handleMenuClose();
+            toast.success("Cập nhật trạng thái đơn hàng thành công");
+          })
+          .catch((error) => {
+            console.error("Update failed:", error);
+            toast.error("Cập nhật trạng thái đơn hàng thất bại");
+          });
+      }
     }
   };
+  
   useEffect(() => {
     if (!isDataLoaded) {
       dispatch(
@@ -94,18 +122,6 @@ const OrderSeller = () => {
     {
       field: `totalAmount`,
       headerName: "Tổng số tiền",
-      flex: 1,
-      valueFormatter: (params) => `${params.value * 1000} vnđ`,
-    },
-    {
-      field: `depositAmount`,
-      headerName: "Số tiền thanh toán trước",
-      flex: 1.2,
-      valueFormatter: (params) => `${params.value * 1000} vnđ`,
-    },
-    {
-      field: `remainingAmount`,
-      headerName: "Số tiền thanh toán sau",
       flex: 1,
       valueFormatter: (params) => `${params.value * 1000} vnđ`,
     },
@@ -137,7 +153,8 @@ const OrderSeller = () => {
       headerName: "Actions",
       flex: 0.5,
       renderCell: (params) => {
-        if (params.row.status === "Đang chờ xử lý") {
+        const status = params.row.status;
+        if (status === "Đang chờ xử lý" || status === "Đang giao hàng") {
           return (
             <span style={{ cursor: "pointer" }}>
               <MoreVertIcon
@@ -157,12 +174,26 @@ const OrderSeller = () => {
                   horizontal: "right",
                 }}
               >
-                <MenuItem onClick={() => handleUpdateOrder("Accepted")}>
-                  Đồng ý
-                </MenuItem>
-                <MenuItem onClick={() => handleUpdateOrder("Rejected")}>
-                  Từ chối
-                </MenuItem>
+                {status === "Đang giao hàng" && (
+                  <div>
+                    <MenuItem onClick={() => handleUpdateOrder("Accepted",  params.row.status)}>
+                      Nhận hàng thành công
+                    </MenuItem>
+                    <MenuItem onClick={() => handleUpdateOrder("UserRefused",  params.row.status)}>
+                      Từ chối nhận hàng
+                    </MenuItem>
+                  </div>
+                )}
+                {status !== "Đang giao hàng" && (
+                  <div>
+                    <MenuItem onClick={() => handleUpdateOrder("Shipping")}>
+                      Đồng ý
+                    </MenuItem>
+                    <MenuItem onClick={() => handleUpdateOrder("Rejected")}>
+                      Từ chối
+                    </MenuItem>
+                  </div>
+                )}
               </Popover>
             </span>
           );
@@ -175,49 +206,65 @@ const OrderSeller = () => {
           );
         }
       },
-    },
+    }
+    
+    
   ];
-  const rows =
-    orderSeller?.map((item) => {
-      const orderDetails = item.orderDetails || []; // Kiểm tra và thiết lập mặc định nếu orderDetails không tồn tại
-      let fruitName = "";
-      let quantity = "";
-      let unitPrice = "";
-      let totalAmount = "";
-      let oderDetailType = "";
-      let status = "";
-      if (orderDetails.length > 0) {
-        const firstOrderDetail = orderDetails[0];
-        fruitName = firstOrderDetail.fruitName;
-        quantity = firstOrderDetail.quantity;
-        unitPrice = firstOrderDetail.unitPrice;
-        totalAmount = firstOrderDetail.totalAmount;
-        oderDetailType = firstOrderDetail.oderDetailType;
-        status =
-          firstOrderDetail.status === "Pending"
-            ? "Đang chờ xử lý"
-            : firstOrderDetail.status === "Rejected"
-            ? "Đơn hàng đã bị từ chối"
-            : firstOrderDetail.status === "Accepted"
-            ? "Đơn hàng đã được duyệt"
-            : firstOrderDetail.status;
-      }
-      return {
-        id: item.orderId,
-        fullName: item.fullName,
-        discountName: item.discountName,
-        orderDate: item.orderDate,
-        remainingAmount: item.remainingAmount,
-        depositAmount: item.depositAmount,
-        fruitName: fruitName,
-        quantity: quantity,
-        unitPrice: unitPrice,
-        totalAmount: totalAmount,
-        oderDetailType: oderDetailType,
-        status: status,
-        orderDetails: orderDetails, // Thêm orderDetails vào dòng dữ liệu
-      };
-    }) || [];
+  const updatedRow = orderSeller?.map((item) => {
+    const orderDetails = item.orderDetails || [];
+    let fruitName = "";
+    let quantity = "";
+    let unitPrice = "";
+    let totalAmount = "";
+    let oderDetailType = "";
+    if (orderDetails.length > 0) {
+      const firstOrderDetail = orderDetails[0];
+      fruitName = firstOrderDetail.fruitName;
+      quantity = firstOrderDetail.quantity;
+      unitPrice = firstOrderDetail.unitPrice;
+      totalAmount = firstOrderDetail.totalAmount;
+      oderDetailType = firstOrderDetail.oderDetailType;
+    }
+  
+    // Mapping các trạng thái từ mã sang văn bản
+    let statusText = "";
+    switch (item.status) {
+      case "Pending":
+        statusText = "Đang chờ xử lý";
+        break;
+      case "Shipping":
+        statusText = "Đang giao hàng";
+        break;
+      case "Rejected":
+        statusText = "Từ chối đơn hàng";
+        break;
+      case "Accepted":
+        statusText = "Đã nhận được hàng";
+        break;
+      case "UserRefused":
+        statusText = "Người dùng từ chối nhận hàng";
+        break;
+      default:
+        break;
+    }
+  
+    return {
+      id: item.orderId,
+      fullName: item.fullName,
+      discountName: item.discountName,
+      orderDate: item.orderDate,
+      remainingAmount: item.remainingAmount,
+      depositAmount: item.depositAmount,
+      fruitName: fruitName,
+      quantity: quantity,
+      unitPrice: unitPrice,
+      totalAmount: totalAmount,
+      oderDetailType: oderDetailType,
+      status: statusText, // Sử dụng văn bản thay vì mã trạng thái
+      orderDetails: orderDetails,
+    };
+  }) || [];
+  
   return (
     <Box m="20px">
       <Header title="Đơn hàng" subtitle="Quản lý danh sách đơn hàng" />
@@ -254,7 +301,7 @@ const OrderSeller = () => {
         }}
       >
         <DataGrid
-          rows={rows}
+          rows={updatedRow}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
@@ -263,12 +310,6 @@ const OrderSeller = () => {
           anchorEl={anchorEl}
           handleClose={handleDetailClose}
           orderDetails={selectedOrderDetails}
-        />
-        <PopupSeller
-          open={open}
-          onClose={() => setOpen(false)}
-          depositAmount={depositAmount} 
-          imageMomoUrl={imageMomoUrl} 
         />
       </Box>
     </Box>

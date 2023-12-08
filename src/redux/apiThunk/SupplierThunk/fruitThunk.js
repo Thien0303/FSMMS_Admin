@@ -1,5 +1,5 @@
 import { createAsyncThunk} from "@reduxjs/toolkit";
-import { createFruit, createFruitImage, getFruit, getFruitDetail, getFruitSupplier, getFruitSupplierDetail } from "../../../api/Supplier/Product";
+import { createFruit, createFruitImage, getFruit, getFruitDetail, getFruitSupplier, getFruitSupplierDetail, updateFruitSupplier } from "../../../api/Supplier/Product";
 export const getAllFruit = createAsyncThunk(
     "fruit/getAllFruit",
     async ({ fruitName, minPrice, maxPrice,newestDate}, thunkAPI) => {
@@ -33,7 +33,7 @@ export const createAllFruit = createAsyncThunk(
         }
     }
 );
-export const updateFruitSupplier = createAsyncThunk(
+export const updateFruitAllSupplier = createAsyncThunk(
     "fruit/updateAllFruit",
     async ({id, data}, thunkAPI) => {
         try {
@@ -69,7 +69,6 @@ export const getAllFruitSupplierDetail = createAsyncThunk(
 export const createAllFruitImage = createAsyncThunk(
     "fruit/createAllFruitImage",
     async (data, thunkAPI) => {
-        console.log("data: ", data);
         try {
             const response = await createFruitImage(data);
             return response;

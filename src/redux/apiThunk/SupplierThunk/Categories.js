@@ -14,7 +14,6 @@ export const getAllCategories = createAsyncThunk(
 export const createAllCategory = createAsyncThunk(
     "category/createAllCategory",
     async (data, thunkAPI) => {
-        console.log("abc: ", data);
         try {
             const response = await createCategory(data);
             return response;
