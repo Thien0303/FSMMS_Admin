@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
+import * as yup from "yup";
 import ReactQuill from "react-quill";
-const validationSchema = Yup.object().shape({
-  discountName: Yup.string().required("Vui lòng nhập tên sản phẩm"),
-  discountThreshold: Yup.number()
-    .required("Vui lòng nhập giá")
+const validationSchema = yup.object().shape({
+  fruitName: yup.string().required("Tên sản phẩm là bắt buộc"),
+  fruitDescription: yup.string().required("Mô tả sản phẩm là bắt buộc"),
+  price: yup
+    .number()
+    .required("Giá sản phẩm là bắt buộc")
     .positive("Giá phải là số dương"),
-  discountPercentage: Yup.number()
-    .required("Vui lòng nhập số lượng có sẵn")
+  quantityAvailable: yup
+    .number()
+    .required("Số lượng có sẵn là bắt buộc")
     .positive("Số lượng phải là số dương"),
-  discountExpiryDate: Yup.string().required("Vui lòng nhập địa điểm"),
-});
+  //   quantityInTransit: yup.number().required('Số lượng trong quá trình vận chuyển là bắt buộc').positive('Số lượng phải là số dương'),
+  originCity: yup.string().required("Thành phố xuất xứ là bắt buộc"),
+  orderType: yup.string().required("Loại đơn hàng là bắt buộc"),
+})
 const UpdateProductDialog = ({ initialValues, onSubmit }) => {
   const [editorValue, setEditorValue] = useState("");
   useEffect(() => {
