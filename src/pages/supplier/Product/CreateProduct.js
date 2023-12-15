@@ -20,6 +20,8 @@ import CategoryForm from "./CreateCategory";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { Tooltip, IconButton } from "@mui/material";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 const validationSchema = yup.object({
   fruitName: yup.string().required("Tên sản phẩm là bắt buộc"),
   productDescription: yup.string().required("Mô tả sản phẩm là bắt buộc"),
@@ -31,7 +33,7 @@ const validationSchema = yup.object({
     .number()
     .required("Số lượng có sẵn là bắt buộc")
     .positive("Số lượng phải là số dương"),
-  //   quantityInTransit: yup.number().required('Số lượng trong quá trình vận chuyển là bắt buộc').positive('Số lượng phải là số dương'),
+  quantityInTransit: yup.number().required('Cân nặng là bắt buộc').positive('Cân nặng phải là số dương'),
   originCity: yup.string().required("Thành phố xuất xứ là bắt buộc"),
   orderType: yup.string().required("Loại đơn hàng là bắt buộc"),
 });
@@ -111,13 +113,11 @@ const ProductForm = () => {
         }
         if (newProductId) {
           resetForm();
-          toast.success("Tạo sản phẩm thành công");
           navigate(`/listFruitDetail/${newProductId}`);
         } else {
           toast.error("Không thể lấy ID của sản phẩm mới");
         }
       } catch (error) {
-        toast.error("Đã xảy ra lỗi khi tạo sản phẩm");
       }
     },
   });
@@ -179,13 +179,22 @@ const ProductForm = () => {
             fullWidth
             id="price"
             name="price"
-            label="Giá sản phẩm"
+            label="Giá sản phẩm /kg"
             type="number"
             value={formik.values.price}
             onChange={formik.handleChange}
             error={formik.touched.price && Boolean(formik.errors.price)}
             helperText={formik.touched.price && formik.errors.price}
             margin="normal"
+            InputProps={{
+              endAdornment: (
+                <Tooltip title="Ví dụ: 10 là 10.000 vnđ">
+                  <IconButton aria-label="tooltip">
+                    <HelpOutlineIcon />
+                  </IconButton>
+                </Tooltip>
+              ),
+            }}
           />
           <TextField
             fullWidth
@@ -202,6 +211,24 @@ const ProductForm = () => {
             helperText={
               formik.touched.quantityAvailable &&
               formik.errors.quantityAvailable
+            }
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            id="quantityInTransit"
+            name="quantityInTransit"
+            label="Cân nặng ước tính cho mỗi sản phẩm"
+            type="number"
+            value={formik.values.quantityInTransit}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.quantityInTransit &&
+              Boolean(formik.errors.quantityInTransit)
+            }
+            helperText={
+              formik.touched.quantityInTransit &&
+              formik.errors.quantityInTransit
             }
             margin="normal"
           />

@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getTotalCustomer, getTotalOrder, getTotalPost, getTotalScales } from "../../../api/Admin/dashboard";
+import { getOrderStatus,getTotalGarden, getTotalOrder, getTotalPost, getTotalScales } from "../../../api/Admin/dashboard";
 export const getAllTotalOrder = createAsyncThunk(
     "dashboard/getAllTotalOrder",
-    async ({startDate, endDate}, thunkAPI) => {
+    async (thunkAPI) => {
         try {
-            const response = await getTotalOrder(startDate, endDate);
+            const response = await getTotalOrder();
             return response;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data);
@@ -13,9 +13,9 @@ export const getAllTotalOrder = createAsyncThunk(
 );
 export const getAllTotalPost = createAsyncThunk(
     "dashboard/getAll",
-    async ({startDate, endDate}, thunkAPI) => {
+    async ( thunkAPI) => {
         try {
-            const response = await getTotalPost(startDate, endDate);
+            const response = await getTotalPost();
             return response;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data);
@@ -24,20 +24,31 @@ export const getAllTotalPost = createAsyncThunk(
 );
 export const getAllTotalScales = createAsyncThunk(
     "dashboard/getAll",
-    async ({startDate, endDate}, thunkAPI) => {
+    async ( thunkAPI) => {
         try {
-            const response = await getTotalScales(startDate, endDate);
+            const response = await getTotalScales();
             return response;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data);
         }
     }
 );
-export const getAllTotalUser = createAsyncThunk(
+export const getAllTotalGarden = createAsyncThunk(
     "dashboard/getAllTotalUser",
-    async ({startDate, endDate}, thunkAPI) => {
+    async ( thunkAPI) => {
         try {
-            const response = await getTotalCustomer(startDate, endDate);
+            const response = await getTotalGarden();
+            return response;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+export const getAllTotalOrderStatus = createAsyncThunk(
+    "dashboard/getAllTotalOrderStatus",
+    async ( thunkAPI) => {
+        try {
+            const response = await getOrderStatus();
             return response;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data);

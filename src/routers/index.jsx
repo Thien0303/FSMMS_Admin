@@ -34,6 +34,7 @@ import GetListPostAdmin from "../pages/admin/Post/getAllPost";
 import PostDetailAdmin from "../pages/admin/Post/getPostDetail";
 import UpdatePost from "../pages/admin/Post/ManagePost";
 import ForgotPassword from "../pages/login/ForgotPassword";
+import CountPost from "../pages/expert/post/CountPost";
 export const publicRouters = [
     {
         path: "/",
@@ -98,7 +99,12 @@ export const expertRouters = [
         component: SinglePost,
         layout: DefaultLayout,
     },
-
+    {
+        path: "/countPost",
+        name: "countPost",
+        component: CountPost,
+        layout: DefaultLayout,
+    },
 ];
 export const supplierRouters = [
     {

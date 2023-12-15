@@ -38,7 +38,6 @@ const styles = {
       if (parentId in commentMap) {
         commentMap[parentId].children.push(commentMap[comment.commentId]);
       } else {
-        // Nếu parentId không hợp lệ, coi comment hiện tại là root
         commentTree.push(commentMap[comment.commentId]);
       }
     });

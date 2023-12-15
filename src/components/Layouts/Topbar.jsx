@@ -69,9 +69,9 @@ const Topbar = () => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton>
+        {/* <IconButton>
           <NotificationsOutlinedIcon />
-        </IconButton>
+        </IconButton> */}
         {isAuthenticated?.roleName === "Supplier" && (
           <IconButton id={ Boolean(cartPopupOpen)?'simple-popover' : undefined} onClick={handleCartIconClick}>
           <Badge badgeContent={cartQuantity} color="error">
@@ -118,7 +118,7 @@ const Topbar = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <Avatar /> Profile
         </MenuItem>
         <MenuItem onClick={handleClose}>
@@ -136,7 +136,7 @@ const Topbar = () => {
             <Settings fontSize="small" />
           </ListItemIcon>
           Settings
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />

@@ -36,14 +36,13 @@ const CreateArticle = () => {
       formData.append("Type", values.type);
       formData.append("UserId", userId.userId);
       formData.append("UploadFile", values.uploadFile);
-      const respone = await dispatch(createAllPost({ data: formData })); // Sử dụng hàm API từ postThunk
-      console.log("response", respone);
-      toast.success("Post created successfully");
+      const respone = await dispatch(createAllPost({ data: formData }));
+      toast.success("Tạo bài viết thành công");
       resetForm();
       // navigate("/post");
     } catch (error) {
       console.error("Error creating post: ", error);
-      toast.error("Error in creating post");
+      toast.error("Tạo bài viết thất bại");
     } finally {
       setSubmitting(false);
     }

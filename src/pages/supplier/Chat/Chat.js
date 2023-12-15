@@ -81,7 +81,6 @@ const ChatIntro = () => {
                                     </p>`;
 
         li.setAttribute('data-chat', user.userId);
-
         li.addEventListener('click', () => {
           document.getElementById('send-to-user').textContent = user.fullName;
           document.getElementById('user-chat-id').textContent = user.userId;

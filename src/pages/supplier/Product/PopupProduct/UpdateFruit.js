@@ -3,6 +3,8 @@ import { TextField, Button } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import ReactQuill from "react-quill";
+import { Tooltip, IconButton } from "@mui/material";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 const validationSchema = yup.object().shape({
   fruitName: yup.string().required("Tên sản phẩm là bắt buộc"),
   fruitDescription: yup.string().required("Mô tả sản phẩm là bắt buộc"),
@@ -14,7 +16,7 @@ const validationSchema = yup.object().shape({
     .number()
     .required("Số lượng có sẵn là bắt buộc")
     .positive("Số lượng phải là số dương"),
-  //   quantityInTransit: yup.number().required('Số lượng trong quá trình vận chuyển là bắt buộc').positive('Số lượng phải là số dương'),
+   quantityInTransit: yup.number().required('Cân nặng là bắt buộc').positive('Cân nặng phải là số dương'),
   originCity: yup.string().required("Thành phố xuất xứ là bắt buộc"),
   orderType: yup.string().required("Loại đơn hàng là bắt buộc"),
 })
@@ -85,6 +87,15 @@ const UpdateProductDialog = ({ initialValues, onSubmit }) => {
                 helperText={meta.touched && meta.error ? meta.error : ""}
                 fullWidth
                 style={{ marginBottom: "10px" }}
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip title="Ví dụ: 10 là 10.000 vnđ">
+                      <IconButton aria-label="tooltip">
+                        <HelpOutlineIcon />
+                      </IconButton>
+                    </Tooltip>
+                  ),
+                }}
               />
             )}
           </Field>
@@ -93,6 +104,19 @@ const UpdateProductDialog = ({ initialValues, onSubmit }) => {
               <TextField
                 {...field}
                 label="Số lượng có sẵn"
+                type="number"
+                error={meta.touched && !!meta.error}
+                helperText={meta.touched && meta.error ? meta.error : ""}
+                fullWidth
+                style={{ marginBottom: "10px" }}
+              />
+            )}
+          </Field>
+          <Field name="quantityInTransit">
+            {({ field, meta }) => (
+              <TextField
+                {...field}
+                label="Cân nặng ước tính cho mỗi sản phẩm"
                 type="number"
                 error={meta.touched && !!meta.error}
                 helperText={meta.touched && meta.error ? meta.error : ""}

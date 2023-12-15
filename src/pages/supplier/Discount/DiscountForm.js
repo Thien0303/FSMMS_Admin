@@ -6,13 +6,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Box } from '@mui/material';
 import DiscountPopup from './DiscountPopup';
-const DiscountForm = ({ open, handleClose, initialValues, onSubmit }) => {
+const DiscountForm = ({ open, handleClose, initialValues, onSubmit , expiryDate, onDateChange }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Cập nhật mã giảm giá</DialogTitle>
       <Box>
       <DialogContent>
-        <DiscountPopup initialValues={initialValues} onSubmit={onSubmit} />
+        <DiscountPopup initialValues={initialValues} onSubmit={onSubmit} expiryDate={expiryDate} onDateChange={onDateChange}/>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} style={{ marginRight: '8px' }}>

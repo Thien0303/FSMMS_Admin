@@ -39,7 +39,7 @@ const OrderSeller = () => {
   const handleDetailClick = (event, row) => {
     console.log("row.orderDetails", row.orderDetails);
     setAnchorEl(event.currentTarget);
-    setSelectedOrderDetails(row.orderDetails);
+    setSelectedOrderDetails(row.orderDetails,);
     setIsDetailPopupOpen(true);
   };
 
@@ -121,9 +121,19 @@ const OrderSeller = () => {
     { field: "fullName", headerName: "Tên khách hàng", flex: 0.9 },
     {
       field: `totalAmount`,
-      headerName: "Tổng số tiền",
+      headerName: "Số tiền cần thanh toán",
       flex: 1,
       valueFormatter: (params) => `${params.value * 1000} vnđ`,
+    },
+    {
+      field: `deliveryAddress`,
+      headerName: "Địa chỉ nhận hàng",
+      flex: 1,
+    },
+    {
+      field: `phoneNumber`,
+      headerName: "Số điện thoại",
+      flex: 1,
     },
     {
       field: "discountExpiryDate",
@@ -150,7 +160,7 @@ const OrderSeller = () => {
     },
     {
       field: "Actions",
-      headerName: "Actions",
+      headerName: "Quản lý",
       flex: 0.5,
       renderCell: (params) => {
         const status = params.row.status;
@@ -215,14 +225,12 @@ const OrderSeller = () => {
     let fruitName = "";
     let quantity = "";
     let unitPrice = "";
-    let totalAmount = "";
     let oderDetailType = "";
     if (orderDetails.length > 0) {
       const firstOrderDetail = orderDetails[0];
       fruitName = firstOrderDetail.fruitName;
       quantity = firstOrderDetail.quantity;
       unitPrice = firstOrderDetail.unitPrice;
-      totalAmount = firstOrderDetail.totalAmount;
       oderDetailType = firstOrderDetail.oderDetailType;
     }
   
@@ -249,18 +257,19 @@ const OrderSeller = () => {
     }
   
     return {
+      ...item,
       id: item.orderId,
       fullName: item.fullName,
+      deliveryAddress: item.deliveryAddress,
+      phoneNumber: item.phoneNumber,
       discountName: item.discountName,
       orderDate: item.orderDate,
-      remainingAmount: item.remainingAmount,
-      depositAmount: item.depositAmount,
+      totalAmount: item.totalAmount,
       fruitName: fruitName,
       quantity: quantity,
       unitPrice: unitPrice,
-      totalAmount: totalAmount,
       oderDetailType: oderDetailType,
-      status: statusText, // Sử dụng văn bản thay vì mã trạng thái
+      status: statusText, 
       orderDetails: orderDetails,
     };
   }) || [];

@@ -1,22 +1,14 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { tokens } from "../../../theme";
-import Header from "../../../components/Header";
-import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Header from "../../../components/Header";
 import {
-  getAllOrder,
-  updateAllOrder,
+  getAllOrder
 } from "../../../redux/apiThunk/SupplierThunk/orderThunk";
-import EditIcon from "@mui/icons-material/Edit";
-import { Popover, MenuItem } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { tokens } from "../../../theme";
 import OrderDetailsPopup from "./OrderDetailPopup";
 const OrderBuyer = () => {
-  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -51,7 +43,7 @@ const OrderBuyer = () => {
   const columns = [ 
     { field: "id", headerName: "Mã đơn hàng", flex: 1 },
     {
-      field: "discountExpiryDate",
+      field: "orderDate",
       headerName: "Ngày đặt hàng",
       flex: 1,
       valueGetter: (params) => {
@@ -61,7 +53,7 @@ const OrderBuyer = () => {
     },
     {
         field: `totalAmount`,
-        headerName: "Tổng số tiền",
+        headerName: "Tổng số tiền cần thanh toán",
         flex: 1,
         valueFormatter: (params) => `${params.value * 1000} vnđ`,
       },
@@ -95,24 +87,33 @@ const OrderBuyer = () => {
     let fruitName = "";
     let quantity = "";
     let unitPrice = "";
-    let totalAmount = "";
     let oderDetailType = "";
-    let status = "";
     if (orderDetails.length > 0) {
       const firstOrderDetail = orderDetails[0];
       fruitName = firstOrderDetail.fruitName;
       quantity = firstOrderDetail.quantity;
       unitPrice = firstOrderDetail.unitPrice;
-      totalAmount = firstOrderDetail.totalAmount;
       oderDetailType = firstOrderDetail.oderDetailType;
-      status =
-        firstOrderDetail.status === "Pending"
-          ? "Đang chờ xử lý"
-          : firstOrderDetail.status === "Rejected"
-          ? "Đơn hàng đã bị từ chối"
-          : firstOrderDetail.status === "Accepted"
-          ? "Đơn hàng đã được duyệt"
-          : firstOrderDetail.status;
+    }
+    let statusText = "";
+    switch (item.status) {
+      case "Pending":
+        statusText = "Đang chờ xử lý";
+        break;
+      case "Shipping":
+        statusText = "Đang giao hàng";
+        break;
+      case "Rejected":
+        statusText = "Từ chối đơn hàng";
+        break;
+      case "Accepted":
+        statusText = "Đã nhận được hàng";
+        break;
+      case "UserRefused":
+        statusText = "Người dùng từ chối nhận hàng";
+        break;
+      default:
+        break;
     }
     return {
       id: item.orderId,
@@ -121,12 +122,12 @@ const OrderBuyer = () => {
       orderDate: item.orderDate,
       remainingAmount: item.remainingAmount,
       depositAmount: item.depositAmount,
+      totalAmount: item.totalAmount,
       fruitName: fruitName,
       quantity: quantity,
       unitPrice: unitPrice,
-      totalAmount: totalAmount,
       oderDetailType: oderDetailType,
-      status: status,
+      status: statusText,
       orderDetails: orderDetails, // Thêm orderDetails vào dòng dữ liệu
     };
   }) || [];

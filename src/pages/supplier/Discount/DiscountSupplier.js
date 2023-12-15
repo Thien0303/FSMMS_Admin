@@ -30,6 +30,11 @@ const DiscountSupplier = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedFruitId, setSelectedFruitId] = useState(null);
+  const [expiryDate, setExpiryDate] = useState(new Date());
+const handleDateChange = (newDate) => {
+  setExpiryDate(newDate);
+};
+console.log("ngày mới: ", expiryDate);
   useEffect(() => {
     if (!isDataLoaded && user) {
       dispatch(
@@ -55,6 +60,7 @@ const DiscountSupplier = () => {
     const productToUpdate = fruitDiscount.find((item) => item.fruitDiscountId === id);
     setSelectedProduct(productToUpdate);
     setSelectedFruitId(productToUpdate?.fruitId);
+    setExpiryDate(new Date(productToUpdate?.discountExpiryDate));
     setOpenModal(true);
     setAnchorEl(null);
   };
@@ -64,10 +70,11 @@ const DiscountSupplier = () => {
         discountName: values.discountName,
         discountThreshold: values.discountThreshold,
         discountPercentage: values.discountPercentage,
-        discountExpiryDate: values.discountExpiryDate,
+        discountExpiryDate: expiryDate.toISOString(),
         fruitId: selectedFruitId,
         status: "Active"
       };
+      console.log("data: ", data);
       await dispatch(
         updateFruitAllDiscount({ id: selectedProduct.fruitDiscountId, data: data })
       );
@@ -131,7 +138,7 @@ const DiscountSupplier = () => {
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Quản lý",
       flex: 1,
       renderCell: (params) => (
         <Box>
@@ -207,7 +214,7 @@ const DiscountSupplier = () => {
           components={{ Toolbar: GridToolbar }}
         />
    {selectedProduct && (
-      <DiscountForm open={openModal} handleClose={handleCloseModal} initialValues={selectedProduct} onSubmit={handleUpdateSubmit}/>
+      <DiscountForm open={openModal} handleClose={handleCloseModal} initialValues={selectedProduct} onSubmit={handleUpdateSubmit}   expiryDate={expiryDate} onDateChange={handleDateChange}/>
       )}
       </Box>
     </Box>

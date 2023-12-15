@@ -15,6 +15,9 @@ import { useDispatch } from "react-redux";
 import { createAllFruitDiscount } from "../../../../redux/apiThunk/SupplierThunk/discountFruitThunk";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Tooltip, IconButton } from "@mui/material";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
 const validationSchema = yup.object({
   discountName: yup.string().required("Vui lòng nhập tên mã giảm giá"),
   discountThreshold: yup
@@ -119,6 +122,15 @@ const DiscountPopup = ({ open, handleCloseDiscountPopup, fruitId }) => {
             }
             fullWidth
             margin="normal"
+            InputProps={{
+              endAdornment: (
+                <Tooltip title="Ví dụ: 0.1 là 10%">
+                  <IconButton aria-label="tooltip">
+                    <HelpOutlineIcon />
+                  </IconButton>
+                </Tooltip>
+              ),
+            }}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker

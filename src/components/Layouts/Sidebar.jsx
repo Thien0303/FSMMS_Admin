@@ -73,6 +73,13 @@ const Sidebar = () => {
           setSelected={setSelected}
         />
         <Item
+          title="Top người đăng bài"
+          to="/countPost"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
           title="Bài viết của tôi"
           to="/post"
           icon={<ListAltOutlinedIcon />}

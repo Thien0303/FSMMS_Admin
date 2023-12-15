@@ -47,7 +47,20 @@ const UpdatePost = () => {
       setIsDataLoaded(false);
     }
   , [dispatch]);
-
+  const getStatusText = (status) => {
+    switch (status) {
+      case "Accepted":
+        return "Đồng ý";
+     case "Pending":
+        return "Đang chờ xử lý";
+      case "Cancelled":
+        return "Từ chối";
+        case "Rejected":
+          return "Từ chối";
+      default:
+        return status;
+    }
+  };
   const columns = [
     { field: "postTitle", headerName: "Tên bài viết", flex: 1 },
     {
@@ -69,10 +82,15 @@ const UpdatePost = () => {
         return createdDate.toLocaleDateString("en-US");
       },
     },
-    { field: "status", headerName: "Trạng thái", flex: 1 },
+    {
+      field: "status",
+      headerName: "Trạng thái",
+      flex: 1,
+      valueGetter: (params) => getStatusText(params.row.status),
+    },
     {
       field: "Actions",
-      headerName: "Actions",
+      headerName: "Quản lý",
       flex: 0.5,
       renderCell: (params) => {
         if (params.row.status === "Pending") {
@@ -117,7 +135,7 @@ const UpdatePost = () => {
   ];
   const rows = postData?.map(item => ({
     ...item,
-    id: item.postId // Sử dụng historyId làm id
+    id: item.postId 
   })) || [];
   return (
     <Box m="20px">

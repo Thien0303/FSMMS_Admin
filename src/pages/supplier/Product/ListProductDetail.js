@@ -6,10 +6,10 @@ import {
   Paper,
   Rating,
   TableContainer,
-  Typography
+  Typography,
 } from "@mui/material";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getAllFruitDetail } from "../../../redux/apiThunk/SupplierThunk/fruitThunk";
@@ -25,6 +25,11 @@ const ProductDetail = () => {
   const reviews = useSelector((state) => state.review.review.data);
   const dispatch = useDispatch();
   const [reload, setReload] = useState(false);
+  const [replyingCommentId, setReplyingCommentId] = useState(null);
+  const [isReplying, setIsReplying] = useState(false);
+  const replyInputRef = useRef(null);
+  const [replyData, setReplyData] = useState([]);
+  const [replyingCommentContent, setReplyingCommentContent] = useState("");
   const baseUrl = "https://fruitseasonms.azurewebsites.net/api/review-fruits";
   const user = JSON.parse(localStorage.getItem("user"));
   const [data, setData] = useState({
@@ -67,12 +72,10 @@ const ProductDetail = () => {
     formData.append("ParentId", data.ParentId);
     formData.append("UserId", data.UserId);
     formData.append("UploadFile", data.UploadFile);
-    // await dispatch(postReview({ data: formData }))
     const response = await fetch(baseUrl, {
       method: "POST",
       body: formData,
     });
-    // const data = await response.json();
     if (response.ok) {
       setReload(!reload);
     } else {
@@ -87,7 +90,67 @@ const ProductDetail = () => {
       UploadFile: "",
     });
   };
+  const handleReply = (reviewId) => {
+    setReplyingCommentId(reviewId);
+    setIsReplying(true);
+    const selectedReview = reviews.find(
+      (review) => review.reviewId === reviewId
+    );
 
+    if (selectedReview) {
+      const replyDataItem = {
+        reviewId: reviewId,
+        rating: selectedReview.rating,
+        replyingCommentContent: "",
+      };
+
+      const existingIndex = replyData.findIndex(
+        (item) => item.reviewId === reviewId
+      );
+
+      if (existingIndex === -1) {
+        setReplyData([...replyData, replyDataItem]);
+      } else {
+        const updatedReplyData = [...replyData];
+        updatedReplyData[existingIndex] = replyDataItem;
+        setReplyData(updatedReplyData);
+      }
+    }
+  };
+  const handleReplySubmit = async (event) => {
+    event.preventDefault();
+
+    const replyInfo = replyData.find(
+      (item) => item.reviewId === replyingCommentId
+    );
+    if (replyInfo) {
+      const formData = new FormData();
+      formData.append("ReviewComment", replyingCommentContent);
+      formData.append("Rating", 0);
+      formData.append("FruitId", id);
+      formData.append("ParentId", replyingCommentId);
+      formData.append("UserId", user?.userId);
+      formData.append("UploadFile", data.UploadFile);
+
+      try {
+        const response = await fetch(baseUrl, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          setReload(!reload);
+          setReplyingCommentId(null);
+          setIsReplying(false);
+          setReplyingCommentContent("");
+        } else {
+          console.log("Reply failed");
+        }
+      } catch (error) {
+        console.error("Error sending reply:", error);
+      }
+    }
+  };
   const handleDeleteReview = async (e, id) => {
     e.preventDefault();
     await dispatch(deleteReview({ id: id }));
@@ -95,7 +158,7 @@ const ProductDetail = () => {
   };
   return (
     <Container sx={{ marginTop: "20px" }}>
-      <Grid container spacing={6} >
+      <Grid container spacing={6}>
         <Grid item xs={12} sm={6}>
           <img
             src={fruitDetail?.fruitImages[currentImageIndex]?.imageUrl}
@@ -132,7 +195,7 @@ const ProductDetail = () => {
               {fruitDetail?.fruitName}
             </Typography>
             <Typography variant="h6" mb={1} style={{ fontWeight: "bold" }}>
-              Giá: ${fruitDetail?.price.toFixed(3)} vnđ
+              Giá: {fruitDetail?.price.toFixed(3)} vnđ
             </Typography>
             <Typography variant="body1" mb={2}>
               Mô tả: {fruitDetail?.fruitDescription}
@@ -158,9 +221,17 @@ const ProductDetail = () => {
                     >
                       Số lượng có sẵn:
                     </TableCell>
-                    <TableCell>
-                      {fruitDetail?.quantityAvailable} (sản phẩm)
+                    <TableCell>{fruitDetail?.quantityAvailable}/kg</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      variant="head"
+                      component="th"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      Cân nặng ước tính:
                     </TableCell>
+                    <TableCell>{fruitDetail?.quantityInTransit}/kg</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell
@@ -204,120 +275,168 @@ const ProductDetail = () => {
                   </TableRow>
                 </TableBody>
               </Table>
-              </TableContainer>
+            </TableContainer>
           </Box>
         </Grid>
         <Grid item xs={12} sm={1}>
           <Divider orientation="vertical" flexItem />
         </Grid>
         <section className="py-0">
-                <div className="container px-2 px-lg-5 my-5">
-                    <div className="card-body">
-                        <form className="mb-4" onSubmit={(e) => handlePostReview(e)}>
-                            <Rating
-                                name="half-rating"
-                                value={data.Rating}
-                                // precision={0.5}
-                                onChange={(e) => setData({ ...data, Rating: e.target.value })}
-                            />
-                            {/* <span>Image</span>
-                            <input
-                                class="form-control form-control-sm"
-                                id="File"
-                                type="file"
-                                placeholder='File'
-                                onChange={(e) => setData({ ...data, UploadFile: e.target.value })}>
-                            </input> */}
-                            <textarea
-                                className="form-control mb-3"
-                                rows="3"
-                                placeholder="Bạn hãy đánh giá về sản phẩm này"
-                                onChange={(e) =>
-                                    setData({ ...data, ReviewComment: e.target.value })
+          <div className="container px-2 px-lg-5 my-5">
+            <div className="card-body">
+              <form className="mb-4" onSubmit={(e) => handlePostReview(e)}>
+                <Rating
+                  name="half-rating"
+                  value={data.Rating}
+                  // precision={0.5}
+                  onChange={(e) => setData({ ...data, Rating: e.target.value })}
+                />
+                <textarea
+                  className="form-control mb-3"
+                  rows="3"
+                  placeholder="Bạn hãy đánh giá về sản phẩm này"
+                  onChange={(e) =>
+                    setData({ ...data, ReviewComment: e.target.value })
+                  }
+                  required
+                  value={data.ReviewComment}
+                ></textarea>
+                <button className="btn btn-success" type="submit">
+                  Đánh giá
+                </button>
+              </form>
+              {reviews?.map(
+                (reviewParent) =>
+                  reviewParent.parentId === 0 && (
+                    <div className="d-flex mb-4" key={reviewParent.reviewId}>
+                      <div className="flex-shrink-0">
+                        <img
+                          className="rounded-circle"
+                          src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+                          alt="avatar user"
+                          style={{ width: "50px", height: "50px" }}
+                        />
+                      </div>
+                      <div className="ms-3">
+                        <div className="fw-bold">
+                          {reviewParent.fullName}&nbsp;
+                          <Rating
+                            name="read-only"
+                            value={reviewParent.rating}
+                            readOnly
+                            precision={0.5}
+                          />
+                        </div>
+                        {reviewParent.reviewComment}
+                        <div>
+                          <button
+                            className="btn btn-light"
+                            style={{ color: "#198754" }}
+                            onClick={() => handleReply(reviewParent.reviewId)}
+                          >
+                            Trả lời
+                          </button>
+                          {reviewParent.reviewId === replyingCommentId &&
+                            isReplying && (
+                              <div ref={replyInputRef}>
+                                <form
+                                  className="mb-4"
+                                  onSubmit={(event) => handleReplySubmit(event)}
+                                  style={{ marginTop: "10px" }}
+                                >
+                                  <textarea
+                                    className="form-control mb-3"
+                                    rows="3"
+                                    placeholder="Bạn hãy phản hồi đánh giá này ở đây"
+                                    onChange={(e) =>
+                                      setReplyingCommentContent(e.target.value)
+                                    }
+                                    required
+                                    value={replyingCommentContent}
+                                  ></textarea>
+                                  <button
+                                    className="btn btn-success"
+                                    type="submit"
+                                  >
+                                    Gửi câu trả lời
+                                  </button>
+                                </form>
+                              </div>
+                            )}
+                          {reviewParent.fullName === user?.fullName && (
+                            <>
+                              <button
+                                className="btn btn-light"
+                                style={{ color: "#dc3545" }}
+                                onClick={(e) =>
+                                  handleDeleteReview(e, reviewParent.reviewId)
                                 }
-                                required
-                                value={data.ReviewComment}
-                            ></textarea>
-                            <button className="btn btn-success" type="submit">
-                                Đánh giá
-                            </button>
-                        </form>
-                        {reviews?.map(
-                            (reviewParent) =>
-                                reviewParent.parentId === 0 && (
-                                    <div className="d-flex mb-4" key={reviewParent.reviewId}>
-                                        <div className="flex-shrink-0">
-                                            <img
-                                                className="rounded-circle"
-                                                src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
-                                                alt="avatar user"
-                                                style={{ width: '50px', height: '50px' }}
-                                            />
-                                        </div>
-                                        <div className="ms-3">
-                                            <div className="fw-bold">
-                                                {reviewParent.fullName}&nbsp;
-                                                <Rating
-                                                    name="read-only"
-                                                    value={reviewParent.rating}
-                                                    readOnly
-                                                    precision={0.5}
-                                                />
-                                            </div>
-                                            {reviewParent.reviewComment}
-                                            <div>
-                                                {reviewParent.fullName === user?.fullName && (
-                                                    <>
-                                                        <button
-                                                            className="btn btn-light"
-                                                            style={{ color: '#dc3545' }}
-                                                            onClick={(e) =>
-                                                                handleDeleteReview(
-                                                                    e,
-                                                                    reviewParent.reviewId
-                                                                )
-                                                            }
-                                                        >
-                                                            Xóa
-                                                        </button>
-                                                    </>
-                                                )}
-                                            </div>
-                                            {reviews?.map(
-                                                (reviewChild) =>
-                                                    reviewChild.parentId ===
-                                                        reviewParent.reviewId && (
-                                                        <div
-                                                            className="d-flex mt-4"
-                                                            key={reviewChild.reviewId}
-                                                        >
-                                                            <div className="flex-shrink-0">
-                                                                <img
-                                                                    className="rounded-circle"
-                                                                    src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
-                                                                    alt="avatar user"
-                                                                    style={{
-                                                                        width: '50px',
-                                                                        height: '50px',
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <div className="ms-3">
-                                                                <div className="fw-bold">
-                                                                    {reviewChild.fullName}
-                                                                </div>
-                                                                {reviewChild.reviewComment}
-                                                            </div>
-                                                        </div>
-                                                    )
-                                            )}
-                                        </div>
-                                    </div>
-                                )
-                        )}
+                              >
+                                Xóa
+                              </button>
+                            </>
+                          )}
+                        </div>
+                        {reviews
+                          ?.filter(
+                            (reviewChild) =>
+                              reviewChild.parentId === reviewParent.reviewId
+                          )
+                          .map((reviewChild) => (
+                            <div
+                              className="d-flex mt-4"
+                              key={reviewChild.reviewId}
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <div className="flex-shrink-0">
+                                <img
+                                  className="rounded-circle"
+                                  src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+                                  alt="avatar user"
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                  }}
+                                />
+                              </div>
+                              <div className="ms-3">
+                                <div className="fw-bold">
+                                  {reviewChild.fullName}
+                                </div>
+                                {reviewChild.reviewComment}
+                              </div>
+                              <div
+                                style={{
+                                  marginLeft: "20px",
+                                  marginTop: "15px",
+                                }}
+                              >
+                                {reviewChild.fullName === user?.fullName && (
+                                  <>
+                                    <button
+                                      className="btn btn-light"
+                                      style={{ color: "#dc3545" }}
+                                      onClick={(e) =>
+                                        handleDeleteReview(
+                                          e,
+                                          reviewChild.reviewId
+                                        )
+                                      }
+                                    >
+                                      Xóa
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                      </div>
                     </div>
-                </div>
-            </section>
+                  )
+              )}
+            </div>
+          </div>
+        </section>
       </Grid>
     </Container>
   );

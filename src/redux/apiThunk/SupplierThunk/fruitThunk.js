@@ -1,5 +1,6 @@
 import { createAsyncThunk} from "@reduxjs/toolkit";
 import { createFruit, createFruitImage, getFruit, getFruitDetail, getFruitSupplier, getFruitSupplierDetail, updateFruitSupplier } from "../../../api/Supplier/Product";
+import { toast } from "react-toastify";
 export const getAllFruit = createAsyncThunk(
     "fruit/getAllFruit",
     async ({ fruitName, minPrice, maxPrice,newestDate}, thunkAPI) => {
@@ -27,8 +28,10 @@ export const createAllFruit = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await createFruit(data);
+            toast.success("Tạo sản phẩm thành công");
             return response;
         } catch (error) {
+            toast.error("Đã xảy ra lỗi khi tạo sản phẩm");
             return thunkAPI.rejectWithValue(error.response.data);
         }
     }
@@ -38,8 +41,10 @@ export const updateFruitAllSupplier = createAsyncThunk(
     async ({id, data}, thunkAPI) => {
         try {
             const response = await updateFruitSupplier(id, data);
+            toast.success("Cập nhật thành công");
             return response;
         } catch (error) {
+            toast.error("Cập nhật thất bại");
             return thunkAPI.rejectWithValue(error.response.data);
         }
     }

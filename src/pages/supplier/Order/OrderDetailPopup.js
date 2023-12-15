@@ -1,8 +1,13 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, TableContainer, Paper } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, TableContainer, Paper, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const OrderDetailsPopup = ({ open, handleClose, orderDetails }) => {
-    console.log("abc: ", orderDetails);
+const OrderDetailsPopup = ({ open, handleClose, orderDetails}) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/createFruit");
+  };
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle style={{color: "green", fontSize: "20px"}}>Thông tin chi tiết đơn hàng</DialogTitle>
@@ -15,7 +20,6 @@ const OrderDetailsPopup = ({ open, handleClose, orderDetails }) => {
               <TableCell component="th" scope="row" style={{fontSize: "15px"}}>Số lượng</TableCell>
               <TableCell component="th" scope="row" style={{fontSize: "15px"}}>Giá sản phẩm</TableCell>
               <TableCell component="th" scope="row" style={{fontSize: "15px"}}>Loại đặt hàng</TableCell>
-              <TableCell component="th" scope="row" style={{fontSize: "15px"}}>Tổng tiền</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -25,12 +29,22 @@ const OrderDetailsPopup = ({ open, handleClose, orderDetails }) => {
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.quantity}</TableCell>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.unitPrice * 1000} vnđ</TableCell>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.oderDetailType}</TableCell>
-                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.totalAmount * 1000} vnđ</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
         </TableContainer>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "20px",
+          }}
+        >
+          <Button variant="contained" color="success" onClick={handleNavigate}>
+            Tạo sản phẩm
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -1,7 +1,9 @@
-import React, {useState } from "react";
+import React from "react";
 import { TextField, Button } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
+import { Tooltip, IconButton } from "@mui/material";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 const validationSchema = yup.object({
   discountName: yup.string().required("Vui lòng nhập tên mã giảm giá"),
   discountThreshold: yup
@@ -18,8 +20,14 @@ const validationSchema = yup.object({
     .required("Vui lòng nhập ngày hết hạn")
     .min(new Date(), "Ngày hết hạn không hợp lệ"),
 });
-const DiscountPopup = ({ initialValues, onSubmit }) => {
-  const [expiryDate, setExpiryDate] = useState(new Date());
+const DiscountPopup = ({ initialValues, onSubmit, expiryDate, onDateChange }) => {
+  const formatDateForInput = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = `${d.getMonth() + 1}`.padStart(2, '0'); // Thêm số 0 ở đầu nếu cần
+    const day = `${d.getDate()}`.padStart(2, '0'); // Thêm số 0 ở đầu nếu cần
+    return `${year}-${month}-${day}`;
+  };
   return (
     <Formik
       initialValues={initialValues}
@@ -63,6 +71,15 @@ const DiscountPopup = ({ initialValues, onSubmit }) => {
                 helperText={meta.touched && meta.error ? meta.error : ""}
                 fullWidth
                 style={{ marginBottom: "10px" }}
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip title="Ví dụ: 0.1 là 10%">
+                      <IconButton aria-label="tooltip">
+                        <HelpOutlineIcon />
+                      </IconButton>
+                    </Tooltip>
+                  ),
+                }}
               />
             )}
           </Field>
@@ -72,10 +89,10 @@ const DiscountPopup = ({ initialValues, onSubmit }) => {
                 {...field}
                 label="Ngày hết hạn"
                 type="date" 
-                value={expiryDate.toISOString().split("T")[0]} 
+                value={formatDateForInput(expiryDate)}
                 onChange={(e) => {
                   const selectedDate = new Date(e.target.value);
-                  setExpiryDate(selectedDate);
+                  onDateChange(selectedDate); 
                 }}
                 error={meta.touched && !!meta.error}
                 helperText={meta.touched && meta.error ? meta.error : ""}

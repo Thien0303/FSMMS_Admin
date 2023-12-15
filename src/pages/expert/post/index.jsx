@@ -35,16 +35,16 @@ export default function SinglePost() {
   }, [dispatch, userId, isDataLoaded]);
   const handleDeletePost = async (id) => {
     const confirmed = window.confirm(
-      "Are you sure you want to delete this Article?"
+      "Bạn chắc chắn muốn xóa bài viết này không?"
     );
     if (confirmed) {
       try {
         await api.delete(`/api/posts/${id}`);
         const updatedList = postData.filter((post) => post.postId !== id);
         dispatch(getAllPost({ postTitle: "", userId: userId.userId }));
-        toast.success("Delete successful");
+        toast.success("Xóa bài viết thành công");
       } catch (error) {
-        toast.error("Delete failed!");
+        toast.error("Xóa bài viết thất bại!");
       }
     }
   };
@@ -132,14 +132,14 @@ export default function SinglePost() {
                     onClose={handleMenuClose}
                   >
                     <MenuItem onClick={() => handleUpdatePost(post.postId)}>
-                      <EditIcon fontSize="small" sx={{ mr: 1 }} /> Update
+                      <EditIcon fontSize="small" sx={{ mr: 1 }} /> Cập nhật bài viết
                     </MenuItem>
                     <MenuItem onClick={() => handleDeletePost(post.postId)}>
                       <DeleteForeverOutlinedIcon
                         fontSize="small"
                         color="error"
                       />{" "}
-                       Delete
+                       Xóa bài viết
                     </MenuItem>
                   </Menu>
                 )}
