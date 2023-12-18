@@ -126,7 +126,7 @@ const CropVarietyStages = () => {
             fullWidth
             id="stageName"
             name="stageName"
-            label="Tên công việc"
+            label="Tên giai đoạn cây trồng"
             value={formik.values.stageName}
             onChange={formik.handleChange}
             error={formik.touched.stageName && Boolean(formik.errors.stageName)}
@@ -134,7 +134,7 @@ const CropVarietyStages = () => {
             margin="normal"
           />
           <div style={{ marginTop: "5px" }}>
-            <label style={{ marginBottom: "8px" }}>Mô tả công việc</label>
+            <label style={{ marginBottom: "8px" }}>Mô tả giai đoạn</label>
             <ReactQuill
               style={{ height: "150px", marginBottom: "16px" }}
               theme="snow"
@@ -154,7 +154,7 @@ const CropVarietyStages = () => {
           <div style={{ marginTop: "65px", display: "flex", gap: "20px" }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Ngày bắt đầu công việc"
+                label="Ngày bắt đầu giai đoạn"
                 value={formik.values.startDate}
                 onChange={(date) => formik.setFieldValue("startDate", date)}
                 onBlur={formik.handleBlur}
@@ -177,7 +177,7 @@ const CropVarietyStages = () => {
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Ngày kết thúc công việc"
+                label="Ngày kết thúc giai đoạn"
                 value={formik.values.endDate}
                 onChange={(date) => formik.setFieldValue("endDate", date)}
                 onBlur={formik.handleBlur}
