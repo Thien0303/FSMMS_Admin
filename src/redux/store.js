@@ -10,6 +10,7 @@ import reviewSlice from './Reducers/SupplierSlice/reviewSlice';
 import orderSlice from './Reducers/SupplierSlice/orderSlice';
 import categorySlice from './Reducers/SupplierSlice/categorySlice';
 import systemSlice from './Reducers/AdminSlice/systemSlice';
+import growthSlice from './Reducers/AdminSlice/growthSlice';
 const store = configureStore({
     reducer: {
       weather : weatherSlice,
@@ -23,6 +24,7 @@ const store = configureStore({
       order: orderSlice,
       category: categorySlice,
       getUser: systemSlice,
+      getGrowth: growthSlice,
     },
 } 
 )

@@ -105,6 +105,13 @@ const Sidebar = () => {
           selected={selected}
           setSelected={setSelected}
         />
+        <Item
+          title="Tạo công việc"
+          to="/growthTask"
+          icon={<ListAltOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
        <Item
           title="Danh sách bài viết"
           to="/listAllPost"

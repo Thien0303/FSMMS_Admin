@@ -91,7 +91,6 @@ const ProductForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log("abcdz");
       const datafruit = {
         fruitName: values.fruitName,
         productDescription: values.productDescription,

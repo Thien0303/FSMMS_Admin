@@ -35,6 +35,8 @@ import PostDetailAdmin from "../pages/admin/Post/getPostDetail";
 import UpdatePost from "../pages/admin/Post/ManagePost";
 import ForgotPassword from "../pages/login/ForgotPassword";
 import CountPost from "../pages/expert/post/CountPost";
+import GrowthTask from "../pages/admin/GrowthTask/GrowthTask";
+import CropVarietyStages from "../pages/admin/GrowthTask/CropVarietyStages";
 export const publicRouters = [
     {
         path: "/",
@@ -185,6 +187,18 @@ export const adminRouters = [
         path: '/createPost',
         name: 'createPost',
         component: CreatePostAdmin,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/cropVarietyStages',
+        name: 'cropVarietyStages',
+        component: CropVarietyStages,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/growthTask',
+        name: 'growthTask',
+        component: GrowthTask,
         layout: DefaultLayout,
     },
     {
