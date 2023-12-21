@@ -15,7 +15,6 @@ import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import api from "../../../api/api";
 import { toast } from "react-toastify";
-import DiscountForm from "./DiscountForm";
 const DiscountSupplier = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -27,14 +26,6 @@ const DiscountSupplier = () => {
   );
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectDiscountId, setSelectDiscountId] = useState();
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedFruitId, setSelectedFruitId] = useState(null);
-  const [expiryDate, setExpiryDate] = useState(new Date());
-const handleDateChange = (newDate) => {
-  setExpiryDate(newDate);
-};
-console.log("ngày mới: ", expiryDate);
   useEffect(() => {
     if (!isDataLoaded && user) {
       dispatch(
@@ -56,50 +47,9 @@ console.log("ngày mới: ", expiryDate);
     setSelectDiscountId(id);
     setAnchorEl(event.currentTarget);
   };
-  const handleUpdateFruit = async (id) => {
-    const productToUpdate = fruitDiscount.find((item) => item.fruitDiscountId === id);
-    setSelectedProduct(productToUpdate);
-    setSelectedFruitId(productToUpdate?.fruitId);
-    setExpiryDate(new Date(productToUpdate?.discountExpiryDate));
-    setOpenModal(true);
-    setAnchorEl(null);
-  };
-  const handleUpdateSubmit = async (values, { setSubmitting, resetForm }) => {
-    try {
-      const data = {
-        discountName: values.discountName,
-        discountThreshold: values.discountThreshold,
-        discountPercentage: values.discountPercentage,
-        discountExpiryDate: expiryDate.toISOString(),
-        fruitId: selectedFruitId,
-        status: "Active"
-      };
-      console.log("data: ", data);
-      await dispatch(
-        updateFruitAllDiscount({ id: selectedProduct.fruitDiscountId, data: data })
-      );
-      dispatch(
-        getAllDiscoutSupplier({
-          discountName: "",
-          discountExpiryDate: "",
-          fruitId: "",
-          userId: user.userId,
-        })
-      );
-      resetForm();
-      setOpenModal(false);
-    } catch (error) {
-    } finally {
-      setSubmitting(false);
-    }
-  };
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
+
   const handleDeleteDiscount = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this discount Fruit?"
-    );
+    const confirmed = window.confirm("Bạn có muốn xóa mã giảm giá này chứ?");
     if (confirmed) {
       try {
         await api.delete(`api/fruit-discounts/${id}`);
@@ -111,9 +61,9 @@ console.log("ngày mới: ", expiryDate);
             userId: user.userId,
           })
         );
-        toast.success("Delete successful");
+        toast.success("Xóa mã giảm giá thành công");
       } catch (error) {
-        toast.error("Delete failed!");
+        toast.error("Xóa mã giảm giá thất bại!");
       }
     }
   };
@@ -153,10 +103,6 @@ console.log("ngày mới: ", expiryDate);
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
               >
-                <MenuItem onClick={() => handleUpdateFruit(params.row.id)}>
-                  <EditIcon fontSize="small" sx={{ mr: 1 }} /> Cập nhật mã giảm
-                  giá
-                </MenuItem>
                 <MenuItem onClick={() => handleDeleteDiscount(params.row.id)}>
                   <DeleteForeverOutlinedIcon fontSize="small" color="error" />{" "}
                   Xóa mã giảm giá
@@ -212,12 +158,9 @@ console.log("ngày mới: ", expiryDate);
           rows={rows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
-          pageSize={20} 
+          pageSize={20}
           pagination
         />
-   {selectedProduct && (
-      <DiscountForm open={openModal} handleClose={handleCloseModal} initialValues={selectedProduct} onSubmit={handleUpdateSubmit}   expiryDate={expiryDate} onDateChange={handleDateChange}/>
-      )}
       </Box>
     </Box>
   );
