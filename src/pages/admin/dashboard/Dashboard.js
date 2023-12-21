@@ -3,9 +3,7 @@ import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import ForestOutlinedIcon from "@mui/icons-material/ForestOutlined";
 import { Box, Typography, useTheme } from "@mui/material";
-// import { format } from "date-fns";
 import { useEffect, useRef, useState } from "react";
-// import Apex from "../../components/ApexChart";
 import Header from "../../../components/Header";
 import StatBox from "../../../components/StatBox";
 import { tokens } from "../../../theme";
@@ -19,6 +17,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getAllTop10, getAllTopPost } from "../../../redux/apiThunk/AdminThunk/systemThunk";
 import ApexCharts from "apexcharts";
+function formatCurrency(value) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [totalOrder, setTotalOrder] = useState(null);
@@ -296,7 +297,7 @@ const Dashboard = () => {
               </Box>
 
               <Box backgroundColor={"#33CCFF"} p="5px 10px" borderRadius="4px">
-                {data?.price * 1000} vnđ
+                {formatCurrency(data?.price * 1000)}
               </Box>
             </Box>
           ))}

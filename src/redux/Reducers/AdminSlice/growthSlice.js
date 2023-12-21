@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllCropVarietyStages, getAllCropVarities } from "../../apiThunk/AdminThunk/growthThunk";
+import { getAllCropVarietyGrowthTasks, getAllCropVarietyStages, getAllCropVarities } from "../../apiThunk/AdminThunk/growthThunk";
 const growthSlice = createSlice({
     name: "getUser",
     initialState: {
         getCropVarities: [],
         getCropVarityTask: [],
+        getCropVarityGrowthTask: [],
         loading: false,
     },
     extraReducers: {
@@ -33,6 +34,20 @@ const growthSlice = createSlice({
 
         },
         [getAllCropVarietyStages.rejected]: (state, action) => {
+            state.loading = false;
+            state.loading = "failed";
+        },
+        [getAllCropVarietyGrowthTasks.pending]: (state, action) => {    
+            state.loading = true;
+            state.loading = "loading"
+        },
+        [getAllCropVarietyGrowthTasks.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.loading = "succeeded";
+            state.getCropVarityGrowthTask = action.payload;
+
+        },
+        [getAllCropVarietyGrowthTasks.rejected]: (state, action) => {
             state.loading = false;
             state.loading = "failed";
         },

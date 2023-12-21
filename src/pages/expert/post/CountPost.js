@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../../../components/Header";
-import { getAllFruitHistory, createAllFruitHistory } from "../../../redux/apiThunk/ExpertThunk/fruitHistoryThunk";
-import { tokens } from '../../../theme';
-import { useState } from 'react';
-import 'react-toastify/dist/ReactToastify.css';
-import { getAllTopPost } from '../../../redux/apiThunk/AdminThunk/systemThunk';
+import {
+  getAllFruitHistory,
+  createAllFruitHistory,
+} from "../../../redux/apiThunk/ExpertThunk/fruitHistoryThunk";
+import { tokens } from "../../../theme";
+import { useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { getAllTopPost } from "../../../redux/apiThunk/AdminThunk/systemThunk";
 const CountPost = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -16,33 +19,34 @@ const CountPost = () => {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-  if(!isDataLoaded){
-    dispatch(getAllTopPost());
-    setIsDataLoaded(true);
-  }
+    if (!isDataLoaded) {
+      dispatch(getAllTopPost());
+      setIsDataLoaded(true);
+    }
   }, [dispatch, user, isDataLoaded]);
 
   const columns = [
     {
-        field: 'profileImageUrl',
-        headerName: 'Ảnh cá nhân',
-        flex: 1,
-        renderCell: (params) => (
-          <img
-            src={params.value} 
-            alt="Avatar"
-            style={{ width: 50, height: 50 }}
-          />
-        ),
-      },
-    { field: 'fullName', headerName: 'Tên', flex: 1 },
-    { field: 'email', headerName: 'Email', flex: 1 },
-    { field: 'postCount', headerName: 'Số bài đăng', flex: 1 },
+      field: "profileImageUrl",
+      headerName: "Ảnh cá nhân",
+      flex: 1,
+      renderCell: (params) => (
+        <img
+          src={params.value}
+          alt="Avatar"
+          style={{ width: 50, height: 50 }}
+        />
+      ),
+    },
+    { field: "fullName", headerName: "Tên", flex: 1 },
+    { field: "email", headerName: "Email", flex: 1 },
+    { field: "postCount", headerName: "Số bài đăng", flex: 1 },
   ];
-  const rows = dataPost?.map(item => ({
-    ...item,
-    id: item.userId 
-  })) || [];
+  const rows =
+    dataPost?.map((item) => ({
+      ...item,
+      id: item.userId,
+    })) || [];
   return (
     <Box m="20px">
       <Header title="Top 10" subtitle="Số người có bài đăng nhiều nhất" />
@@ -75,15 +79,20 @@ const CountPost = () => {
           },
         }}
       >
-       <Box
+        <Box
           sx={{
             display: "flex",
             justifyContent: "flex-end",
-            marginBottom: "10px"
+            marginBottom: "10px",
           }}
-        >
-      </Box>
-        <DataGrid components={{ Toolbar: GridToolbar }} rows={rows} columns={columns} />
+        ></Box>
+        <DataGrid
+          components={{ Toolbar: GridToolbar }}
+          rows={rows}
+          columns={columns}
+          pageSize={20}
+          pagination
+        />
       </Box>
     </Box>
   );

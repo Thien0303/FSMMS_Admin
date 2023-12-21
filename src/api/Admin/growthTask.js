@@ -19,7 +19,11 @@ export const getCropVarities = async () => {
   const response = await api.get(`api/crop-varieties?activeOnly=true`);
   return response.data;
 };
-export const getCropVarietyStages = async () => {
-  const response = await api.get(`api/crop-variety-stages?activeOnly=true`);
+export const getCropVarietyStages = async (id) => {
+  const response = await api.get(`api/crop-variety-stages?activeOnly=false&CropVarietyId=${id}`);
+  return response.data;
+};
+export const getCropVarietyGrowthTasks = async (id) => {
+  const response = await api.get(`api/crop-variety-growth-tasks?activeOnly=true&cropVarietyStageId=${id}`);
   return response.data;
 };

@@ -16,6 +16,10 @@ import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import DiscountOutlinedIcon from "@mui/icons-material/DiscountOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
+import DoneOutlineOutlinedIcon from "@mui/icons-material/DoneOutlineOutlined";
+import RecentActorsOutlinedIcon from "@mui/icons-material/RecentActorsOutlined";
+import BallotOutlinedIcon from '@mui/icons-material/BallotOutlined';
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -101,35 +105,42 @@ const Sidebar = () => {
         <Item
           title="Tạo bài viết"
           to="/createPost"
-          icon={<ListAltOutlinedIcon />}
+          icon={<CreateNewFolderOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />
         <Item
           title="Tạo công việc"
           to="/growthTask"
-          icon={<ListAltOutlinedIcon />}
+          icon={<AddTaskOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />
-       <Item
+        <Item
+          title="Loại cây trồng"
+          to="/listgrowthTask"
+          icon={<BallotOutlinedIcon />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Item
           title="Danh sách bài viết"
           to="/listAllPost"
           icon={<ListAltOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />
-       <Item
+        <Item
           title="Quản lý bài viết"
           to="/updatePost"
-          icon={<ListAltOutlinedIcon />}
+          icon={<DoneOutlineOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />
-         <Item
+        <Item
           title="Danh sách người dùng"
           to="/getUser"
-          icon={<ListAltOutlinedIcon />}
+          icon={<RecentActorsOutlinedIcon />}
           selected={selected}
           setSelected={setSelected}
         />

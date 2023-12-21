@@ -11,6 +11,9 @@ import { tokens } from "../../../theme";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+function formatCurrency(value) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
 const FruitHistory = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -57,9 +60,14 @@ const FruitHistory = () => {
     }
   };
   const columns = [
-    { field: "historyId", headerName: "Mã", flex: 1 },
+    { field: "historyId", headerName: "Mã", flex: 0.5 },
     { field: "fruitName", headerName: "Trái cây", flex: 1 },
-    { field: "price", headerName: "Giá", flex: 1 },
+    { field: "price", headerName: "Giá", flex: 1,
+    valueGetter: (params) => {
+       const price = formatCurrency(params.row.price)
+       return price;
+    }
+  },
     { field: "location", headerName: "Địa điểm", flex: 1 },
     {
       field: "createdDate",

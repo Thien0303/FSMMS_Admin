@@ -25,7 +25,6 @@ import DiscountSupplier from "../pages/supplier/Discount/DiscountSupplier";
 import OrderSeller from "../pages/supplier/Order/OrderSeller";
 import OrderBuyer from "../pages/supplier/Order/OrderBuyer";
 import Register from "../pages/login/Register";
-import OTPPage from "../pages/login/OTPPage";
 import ChatLayout from "../components/Layouts/ChatLayout";
 import Dashboard from "../pages/admin/dashboard/Dashboard";
 import GetUser from "../pages/admin/System/getUser";
@@ -37,6 +36,7 @@ import ForgotPassword from "../pages/login/ForgotPassword";
 import CountPost from "../pages/expert/post/CountPost";
 import GrowthTask from "../pages/admin/GrowthTask/GrowthTask";
 import CropVarietyStages from "../pages/admin/GrowthTask/CropVarietyStages";
+import ListCropVarities from "../pages/admin/GrowthTask/ListGrowthTask";
 export const publicRouters = [
     {
         path: "/",
@@ -199,6 +199,12 @@ export const adminRouters = [
         path: '/growthTask',
         name: 'growthTask',
         component: GrowthTask,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/listgrowthTask',
+        name: 'listgrowthTask',
+        component: ListCropVarities,
         layout: DefaultLayout,
     },
     {

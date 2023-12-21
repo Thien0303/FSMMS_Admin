@@ -58,7 +58,7 @@ const GrowthTask = () => {
   }, [cropVarietyStage]);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllCropVarietyStages())
+    dispatch(getAllCropVarietyStages({id: ""}))
       .unwrap()
       .then((data) => {
         setCropVaritiesStage(data.data);
