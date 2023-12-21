@@ -8,6 +8,10 @@ import {
 } from "../../../redux/apiThunk/SupplierThunk/orderThunk";
 import { tokens } from "../../../theme";
 import OrderDetailsPopup from "./OrderDetailPopup";
+function formatCurrency(value) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
+
 const OrderBuyer = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -51,31 +55,21 @@ const OrderBuyer = () => {
         return createdDate.toLocaleDateString("en-US");
       },
     },
+    { field: "fullName", headerName: "Người bán", flex: 1 },
     {
         field: `totalAmount`,
         headerName: "Tổng số tiền cần thanh toán",
         flex: 1,
-        valueFormatter: (params) => `${params.value * 1000} vnđ`,
+        valueFormatter: (params) => `${formatCurrency(params.value * 1000)}`,
       },
-      // {
-      //   field: `depositAmount`,
-      //   headerName: "Số tiền thanh toán trước",
-      //   flex: 1,
-      //   valueFormatter: (params) => `${params.value * 1000} vnđ`,
-      // },
-      // {
-      //   field: `remainingAmount`,
-      //   headerName: "Số tiền thanh toán sau",
-      //   flex: 1,
-      //   valueFormatter: (params) => `${params.value *1000} vnđ`,
-      // },
+      { field: "deliveryAddress", headerName: "Địa chỉ nhận hàng", flex: 1 },
     { field: "status", headerName: "Trạng thái", flex: 1 },
     {
         field: "orderDetails",
         headerName: "Xem đơn hàng chi tiết",
         flex: 1,
         renderCell: (params) => (
-          <Button onClick={(event) => handleDetailClick(event, params.row)} sx={{ textTransform: 'none' }}>
+          <Button onClick={(event) => handleDetailClick(event, params.row)} sx={{ textTransform: 'none', color: "green" }}>
             Xem đơn hàng
           </Button>
         ),
@@ -85,12 +79,14 @@ const OrderBuyer = () => {
   orderSeller?.map((item) => {
     const orderDetails = item.orderDetails || []; // Kiểm tra và thiết lập mặc định nếu orderDetails không tồn tại
     let fruitName = "";
+    let fullName = "";
     let quantity = "";
     let unitPrice = "";
     let oderDetailType = "";
     if (orderDetails.length > 0) {
       const firstOrderDetail = orderDetails[0];
       fruitName = firstOrderDetail.fruitName;
+      fullName = firstOrderDetail.fullName;
       quantity = firstOrderDetail.quantity;
       unitPrice = firstOrderDetail.unitPrice;
       oderDetailType = firstOrderDetail.oderDetailType;
@@ -117,9 +113,9 @@ const OrderBuyer = () => {
     }
     return {
       id: item.orderId,
-      fullName: item.fullName,
       discountName: item.discountName,
       orderDate: item.orderDate,
+      deliveryAddress: item.deliveryAddress,
       remainingAmount: item.remainingAmount,
       depositAmount: item.depositAmount,
       totalAmount: item.totalAmount,
@@ -128,6 +124,7 @@ const OrderBuyer = () => {
       unitPrice: unitPrice,
       oderDetailType: oderDetailType,
       status: statusText,
+      fullName: fullName,
       orderDetails: orderDetails, // Thêm orderDetails vào dòng dữ liệu
     };
   }) || [];
@@ -171,6 +168,8 @@ const OrderBuyer = () => {
           rows={rows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
+          pageSize={20} 
+          pagination
         />
     <OrderDetailsPopup
         open={isDetailPopupOpen}

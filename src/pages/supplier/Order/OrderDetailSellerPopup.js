@@ -11,7 +11,9 @@ import {
   TableRow,
 } from "@mui/material";
 import React from "react";
-
+function formatCurrency(value) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
 const OrderDetailSeller = ({ open, handleClose, orderDetails }) => {
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
@@ -75,7 +77,7 @@ const OrderDetailSeller = ({ open, handleClose, orderDetails }) => {
                     scope="row"
                     style={{ fontSize: "15px" }}
                   >
-                    {detail.unitPrice * 1000} vnđ
+                    {formatCurrency(detail.unitPrice * 1000)}
                   </TableCell>
                   <TableCell
                     component="th"

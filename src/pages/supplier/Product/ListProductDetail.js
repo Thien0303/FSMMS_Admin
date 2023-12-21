@@ -18,6 +18,9 @@ import {
   getAllReview,
 } from "../../../redux/apiThunk/SupplierThunk/reviewThunk";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
+function formatCurrency(value) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
 const ProductDetail = () => {
   const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -211,7 +214,7 @@ const ProductDetail = () => {
                     >
                       Giá:
                     </TableCell>
-                    <TableCell>${fruitDetail?.price.toFixed(3)} vnđ</TableCell>
+                    <TableCell>{formatCurrency(fruitDetail?.price * 1000)} /kg</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell
@@ -269,7 +272,7 @@ const ProductDetail = () => {
                       component="th"
                       style={{ fontWeight: "bold" }}
                     >
-                      Người sản xuất:
+                      Người bán:
                     </TableCell>
                     <TableCell>{fruitDetail?.fullName}</TableCell>
                   </TableRow>
@@ -300,6 +303,7 @@ const ProductDetail = () => {
                   }
                   required
                   value={data.ReviewComment}
+                  style={{width: '170%'}}
                 ></textarea>
                 <button className="btn btn-success" type="submit">
                   Đánh giá
@@ -353,6 +357,7 @@ const ProductDetail = () => {
                                     }
                                     required
                                     value={replyingCommentContent}
+                                    style={{width: "170%"}}
                                   ></textarea>
                                   <button
                                     className="btn btn-success"

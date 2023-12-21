@@ -14,6 +14,9 @@ import { Popover, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { toast } from "react-toastify";
 import OrderDetailSeller from "./OrderDetailSellerPopup";
+function formatCurrency(value) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
 const OrderSeller = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -123,7 +126,7 @@ const OrderSeller = () => {
       field: `totalAmount`,
       headerName: "Số tiền cần thanh toán",
       flex: 1,
-      valueFormatter: (params) => `${params.value * 1000} vnđ`,
+      valueFormatter: (params) => `${formatCurrency(params.value * 1000)}`,
     },
     {
       field: `deliveryAddress`,
@@ -152,7 +155,7 @@ const OrderSeller = () => {
       renderCell: (params) => (
         <Button
           onClick={(event) => handleDetailClick(event, params.row)}
-          sx={{ textTransform: "none" }}
+          sx={{ textTransform: "none", color: "green" }}
         >
           Xem đơn hàng
         </Button>
@@ -313,6 +316,8 @@ const OrderSeller = () => {
           rows={updatedRow}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
+          pageSize={20} 
+          pagination
         />
         <OrderDetailSeller
           open={isDetailPopupOpen}

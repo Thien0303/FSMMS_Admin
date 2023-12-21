@@ -21,7 +21,12 @@ import {
   removeFromCart,
 } from "../../../../redux/Reducers/SupplierSlice/cartSlice"; // Thay đổi đường dẫn tới slice của bạn
 import { useNavigate } from "react-router-dom";
-
+function formatCurrency(value) {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(value);
+}
 const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.fruit?.fruit.data);
@@ -91,7 +96,7 @@ const CartPopup = ({ cartPopupOpen, setCartPopupOpen }) => {
                 </Box>
                 <ListItemText
                   primary={item.fruitName}
-                  secondary={`${item.price?.toFixed(3)} x ${item.quantity}`}
+                  secondary={`${formatCurrency(item.price * 1000)}/kg x ${item.quantity}`}
                   style={{ flex: 1 }}
                 />
                 <ListItemSecondaryAction style={{ marginLeft: "auto" }}>

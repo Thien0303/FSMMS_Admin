@@ -212,6 +212,8 @@ console.log("ngày mới: ", expiryDate);
           rows={rows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
+          pageSize={20} 
+          pagination
         />
    {selectedProduct && (
       <DiscountForm open={openModal} handleClose={handleCloseModal} initialValues={selectedProduct} onSubmit={handleUpdateSubmit}   expiryDate={expiryDate} onDateChange={handleDateChange}/>

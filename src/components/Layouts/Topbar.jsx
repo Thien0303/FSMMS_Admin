@@ -69,9 +69,6 @@ const Topbar = () => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        {/* <IconButton>
-          <NotificationsOutlinedIcon />
-        </IconButton> */}
         {isAuthenticated?.roleName === "Supplier" && (
           <IconButton id={ Boolean(cartPopupOpen)?'simple-popover' : undefined} onClick={handleCartIconClick}>
           <Badge badgeContent={cartQuantity} color="error">

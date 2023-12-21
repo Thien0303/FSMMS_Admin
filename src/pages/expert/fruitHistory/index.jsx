@@ -1,33 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { Box, Button, useTheme } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { useDispatch, useSelector } from 'react-redux';
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../../../components/Header";
-import { getAllFruitHistory, createAllFruitHistory } from "../../../redux/apiThunk/ExpertThunk/fruitHistoryThunk";
-import { tokens } from '../../../theme';
-import { useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  getAllFruitHistory,
+  createAllFruitHistory,
+} from "../../../redux/apiThunk/ExpertThunk/fruitHistoryThunk";
+import { tokens } from "../../../theme";
+import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const FruitHistory = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
-  const fruitHistory = useSelector((state) => state.fruitHistory?.weather?.data);
+  const fruitHistory = useSelector(
+    (state) => state.fruitHistory?.weather?.data
+  );
   const [reload, setReload] = useState(true);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-  if(!isDataLoaded){
-    dispatch(getAllFruitHistory({ location: '', createdDate: '',userId: user.userId  }));
-    setIsDataLoaded(true);
-  }
+    if (!isDataLoaded) {
+      dispatch(
+        getAllFruitHistory({
+          location: "",
+          createdDate: "",
+          userId: user.userId,
+        })
+      );
+      setIsDataLoaded(true);
+    }
   }, [dispatch, user, isDataLoaded]);
   const handleCreateNewFruitHistory = async () => {
     try {
       await dispatch(createAllFruitHistory({ userId: user?.userId }));
       setReload(!reload);
-      toast.success('Bảng so sánh giá đã được cập nhật thành công!', {
-        position: 'top-right',
+      toast.success("Bảng so sánh giá đã được cập nhật thành công!", {
+        position: "top-right",
         autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -35,8 +46,8 @@ const FruitHistory = () => {
         draggable: true,
       });
     } catch (error) {
-      toast.error('Có lỗi xảy ra khi cập nhật so sánh giá!', {
-        position: 'top-right',
+      toast.error("Có lỗi xảy ra khi cập nhật so sánh giá!", {
+        position: "top-right",
         autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -46,24 +57,25 @@ const FruitHistory = () => {
     }
   };
   const columns = [
-    { field: 'historyId', headerName: 'Mã', flex: 1 },
-    { field: 'fruitName', headerName: 'Trái cây', flex: 1 },
-    { field: 'price', headerName: 'Giá', flex: 1 },
-    { field: 'location', headerName: 'Địa điểm', flex: 1 },
-    { 
-      field: 'createdDate', 
-      headerName: 'Ngày tạo', 
-      flex: 1, 
+    { field: "historyId", headerName: "Mã", flex: 1 },
+    { field: "fruitName", headerName: "Trái cây", flex: 1 },
+    { field: "price", headerName: "Giá", flex: 1 },
+    { field: "location", headerName: "Địa điểm", flex: 1 },
+    {
+      field: "createdDate",
+      headerName: "Ngày tạo",
+      flex: 1,
       valueGetter: (params) => {
         const createdDate = new Date(params.row.createdDate);
-        return createdDate.toLocaleDateString('en-US');
-      }
-    }
+        return createdDate.toLocaleDateString("en-US");
+      },
+    },
   ];
-  const rows = fruitHistory?.map(item => ({
-    ...item,
-    id: item.historyId // Sử dụng historyId làm id
-  })) || [];
+  const rows =
+    fruitHistory?.map((item) => ({
+      ...item,
+      id: item.historyId, // Sử dụng historyId làm id
+    })) || [];
   return (
     <Box m="20px">
       <Header title="Giá cả thị trường" subtitle="Dữ liệu giá trái cây" />
@@ -96,18 +108,28 @@ const FruitHistory = () => {
           },
         }}
       >
-       <Box
+        <Box
           sx={{
             display: "flex",
             justifyContent: "flex-end",
-            marginBottom: "10px"
+            marginBottom: "10px",
           }}
         >
-     <Button variant="contained" color="success" onClick={handleCreateNewFruitHistory}>
-        Cập nhật mới nhất
-      </Button>
-      </Box>
-        <DataGrid checkboxSelection rows={rows} columns={columns} />
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleCreateNewFruitHistory}
+          >
+            Cập nhật mới nhất
+          </Button>
+        </Box>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          components={{ Toolbar: GridToolbar }}
+          pageSize={20}
+          pagination
+        />
       </Box>
       <ToastContainer />
     </Box>

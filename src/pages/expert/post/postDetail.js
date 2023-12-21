@@ -18,11 +18,12 @@ import {
 } from "../../../redux/apiThunk/ExpertThunk/commentThunk";
 const styles = {
     commentInput: {
-      width: "90%", // Đặt chiều rộng cho TextField
+      width: "75%", // Đặt chiều rộng cho TextField
       marginBottom: "10px", // Khoảng cách giữa TextField và Button
     },
     button: {
       minWidth: "10%", // Đặt chiều rộng tối thiểu cho Button
+      height: "40px",    
     },
   };
   function createCommentTree(comments) {
@@ -159,7 +160,7 @@ const PostDetail = () => {
     <>
       <Card
         sx={{
-          maxWidth: "50vw",
+          maxWidth: "60vw",
           m: "auto",
           mb: 5
         }}
@@ -171,55 +172,18 @@ const PostDetail = () => {
           alt={postDataDetail?.postTitle}
         />
         <CardContent>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h2" gutterBottom color={"#FF3300"}>
             {postDataDetail?.postTitle}
           </Typography>
-          <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+          <Typography variant="h5" color="black" sx={{fontWeight: "bold"}} gutterBottom>
             Được đăng bởi {postDataDetail?.fullName} vào ngày{" "}
             {new Date(postDataDetail?.createdDate).toLocaleDateString()}
           </Typography>
-          <Typography variant="h6" color="text.secondary" dangerouslySetInnerHTML={{ __html: postDataDetail?.postContent }} />
+          <Typography variant="h5" color="black" dangerouslySetInnerHTML={{ __html: postDataDetail?.postContent }} />
         </CardContent>
       </Card>
-      {commentTree
-        .filter(comment => comment.postContent === postDataDetail?.postContent)
-        .map(comment => (
-            <div key={comment.commentId}>
-            <div style={{ display: "flex",flex: 1, flexDirection: "column", alignItems: "flex-start" }}>
-            <Comment comment={comment} onDeleteComment={handleDeleteComment}/>
-            <Typography
-             variant="body2"
-             color="primary"
-             style={{
-               cursor: "pointer",
-               fontWeight: "bold",
-               color: "steelblue",
-               marginRight: "50px" /* Khoảng cách giữa nút và Comment */
-              }}
-             onClick={() => handleReply(comment.commentId)}
-           >
-           Trả Lời
-           </Typography>
-           </div>
-            {comment.commentId === replyingCommentId && isReplying && (
-              <div ref={replyInputRef}>
-                <TextField
-                  label="Viết trả lời..."
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  value={replyingCommentContent}
-                  onChange={e => setReplyingCommentContent(e.target.value)}
-                  margin="normal"
-                />
-                <Button variant="contained" size="small" color="success" onClick={handleReplySubmit}>
-                  Gửi Trả Lời
-                </Button>
-              </div>
-            )}
-          </div>
-        ))}
-    <div style={{ display: "flex", flex: 1, flexDirection: "column", alignItems: "flex-start" }}>
+      <Typography variant="h3" style={{marginLeft: "155px", fontWeight: "bold"}}>Nội dung bình luận</Typography>
+      <div style={{ display: "flex", flex: 1, flexDirection: "column", alignItems: "center"}}>
       <TextField
         label="Viết bình luận..."
         variant="outlined"
@@ -227,17 +191,64 @@ const PostDetail = () => {
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
         margin="normal"
-        style={styles.commentInput} // Áp dụng CSS cho TextField
+        style={styles.commentInput} 
       />
+      </div>
+      <div style={{display: "block", marginLeft: "155px", marginBottom: "30px"}}>
       <Button
         variant="contained"
         color="success"
         onClick={handleCommentChange}
-        style={styles.button} // Áp dụng CSS cho Button
+        style={styles.button}
       >
         Gửi Bình Luận
       </Button>
-    </div>
+      </div>
+      {commentTree
+        .filter(comment => comment.postContent === postDataDetail?.postContent)
+        .map(comment => (
+            <div key={comment.commentId}>
+            <div style={{ display: "flex",flex: 1, flexDirection: "column", alignItems: "flex-start", marginLeft: "150px" }}>
+            <Comment comment={comment} onDeleteComment={handleDeleteComment}/>
+            <Button
+             variant="contained"
+             color="success"
+             style={{
+              cursor: "pointer",
+              fontWeight: "bold",
+              color: "black",
+              left: "0",
+              top: "0",
+              marginBottom: "20px"
+              }}
+             onClick={() => handleReply(comment.commentId)}
+           >
+           Trả Lời
+           </Button>
+           </div>
+            {comment.commentId === replyingCommentId && isReplying && (
+              <div ref={replyInputRef}>
+              <div style={{ display: "flex", flex: 1, flexDirection: "column", alignItems: "center"}}>
+              <TextField
+                label="Viết trả lời..."
+                variant="outlined"
+                fullWidth
+                size="small"
+                value={replyingCommentContent}
+                onChange={e => setReplyingCommentContent(e.target.value)}
+                margin="normal"
+                style={styles.commentInput}
+              />
+              </div>
+            <div style={{display: "block", marginLeft: "150px", marginBottom: "30px"}}>
+              <Button variant="contained" size="small" color="success" onClick={handleReplySubmit}>
+                Gửi Trả Lời
+              </Button>
+             </div>
+           </div> 
+            )}
+          </div>
+        ))}
     </>
   );
 };

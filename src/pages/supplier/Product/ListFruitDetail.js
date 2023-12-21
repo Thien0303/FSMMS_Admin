@@ -17,6 +17,12 @@ import { deleteReview, getAllReview } from "../../../redux/apiThunk/SupplierThun
 import FruitImage from "./CartPopup/CartFruitImage";
 import DiscountPopup from "./CartPopup/CartDiscount";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
+function formatCurrency(value) {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(value);
+}
 const FruitSupplierDetail = () => {
   const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -267,7 +273,7 @@ const FruitSupplierDetail = () => {
                     >
                       Giá:
                     </TableCell>
-                    <TableCell>${fruitDetail?.price.toFixed(3)} vnđ</TableCell>
+                    <TableCell>{formatCurrency(fruitDetail?.price * 1000)} /kg</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell
@@ -329,7 +335,7 @@ const FruitSupplierDetail = () => {
                       component="th"
                       style={{ fontWeight: "bold" }}
                     >
-                      Người sản xuất:
+                      Người bán:
                     </TableCell>
                     <TableCell>{fruitDetail?.fullName}</TableCell>
                   </TableRow>
@@ -362,6 +368,7 @@ const FruitSupplierDetail = () => {
                   }
                   required
                   value={data.ReviewComment}
+                  style={{width: "210%"}}
                 ></textarea>
                 <button className="btn btn-success" type="submit">
                   Đánh giá
@@ -415,6 +422,7 @@ const FruitSupplierDetail = () => {
                                     }
                                     required
                                     value={replyingCommentContent}
+                                    style={{width: "200%"}}
                                   ></textarea>
                                   <button
                                     className="btn btn-success"

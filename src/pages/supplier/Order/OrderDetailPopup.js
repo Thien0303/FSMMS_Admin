@@ -1,7 +1,9 @@
 import React from "react";
 import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, TableContainer, Paper, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+function formatCurrency(value) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
 const OrderDetailsPopup = ({ open, handleClose, orderDetails}) => {
   const navigate = useNavigate();
 
@@ -27,7 +29,7 @@ const OrderDetailsPopup = ({ open, handleClose, orderDetails}) => {
               <TableRow key={index}>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.fruitName}</TableCell>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.quantity}</TableCell>
-                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.unitPrice * 1000} vnđ</TableCell>
+                <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{formatCurrency(detail.unitPrice * 1000)}</TableCell>
                 <TableCell component="th" scope="row" style={{fontSize: "15px"}}>{detail.oderDetailType}</TableCell>
               </TableRow>
             ))}

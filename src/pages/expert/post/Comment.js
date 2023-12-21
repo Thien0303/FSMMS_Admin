@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import DeleteIcon from '@mui/icons-material/Delete';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import DeleteIcon from "@mui/icons-material/Delete";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 const Comment = ({ comment, onDeleteComment }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -23,19 +23,29 @@ const Comment = ({ comment, onDeleteComment }) => {
 
   return (
     <div
-    style={{
-      display: "flex",
-      flexDirection: "column", // Đặt flex-direction thành column để comment con nằm dưới comment cha
-      alignItems: "flex-start", // Đảm bảo các phần tử con căng trái
-      marginLeft: "20px", // Khoảng cách giữa comment cha và comment con
-      marginTop: "10px",
-      position: "relative",
-    }}
+      style={{
+        display: "block",
+        flexDirection: "column", // Đặt flex-direction thành column để comment con nằm dưới comment cha
+        alignItems: "flex-start", // Đảm bảo các phần tử con căng trái
+        margin: "0", // Khoảng cách giữa comment cha và comment co
+        padding: "0",
+        position: "relative",
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div style={{ flex: 1 }}>
-      <strong>{comment.fullName}</strong>: {comment.commentContent}
+      <div className="d-flex mb-4"  style={{fontSize: "16px" }}>
+        <div className="flex-shrink-0">
+          <img
+            className="rounded-circle"
+            src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+            alt="avatar user"
+            style={{ width: "50px", height: "50px" }}
+          />
+        </div>
+        <div className="ms-2">
+        <strong>{comment.fullName}</strong>: {comment.commentContent}
+        </div>
       </div>
       {comment.children && comment.children.length > 0 && (
         <div style={{ marginLeft: "20px" }}>
@@ -49,7 +59,7 @@ const Comment = ({ comment, onDeleteComment }) => {
         </div>
       )}
       <div
-         style={{
+        style={{
           position: "absolute",
           top: 0,
           right: 0,

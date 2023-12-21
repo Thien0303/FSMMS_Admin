@@ -210,7 +210,7 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Top 10 người có bài đăng nhiều nhất
+              Top 10 người có bài đăng nhiều nhất trong 7 ngày qua
             </Typography>
           </Box>
           {/* {dashboardData?.FiveNewOrders && dashboardData?.FiveNewOrders.map((transaction, i) => ( */}
@@ -269,7 +269,7 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Top 10 sản phẩm bán chạy nhất
+              Top 10 sản phẩm bán chạy nhất trong 7 ngày qua
             </Typography>
           </Box>
           {/* {dashboardData?.FiveNewOrders && dashboardData?.FiveNewOrders.map((transaction, i) => ( */}

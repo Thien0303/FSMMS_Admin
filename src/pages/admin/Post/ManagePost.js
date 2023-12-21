@@ -10,6 +10,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { toast } from "react-toastify";
 import { getAllPost } from "../../../redux/apiThunk/ExpertThunk/postThunk";
 import { getAllPostAdmin, updateAllPost } from "../../../redux/apiThunk/AdminThunk/systemThunk";
+import { NavLink } from "react-router-dom";
 const UpdatePost = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -88,6 +89,16 @@ const UpdatePost = () => {
       flex: 1,
       valueGetter: (params) => getStatusText(params.row.status),
     },
+    {
+      field: 'view',
+      headerName: 'Xem chi tiết',
+      flex: 1,
+      renderCell: (params) => (
+        <NavLink to={`/postdetailAdmin/${params.row.postId}`}>
+          Xem chi tiết
+        </NavLink>
+      ),
+    },    
     {
       field: "Actions",
       headerName: "Quản lý",
@@ -176,6 +187,8 @@ const UpdatePost = () => {
           rows={rows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
+          pageSize={20} 
+          pagination
         />
       </Box>
     </Box>

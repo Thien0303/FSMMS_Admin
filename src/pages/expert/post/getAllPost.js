@@ -41,14 +41,14 @@ const GetListPost = () => {
   return (
     <>
       {postData?.filter((p) => p.userId !== user.userId)?.map((post) => (
-        <Card key={post.postId} sx={{ maxWidth: "50vw", m: "auto", mb: 5 }}>
+        <Card key={post.postId} sx={{ maxWidth: "55vw", m: "auto", mb: 5, width: "100%", height: "100%" }}>
           <NavLink to={`/postdetail/${post.postId}`}>
             <CardMedia
               component="img"
               height={100}
               image={post.postImage}
               alt="alt name"
-              sx={{ width: "100%", height: "100%", objectFit: "contain" }}
+              sx={{ width: "100%", height: "450px", objectFit: "cover" }}
             />
           </NavLink>
           <CardContent>
@@ -59,10 +59,10 @@ const GetListPost = () => {
                 alignItems: "center",
               }}
             >
-              <Typography variant="h2">{post.postTitle}</Typography>
+              <Typography variant="h2" gutterBottom color={"#FF3300"}>{post.postTitle}</Typography>
             </Box>
             <Divider sx={{ mt: 2, mb: 2 }} />
-            <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+            <Typography variant="h5" color="black" sx={{fontWeight: "bold"}} gutterBottom>
             Được đăng bởi {post?.fullName} vào ngày{" "}
             {new Date(post?.createdDate).toLocaleDateString()}
           </Typography>

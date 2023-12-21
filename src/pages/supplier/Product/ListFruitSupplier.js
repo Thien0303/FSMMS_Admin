@@ -26,6 +26,12 @@ import UpdateForm from "./PopupProduct/UpdateForm";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import IconButton from "@mui/material/IconButton";
+function formatCurrency(value) {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(value);
+}
 const ListFruitSupplier = () => {
   const productsPerRow = 4;
   const productsPerPage = productsPerRow * 2;
@@ -332,7 +338,7 @@ const ListFruitSupplier = () => {
                     variant="h6"
                     style={{ marginTop: 5, color: "#FF0000" }}
                   >
-                    Giá: {product?.price?.toFixed(3)} vnđ
+                    Giá: {formatCurrency(product?.price * 1000)} /kg
                   </Typography>
                 </Paper>
               </Grid>
@@ -405,7 +411,7 @@ const ListFruitSupplier = () => {
                         variant="h6"
                         style={{ marginTop: 5, color: "#FF0000" }}
                       >
-                        Giá: {product?.price?.toFixed(3)} vnđ
+                        Giá: {formatCurrency(product?.price * 1000)} /kg
                       </Typography>
                       <span style={{ cursor: "pointer" }}>
                         <MoreVertIcon

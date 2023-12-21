@@ -34,7 +34,12 @@ const validationSchema = yup.object({
   deliveryAddress: yup.string().required("Delivery address is required"),
   phoneNumber: yup.string().matches(/^0/, "Số điện thoại phải bắt đầu bằng '0'").min(10, "Số điện thoại ít nhất là 10 số").max(11, "Số điện thoại nhiều nhất là 11 số").required("Bắt buộc nhập số điện thoại"),
 });
-
+function formatCurrency(value) {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(value);
+}
 const CheckoutPage = () => {
   const currentDate = new Date().toLocaleDateString();
   const cartItems = useSelector((state) => state.cart);
@@ -242,7 +247,7 @@ const CheckoutPage = () => {
                           {item.fruitName}
                         </Typography>
                         <Typography>
-                          Số lượng: {item.quantity} x {item.price?.toFixed(3)} vnđ
+                          Số lượng: {item?.quantity} x {formatCurrency(item?.price * 1000)}/kg
                         </Typography>
                         {item?.orderType === "PreOrder" && (
                           <FormControl
